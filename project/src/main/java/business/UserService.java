@@ -41,9 +41,14 @@ public class UserService {
         else throw new CustomNotFoundException("No existe usuarios con el codigo: " + cod + ".\n");
     }
 
-    public List<User> findByUsername(String username) {
-        List<User> usersList = userRepository.findByUsername(username);
-        if (usersList.size() > 0) return usersList;
-        else throw new CustomNotFoundException("No existe usuarios con el username: " + username + ".\n");
+    public User findByUsername(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) return userOptional.get();
+        else throw new CustomNotFoundException("No existe un usuario con el id: " + username + ".\n");
+    }
+
+    public boolean isUser(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        return userOptional.isPresent();
     }
 }

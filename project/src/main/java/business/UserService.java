@@ -51,4 +51,10 @@ public class UserService {
         Optional<User> userOptional = userRepository.findByUsername(username);
         return userOptional.isPresent();
     }
+
+    public User isTeacher(String username) {
+        Optional<User> userOptional = userRepository.findTeacherUsername(username);
+        if (userOptional.isPresent()) return userOptional.get();
+        else throw new CustomNotFoundException("No existe un docente con el ususario: " + username + ".\n");
+    }
 }

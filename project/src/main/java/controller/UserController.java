@@ -4,7 +4,6 @@ import business.UserService;
 import data.dtos.UserDTO;
 import data.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,6 +38,7 @@ public class UserController {
     public User getUsersByUsername(@PathVariable String username) {
         return userService.findByUsername(username);
     }
+
     @GetMapping("/isUser/{username}")
     public boolean isUser(@PathVariable String username) {
         return userService.isUser(username);

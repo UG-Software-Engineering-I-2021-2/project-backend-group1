@@ -1,8 +1,11 @@
 package data.dtos;
 
+import data.entities.User;
+
 public class UserDTO {
     Long codEmpleado;
     String username;
+    User.Role rol;
 
     public UserDTO() {}
 
@@ -20,6 +23,14 @@ public class UserDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public User.Role getRol() {
+        return rol;
+    }
+
+    public void setRol(User.Role rol) {
+        this.rol = rol;
     }
 }
 

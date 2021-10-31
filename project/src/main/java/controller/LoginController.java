@@ -4,6 +4,7 @@ import business.UserService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -35,24 +36,28 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping("/login")
-    public Map<String, String> isUser(@RequestHeader(value="Authorization") String authorization, @RequestBody Login login) throws JSONException, GeneralSecurityException, IOException {
+    public ResponseEntity<HashMap<String, String>> isUser(@RequestHeader(value="Authorization") String authorization, @RequestBody Login login) throws JSONException, GeneralSecurityException, IOException {
         HashMap<String, String> map = new HashMap<>();
 
         System.out.println(login.getEmail() + "  " + authorization);
+        if(!userService.isUser(login.getEmail())){
+            HashMap<String, String> errorMap = new HashMap<>();
+            errorMap.put("error", "user is not valid");
+            return  ResponseEntity.status(404).body(errorMap);
+        }
+
 
         if(!this.isTokenValid(authorization)){
             HashMap<String, String> errorMap = new HashMap<>();
             errorMap.put("error", "token not verified");
-            return  errorMap;
+            return  ResponseEntity.status(404).body(errorMap);
         }
-
-        // here validate the user with login.getEmail and set the roll on the map, then return response
 
         map.put("email", login.getEmail());
 
         map.put("roll", "profesor");
 
-        return map;
+        return ResponseEntity.status(200).body(map);
     }
 
     public boolean isTokenValid(String idTokenString) throws GeneralSecurityException, IOException {

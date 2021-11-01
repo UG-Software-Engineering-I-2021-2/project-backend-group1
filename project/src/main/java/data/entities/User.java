@@ -1,27 +1,26 @@
 package data.entities;
 
 import javax.persistence.*;
-import static config.GlobalConstants.DB_CHAR_LENGTH;
 
 @Entity
-@Table(name = "users")
+@Table(name = "Usuario")
 public class User {
     public static enum Role {Docente, Calidad};
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "usuario_id")
     private Long id;
 
-    @Column(name = "codempleado")
+    @Column(name = "codempleado", nullable = false)
     private Long codEmpleado;
 
-    @Column(name = "username", length = DB_CHAR_LENGTH, unique = true)
-    private String username;
-
-    @Column(name = "rol")
+    @Column(name = "rol", nullable = false, columnDefinition = "text")
     @Enumerated(EnumType.STRING)
     private Role rol;
+
+    @Column(name = "username", unique = true, nullable = false, columnDefinition = "text")
+    private String username;
 
     public User() {}
 

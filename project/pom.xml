@@ -11,7 +11,7 @@
 	</parent>
 
 	<groupId>software.group1</groupId>
-	<artifactId>project</artifactId>
+	<artifactId>project-backend-group1</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>project</name>
@@ -19,6 +19,9 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<sonar.projectKey>project-backend-group1</sonar.projectKey>
+		<sonar.organization>ug-software-engineering-i-2021-2</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<dependencies>

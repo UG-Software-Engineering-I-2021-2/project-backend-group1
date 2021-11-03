@@ -2,59 +2,97 @@ package data.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Set;
 
 import static config.GlobalConstants.COD_ALUMNO_LENGTH;
 
-class AlumnoCompositeKey implements Serializable {
-    private Long id;
-    private Carrera carrera;
+@Embeddable
+class AlumnoPK implements Serializable {
+    @Column(name = "codAlumno", length = COD_ALUMNO_LENGTH)
+    private String codAlumno;
+
+    @Column(name = "carreraId")
+    private Long carreraId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AlumnoPK alumnoPK = (AlumnoPK) o;
+        return codAlumno.equals(alumnoPK.codAlumno) && carreraId.equals(alumnoPK.carreraId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(codAlumno, carreraId);
+    }
 }
 
 @Entity
 @Table(name = "Alumno")
-@IdClass(AlumnoCompositeKey.class)
 public class Alumno {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "alumno_id")
-    private Long id;
+    @EmbeddedId
+    private AlumnoPK alumnoPK;
 
-    @Id
+    @MapsId("carreraId")
+    @JoinColumn(name = "carreraId", referencedColumnName = "carreraId")
     @ManyToOne
-    @JoinColumn(name = "carrera_id")
-    private Carrera carrera;
-
-    @Column(name = "codcurso", nullable = false, length = COD_ALUMNO_LENGTH)
-    private String codalumno;
+    private Carrera carreraAlumno;
 
     @Column(name = "nombre", nullable = false, columnDefinition = "text")
     private String nombre;
 
+    @ManyToMany
+    @JoinTable(
+            name = "LLevaAlumnoSeccion",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "codAlumno",
+                            referencedColumnName = "codAlumno"
+                    ),
+                    @JoinColumn(
+                            name = "carreraId",
+                            referencedColumnName = "carreraId"
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "codSeccion",
+                            referencedColumnName = "codSeccion",
+                            columnDefinition = "text"
+                    ),
+                    @JoinColumn(
+                            name = "codCurso",
+                            referencedColumnName = "codCurso",
+                            columnDefinition = "text"
+                    )
+            }
+    )
+    private Set<Seccion> seccionesAlumno;
+
+    @OneToMany(mappedBy = "alumnoEvalua")
+    private Set<Evalua> evalua;
+
     public Alumno() {
     }
 
-    public Long getId() {
-        return id;
+    // Getters and setters
+
+    public AlumnoPK getAlumnoPK() {
+        return alumnoPK;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAlumnoPK(AlumnoPK alumnoPK) {
+        this.alumnoPK = alumnoPK;
     }
 
-    public Carrera getCarrera() {
-        return carrera;
+    public Carrera getCarreraAlumno() {
+        return carreraAlumno;
     }
 
-    public void setCarrera(Carrera carrera) {
-        this.carrera = carrera;
-    }
-
-    public String getCodalumno() {
-        return codalumno;
-    }
-
-    public void setCodalumno(String codalumno) {
-        this.codalumno = codalumno;
+    public void setCarreraAlumno(Carrera carreraAlumno) {
+        this.carreraAlumno = carreraAlumno;
     }
 
     public String getNombre() {
@@ -63,5 +101,21 @@ public class Alumno {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Set<Seccion> getSeccionesAlumno() {
+        return seccionesAlumno;
+    }
+
+    public void setSeccionesAlumno(Set<Seccion> seccionesAlumno) {
+        this.seccionesAlumno = seccionesAlumno;
+    }
+
+    public Set<Evalua> getEvalua() {
+        return evalua;
+    }
+
+    public void setEvalua(Set<Evalua> evalua) {
+        this.evalua = evalua;
     }
 }

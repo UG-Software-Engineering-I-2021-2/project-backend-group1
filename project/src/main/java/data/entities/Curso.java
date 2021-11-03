@@ -1,19 +1,16 @@
 package data.entities;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "Curso")
 public class Curso {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "curso_id")
-    private Long id;
+    @Column(name = "codCurso", columnDefinition = "text")
+    private String codCurso;
 
-    @Column(name = "codcurso", nullable = false, columnDefinition = "text")
-    private String codcurso;
-
-    @Column(name = "nombre", nullable = false, columnDefinition = "text")
+    @Column(name = "nombre", nullable = false, columnDefinition = "text", unique = true)
     private String nombre;
 
     @Column(name = "ciclo", nullable = false)
@@ -22,26 +19,23 @@ public class Curso {
     @Column(name = "semestre", nullable = false, columnDefinition = "text")
     private String semestre;
 
-    @Column(name = "seccion", nullable = false, columnDefinition = "text")
-    private String seccion;
+    @OneToMany(mappedBy = "cursoSeccion")
+    private Set<Seccion> secciones;
+
+    @OneToMany(mappedBy = "cursoRubrica")
+    private Set<Rubrica> rubricas;
 
     public Curso() {
     }
 
-    public Long getId() {
-        return id;
+    // Getters and setters
+
+    public String getCodCurso() {
+        return codCurso;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCodcurso() {
-        return codcurso;
-    }
-
-    public void setCodcurso(String codcurso) {
-        this.codcurso = codcurso;
+    public void setCodCurso(String codCurso) {
+        this.codCurso = codCurso;
     }
 
     public String getNombre() {
@@ -68,11 +62,19 @@ public class Curso {
         this.semestre = semestre;
     }
 
-    public String getSeccion() {
-        return seccion;
+    public Set<Seccion> getSecciones() {
+        return secciones;
     }
 
-    public void setSeccion(String seccion) {
-        this.seccion = seccion;
+    public void setSecciones(Set<Seccion> secciones) {
+        this.secciones = secciones;
+    }
+
+    public Set<Rubrica> getRubricas() {
+        return rubricas;
+    }
+
+    public void setRubricas(Set<Rubrica> rubricas) {
+        this.rubricas = rubricas;
     }
 }

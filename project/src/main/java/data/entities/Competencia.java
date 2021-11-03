@@ -1,30 +1,59 @@
 package data.entities;
 
 import javax.persistence.*;
-import java.io.Serializable;
-
-class CompetenciaCompositeKey implements Serializable {
-    private Long id;
-    private Carrera carrera;
-}
+import java.util.Set;
 
 @Entity
 @Table(name = "Competencia")
-@IdClass(CompetenciaCompositeKey.class)
 public class Competencia {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "competencia_id")
-    private Long id;
+    @Column(name = "codCompetencia", columnDefinition = "text")
+    private String codCompetencia;
 
-    @Id
+    @JoinColumn(name = "carreraId", referencedColumnName = "carreraId", nullable = false)
     @ManyToOne
-    @JoinColumn(name = "carrera_id")
-    private Carrera carrera;
-
-    @Column(name = "codcompetencia", nullable = false, columnDefinition = "text")
-    private String codcompetencia;
+    private Carrera carreraCompetencia;
 
     @Column(name = "descripcion", nullable = false, columnDefinition = "text")
     private String descripcion;
+
+    @OneToMany(mappedBy = "competenciaRubrica")
+    private Set<Rubrica> rubricas;
+
+    public Competencia() {
+    }
+
+    // Getters and setters
+
+    public String getCodCompetencia() {
+        return codCompetencia;
+    }
+
+    public void setCodCompetencia(String codCompetencia) {
+        this.codCompetencia = codCompetencia;
+    }
+
+    public Carrera getCarreraCompetencia() {
+        return carreraCompetencia;
+    }
+
+    public void setCarreraCompetencia(Carrera carreraCompetencia) {
+        this.carreraCompetencia = carreraCompetencia;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Set<Rubrica> getRubricas() {
+        return rubricas;
+    }
+
+    public void setRubricas(Set<Rubrica> rubricas) {
+        this.rubricas = rubricas;
+    }
 }

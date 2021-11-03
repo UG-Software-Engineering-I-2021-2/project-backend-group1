@@ -1,29 +1,54 @@
 package data.entities;
 
 import javax.persistence.*;
-import static config.GlobalConstants.DB_CHAR_LENGTH;
+import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "Usuario")
 public class User {
     public static enum Role {Docente, Calidad};
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "usuarioId")
     private Long id;
 
-    @Column(name = "codempleado")
+    @Column(name = "codEmpleado", nullable = false)
     private Long codEmpleado;
 
-    @Column(name = "username", length = DB_CHAR_LENGTH, unique = true)
-    private String username;
-
-    @Column(name = "rol")
+    @Column(name = "rol", nullable = false, columnDefinition = "text")
     @Enumerated(EnumType.STRING)
     private Role rol;
 
-    public User() {}
+    @Column(name = "username", unique = true, nullable = false, columnDefinition = "text")
+    private String username;
+
+    @ManyToMany
+    @JoinTable(
+            name = "DictaDocenteSeccion",
+            joinColumns = @JoinColumn(
+                    name = "usuarioId",
+                    referencedColumnName = "usuarioId"
+            ),
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "codSeccion",
+                            referencedColumnName = "codSeccion",
+                            columnDefinition = "text"
+                    ),
+                    @JoinColumn(
+                            name = "codCurso",
+                            referencedColumnName = "codCurso",
+                            columnDefinition = "text"
+                    )
+            }
+    )
+    private Set<Seccion> seccionesDocente;
+
+    public User() {
+    }
+
+    // Getters and setters
 
     public Long getId() {
         return id;
@@ -41,6 +66,14 @@ public class User {
         this.codEmpleado = codEmpleado;
     }
 
+    public Role getRol() {
+        return rol;
+    }
+
+    public void setRol(Role rol) {
+        this.rol = rol;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -49,11 +82,11 @@ public class User {
         this.username = username;
     }
 
-    public Role getRol() {
-        return rol;
+    public Set<Seccion> getSeccionesDocente() {
+        return seccionesDocente;
     }
 
-    public void setRol(Role rol) {
-        this.rol = rol;
+    public void setSeccionesDocente(Set<Seccion> seccionesDocente) {
+        this.seccionesDocente = seccionesDocente;
     }
 }

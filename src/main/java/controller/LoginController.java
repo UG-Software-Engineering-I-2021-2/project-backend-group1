@@ -46,47 +46,44 @@ public class LoginController {
             errorMap.put("error", "user is not valid");
             return  ResponseEntity.status(404).body(errorMap);
         }
+Payload payload = this.ValidateTokenAndGetPayload(authorization);
+            if(payload == null){
+                HashMap<String, String> errorMap = new HashMap<>();
+                errorMap.put("error", "token not verified");
+                return  ResponseEntity.status(404).body(errorMap);
+            }
 
 
-        if(!this.isTokenValid(authorization)){
-            HashMap<String, String> errorMap = new HashMap<>();
-            errorMap.put("error", "token not verified");
-            return  ResponseEntity.status(404).body(errorMap);
-        }
-
-        map.put("email", login.getEmail());
-
+map.put("name", payload.get("name"))
+        map.put("email", login.getEmail()
         map.put("roll", "profesor");
 
         return ResponseEntity.status(200).body(map);
     }
 
-    public boolean isTokenValid(String idTokenString) throws GeneralSecurityException, IOException {
+    public Payload ValidateTokenAndGetPayload(String idTokenString)  {
 
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-                .setAudience(Collections.singletonList("6Ksgajs4QkIBhcgqP7IYEqcybmkc3lQM"))
-                .build();
+        try {
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+                    .setAudience(Collections.singletonList("854441781361-k1cg7207b002frst5mirrhfko7tbj602.apps.googleusercontent.com"))
+                    .build();
 
-        GoogleIdToken idToken = verifier.verify(idTokenString);
-        
-        if (idToken != null) {
-            Payload payload = idToken.getPayload();
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+            System.out.println(idToken);
 
-            String userId = payload.getSubject();
-            System.out.println("User ID: " + userId);
+            if (idToken != null) {
+                Payload payload = idToken.getPayload();
 
-            String email = payload.getEmail();
-            boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-            String name = (String) payload.get("name");
-            String pictureUrl = (String) payload.get("picture");
-            String locale = (String) payload.get("locale");
-            String familyName = (String) payload.get("family_name");
-            String givenName = (String) payload.get("given_name");
+                return payload;
+            }
+        }catch(Exception er){
+            System.out.println(er);
+            return null;
 
-            System.out.println("User ID: " + email);
-            return true;
         }
-        return false;
+        System.out.println("Cant get token info");
+
+        return null;
     }
 }
 

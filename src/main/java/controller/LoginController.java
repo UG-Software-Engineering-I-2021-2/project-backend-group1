@@ -1,6 +1,7 @@
 package controller;
 
 import business.UserService;
+import data.entities.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,33 +31,35 @@ class Login {
     }
 }
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class LoginController {
     @Autowired
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<HashMap<String, String>> isUser(@RequestHeader(value="Authorization") String authorization, @RequestBody Login login) throws JSONException, GeneralSecurityException, IOException {
+    public ResponseEntity<HashMap<String, String>> login_verifier(@RequestHeader(value="Authorization") String authorization, @RequestBody Login login) throws JSONException, GeneralSecurityException, IOException {
         HashMap<String, String> map = new HashMap<>();
+        String email = login.getEmail();
+        String username = email.substring(0,email.indexOf('@'));
 
-        System.out.println(login.getEmail() + "  " + authorization);
-        if(!userService.isUser(login.getEmail())){
+        if(!userService.isUser(username)){
             HashMap<String, String> errorMap = new HashMap<>();
             errorMap.put("error", "user is not valid");
             return  ResponseEntity.status(404).body(errorMap);
         }
-Payload payload = this.ValidateTokenAndGetPayload(authorization);
+        Payload payload = this.ValidateTokenAndGetPayload(authorization);
             if(payload == null){
                 HashMap<String, String> errorMap = new HashMap<>();
                 errorMap.put("error", "token not verified");
                 return  ResponseEntity.status(404).body(errorMap);
             }
 
+        User user = userService.findByUsername(username);
 
         map.put("name", payload.get("name").toString());
         map.put("email", login.getEmail());
-        map.put("roll", "profesor");
+        map.put("rol", user.getRol().toString());
 
         return ResponseEntity.status(200).body(map);
     }

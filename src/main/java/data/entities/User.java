@@ -1,5 +1,7 @@
 package data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -43,6 +45,7 @@ public class User {
                     )
             }
     )
+    @JsonIgnore
     private Set<Seccion> seccionesDocente;
 
     public User() {

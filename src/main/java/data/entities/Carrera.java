@@ -1,5 +1,7 @@
 package data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -15,9 +17,11 @@ public class Carrera {
     private String nombre;
 
     @OneToMany(mappedBy = "carreraAlumno")
+    @JsonIgnore
     private Set<Alumno> alumnos;
 
     @OneToMany(mappedBy = "carreraCompetencia")
+    @JsonIgnore
     private Set<Competencia> competencias;
 
     public Carrera() {

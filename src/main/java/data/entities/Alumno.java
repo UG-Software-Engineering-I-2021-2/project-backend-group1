@@ -1,42 +1,20 @@
 package data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 import java.util.Set;
 
 import static config.GlobalConstants.COD_ALUMNO_LENGTH;
 
-@Embeddable
-class AlumnoPK implements Serializable {
-    @Column(name = "codAlumno", length = COD_ALUMNO_LENGTH)
-    private String codAlumno;
-
-    @Column(name = "carreraId")
-    private Long carreraId;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AlumnoPK alumnoPK = (AlumnoPK) o;
-        return codAlumno.equals(alumnoPK.codAlumno) && carreraId.equals(alumnoPK.carreraId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(codAlumno, carreraId);
-    }
-}
-
 @Entity
 @Table(name = "Alumno")
 public class Alumno {
-    @EmbeddedId
-    private AlumnoPK alumnoPK;
+    @Id
+    @Column(name = "codAlumno", length = COD_ALUMNO_LENGTH)
+    private String codAlumno;
 
-    @MapsId("carreraId")
-    @JoinColumn(name = "carreraId", referencedColumnName = "carreraId")
+    @JoinColumn(name = "carreraId", referencedColumnName = "carreraId", nullable = false)
     @ManyToOne
     private Carrera carreraAlumno;
 
@@ -46,16 +24,10 @@ public class Alumno {
     @ManyToMany
     @JoinTable(
             name = "LLevaAlumnoSeccion",
-            joinColumns = {
-                    @JoinColumn(
-                            name = "codAlumno",
-                            referencedColumnName = "codAlumno"
-                    ),
-                    @JoinColumn(
-                            name = "carreraId",
-                            referencedColumnName = "carreraId"
-                    )
-            },
+            joinColumns = @JoinColumn(
+                    name = "codAlumno",
+                    referencedColumnName = "codAlumno"
+            ),
             inverseJoinColumns = {
                     @JoinColumn(
                             name = "codSeccion",
@@ -69,9 +41,11 @@ public class Alumno {
                     )
             }
     )
+    @JsonIgnore
     private Set<Seccion> seccionesAlumno;
 
     @OneToMany(mappedBy = "alumnoEvalua")
+    @JsonIgnore
     private Set<Evalua> evalua;
 
     public Alumno() {
@@ -79,12 +53,12 @@ public class Alumno {
 
     // Getters and setters
 
-    public AlumnoPK getAlumnoPK() {
-        return alumnoPK;
+    public String getCodAlumno() {
+        return codAlumno;
     }
 
-    public void setAlumnoPK(AlumnoPK alumnoPK) {
-        this.alumnoPK = alumnoPK;
+    public void setCodAlumno(String codAlumno) {
+        this.codAlumno = codAlumno;
     }
 
     public Carrera getCarreraAlumno() {

@@ -1,5 +1,7 @@
 package data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -18,6 +20,7 @@ public class Competencia {
     private String descripcion;
 
     @OneToMany(mappedBy = "competenciaRubrica")
+    @JsonIgnore
     private Set<Rubrica> rubricas;
 
     public Competencia() {

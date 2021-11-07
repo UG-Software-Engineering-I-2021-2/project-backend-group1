@@ -4,12 +4,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+import static config.GlobalConstants.COD_ALUMNO_LENGTH;
+
 @Embeddable
 class EvaluaPK implements Serializable {
-    @Column
-    private AlumnoPK alumnoPK;
+    @Column(name = "codAlumno", length = COD_ALUMNO_LENGTH)
+    private String codAlumno;
 
-    @Column
     private RubricaPK rubricaPK;
 
     @Override
@@ -17,12 +18,12 @@ class EvaluaPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EvaluaPK evaluaPK = (EvaluaPK) o;
-        return alumnoPK.equals(evaluaPK.alumnoPK) && rubricaPK.equals(evaluaPK.rubricaPK);
+        return codAlumno.equals(evaluaPK.codAlumno) && rubricaPK.equals(evaluaPK.rubricaPK);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(alumnoPK, rubricaPK);
+        return Objects.hash(codAlumno, rubricaPK);
     }
 }
 
@@ -35,20 +36,8 @@ public class Evalua {
     @Column(name = "calificacion", columnDefinition = "text", nullable = false)
     private String calificacion;
 
-    @JoinColumns(value = {
-            @JoinColumn(
-                    name = "codAlumno",
-                    referencedColumnName = "codAlumno",
-                    insertable = false,
-                    updatable = false
-            ),
-            @JoinColumn(
-                    name = "carreraId",
-                    referencedColumnName = "carreraId",
-                    insertable = false,
-                    updatable = false
-            )
-    })
+    @MapsId("codAlumno")
+    @JoinColumn(name = "codAlumno", referencedColumnName = "codAlumno")
     @ManyToOne
     private Alumno alumnoEvalua;
 

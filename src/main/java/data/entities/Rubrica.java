@@ -1,5 +1,7 @@
 package data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -72,6 +74,7 @@ public class Rubrica {
     private Competencia competenciaRubrica;
 
     @OneToMany(mappedBy = "rubricaEvalua")
+    @JsonIgnore
     private Set<Evalua> evalua;
 
     public Rubrica() {

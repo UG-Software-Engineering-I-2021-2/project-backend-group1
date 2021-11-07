@@ -1,5 +1,7 @@
 package data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -39,9 +41,11 @@ public class Seccion {
     private Curso cursoSeccion;
 
     @ManyToMany(mappedBy = "seccionesDocente")
+    @JsonIgnore
     private Set<User> docentes;
 
     @ManyToMany(mappedBy = "seccionesAlumno")
+    @JsonIgnore
     private Set<Alumno> alumnos;
 
     public Seccion() {

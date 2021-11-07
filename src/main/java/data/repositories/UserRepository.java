@@ -13,8 +13,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
     @Query(
-            value = "SELECT * FROM users WHERE rol = 'Docente' and username = :#{#username}",
+            value = "SELECT * FROM usuario WHERE rol = 'Docente' and username = :#{#username}",
             nativeQuery = true
     )
     Optional<User> findTeacherUsername(@Param("username") String username);
+
+    @Query(
+            value = "SELECT * FROM usuario",
+            nativeQuery = true
+    )
+    List<User> findAll();
 }

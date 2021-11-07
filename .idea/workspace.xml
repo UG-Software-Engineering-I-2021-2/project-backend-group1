@@ -5,7 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="38af9b34-b635-42a1-a28d-c8f8db61c809" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data/entities/Alumno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/entities/Alumno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data/entities/Carrera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/entities/Carrera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data/entities/Competencia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/entities/Competencia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data/entities/Curso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/entities/Curso.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data/entities/Evalua.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/entities/Evalua.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data/entities/Rubrica.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/entities/Rubrica.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data/entities/Seccion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/entities/Seccion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data/repositories/UserRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,14 +30,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHome" value="Use Maven wrapper" />
-      </MavenGeneralSettings>
-    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="206YqahTwIK7xsNq9uG2gM5hpuW" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -36,6 +39,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -50,7 +54,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.ProjectApplication (1)">
     <configuration default="true" type="JetRunConfigurationType">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -62,13 +66,32 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ProjectApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="project" />
+    <configuration name="ProjectApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="project-backend-group1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="software.group1.project.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <option name="SPRING_BOOT_MAIN_CLASS" value="software.group1.project.ProjectApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ProjectApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <option name="SPRING_BOOT_MAIN_CLASS" value="software.group1.project.ProjectApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SHORTEN_COMMAND_LINE" value="NONE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.ProjectApplication (1)" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -82,6 +105,7 @@
       <workItem from="1635389747587" duration="2137000" />
       <workItem from="1635434961510" duration="734000" />
       <workItem from="1635902760679" duration="4136000" />
+      <workItem from="1636235593240" duration="13521000" />
     </task>
     <servers />
   </component>

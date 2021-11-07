@@ -30,7 +30,7 @@ class Login {
     }
 }
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*")
 @RestController
 public class LoginController {
     @Autowired

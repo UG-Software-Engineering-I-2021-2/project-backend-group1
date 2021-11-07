@@ -2,6 +2,7 @@ package controller;
 
 import business.UserService;
 import data.entities.User;
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ class Login {
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class LoginController {
+    private TokenValidator tokenValidator = new TokenValidator();
+
     @Autowired
     private UserService userService;
 
@@ -48,12 +51,12 @@ public class LoginController {
             errorMap.put("error", "user is not valid");
             return  ResponseEntity.status(404).body(errorMap);
         }
-        Payload payload = this.ValidateTokenAndGetPayload(authorization);
-            if(payload == null){
-                HashMap<String, String> errorMap = new HashMap<>();
-                errorMap.put("error", "token not verified");
-                return  ResponseEntity.status(404).body(errorMap);
-            }
+        Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        if(payload == null){
+            HashMap<String, String> errorMap = new HashMap<>();
+            errorMap.put("error", "token not verified");
+            return  ResponseEntity.status(404).body(errorMap);
+        }
 
         User user = userService.findByUsername(username);
 
@@ -64,29 +67,6 @@ public class LoginController {
         return ResponseEntity.status(200).body(map);
     }
 
-    public Payload ValidateTokenAndGetPayload(String idTokenString)  {
 
-        try {
-            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-                    .setAudience(Collections.singletonList("854441781361-k1cg7207b002frst5mirrhfko7tbj602.apps.googleusercontent.com"))
-                    .build();
-
-            GoogleIdToken idToken = verifier.verify(idTokenString);
-            System.out.println(idToken);
-
-            if (idToken != null) {
-                Payload payload = idToken.getPayload();
-
-                return payload;
-            }
-        }catch(Exception er){
-            System.out.println(er);
-            return null;
-
-        }
-        System.out.println("Cant get token info");
-
-        return null;
-    }
 }
 

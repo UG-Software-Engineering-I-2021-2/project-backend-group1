@@ -54,8 +54,8 @@ Payload payload = this.ValidateTokenAndGetPayload(authorization);
             }
 
 
-map.put("name", payload.get("name"))
-        map.put("email", login.getEmail()
+        map.put("name", payload.get("name").toString());
+        map.put("email", login.getEmail());
         map.put("roll", "profesor");
 
         return ResponseEntity.status(200).body(map);

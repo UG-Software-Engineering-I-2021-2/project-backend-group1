@@ -30,7 +30,7 @@ class Login {
     }
 }
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://dev-1m3nzcnf.us.auth0.com/")
 @RestController
 public class LoginController {
     @Autowired

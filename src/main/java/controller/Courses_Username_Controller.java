@@ -18,6 +18,15 @@ import java.util.Set;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 
+class Course{
+    private String name;
+    private String code;
+    Course(String _name, String _code){
+        name = _name;
+        code = _code;
+    }
+}
+
 class Courses_Username_Body {
     private String semestre;
     public String getSemestre() {return semestre;}
@@ -51,16 +60,14 @@ public class Courses_Username_Controller {
 
         Set<Seccion> set_secciones = user.getSeccionesDocente();
         Seccion [] secciones = set_secciones.toArray(new Seccion[set_secciones.size()]);
-        ArrayList<String> courses = new ArrayList<String>();
-        ArrayList<String> courses_codes = new ArrayList<String>();
+        ArrayList<Course> courses = new ArrayList<Course>();
 
         for(int i = 0; i < secciones.length; i++){
-            courses.add(secciones[i].getCursoSeccion().getNombre());
-            courses_codes.add(secciones[i].getCursoSeccion().getCodCurso());
+            Course course = new Course(secciones[i].getCursoSeccion().getNombre(), secciones[i].getCursoSeccion().getCodCurso());
+            courses.add(course);
         }
 
         json.put("courses", courses);
-        json.put("code_courses", courses_codes);
 
         return ResponseEntity.status(200).body(json);
     }

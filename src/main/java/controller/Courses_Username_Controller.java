@@ -18,22 +18,10 @@ import java.util.Set;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 
-class Courses_Username {
-    private String email;
+class Courses_Username_Body {
     private String semestre;
-
-    public String getEmail() {
-        return email;
-    }
-    public String getSemestre() {
-        return semestre;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public void setSemestre(String semestre) {
-        this.semestre = semestre;
-    }
+    public String getSemestre() {return semestre;}
+    public void setSemestre(String semestre) {this.semestre = semestre;}
 }
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -45,7 +33,7 @@ public class Courses_Username_Controller {
     private UserService userService;
 
     @PostMapping("/courses_username")
-    public ResponseEntity<JSONObject> courses_username_controller(@RequestHeader(value="Authorization") String authorization, @RequestBody Courses_Username courses_username) throws JSONException, GeneralSecurityException, IOException {
+    public ResponseEntity<JSONObject> courses_username_controller(@RequestHeader(value="Authorization") String authorization, @RequestBody Courses_Username_Body courses_username_body) throws JSONException, GeneralSecurityException, IOException {
         Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         if(payload == null){
             JSONObject errorJson = new JSONObject();
@@ -56,7 +44,7 @@ public class Courses_Username_Controller {
         JSONObject json = new JSONObject();
 
         String email = payload.getEmail();
-        String semestre = courses_username.getSemestre();
+        String semestre = courses_username_body.getSemestre();
         String username = email.substring(0,email.indexOf('@'));
 
         User user = userService.findByUsername(username);
@@ -64,23 +52,17 @@ public class Courses_Username_Controller {
         Set<Seccion> set_secciones = user.getSeccionesDocente();
         Seccion [] secciones = set_secciones.toArray(new Seccion[set_secciones.size()]);
         ArrayList<String> courses = new ArrayList<String>();
+        ArrayList<String> courses_codes = new ArrayList<String>();
 
         for(int i = 0; i < secciones.length; i++){
             courses.add(secciones[i].getCursoSeccion().getNombre());
-            /*System.out.println("Código curso: " + secciones[i].getCursoSeccion().getCodCurso());
-            System.out.println("Curso: " + secciones[i].getCursoSeccion().getNombre());
-            System.out.println("Código: " + secciones[i].getSeccionPK());*/
+            courses_codes.add(secciones[i].getCursoSeccion().getCodCurso());
         }
 
-        json.put("rol", user.getRol().toString());
-        json.put("cursos", courses);
-        /*map.put("name", payload.get("name").toString());
-        map.put("email", login.getEmail());
-        map.put("rol", user.getRol().toString());
-        */
+        json.put("courses", courses);
+        json.put("code_courses", courses_codes);
+
         return ResponseEntity.status(200).body(json);
     }
-
-
 }
 

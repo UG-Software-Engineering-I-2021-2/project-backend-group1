@@ -1,6 +1,10 @@
 package controller;
 
+import business.CourseService;
 import business.UserService;
+import data.entities.Curso;
+import data.entities.Rubrica;
+import data.entities.RubricaBase;
 import data.entities.User;
 import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
@@ -11,9 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -27,10 +34,17 @@ public class LoginController {
     private TokenValidator tokenValidator = new TokenValidator();
 
     @Autowired
+    private CourseService courseService;
+
+    @Autowired
     private UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<HashMap<String, String>> login_verifier(@RequestHeader(value="Authorization") String authorization) throws JSONException, GeneralSecurityException, IOException {
+
+        System.out.println("TEST LOGIN");
+
+
         Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         if(payload == null){
             HashMap<String, String> errorMap = new HashMap<>();

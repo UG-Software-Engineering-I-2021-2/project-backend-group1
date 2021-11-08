@@ -1,5 +1,6 @@
 package controller;
 
+import business.CourseService;
 import business.UserService;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import data.entities.Seccion;
@@ -45,6 +46,8 @@ public class Courses_Username_Controller {
 
     @PostMapping("/courses_username")
     public ResponseEntity<HashMap<String, String>> courses_username_controller(@RequestHeader(value="Authorization") String authorization, @RequestBody Courses_Username_Body courses_username_body) throws JSONException, GeneralSecurityException, IOException {
+        System.out.println("TEST COURSE");
+
         Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         //System.out.println("Token course: " + authorization);
         if(payload == null){

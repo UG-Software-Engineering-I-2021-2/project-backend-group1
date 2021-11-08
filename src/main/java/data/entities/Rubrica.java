@@ -151,4 +151,6 @@ public class Rubrica {
     public void setEvalua(Set<Evalua> evalua) {
         this.evalua = evalua;
     }
+
+    public String getSemestre() { return this.rubricaPK.getSemestre(); }
 }

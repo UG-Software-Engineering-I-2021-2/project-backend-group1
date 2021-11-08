@@ -182,4 +182,6 @@ public class RubricaBase {
     public void setEvidencia(String evidencia) {
         this.evidencia = evidencia;
     }
+
+    public String getCodRubrica() { return this.rubricaPK.getCodRubrica(); }
 }

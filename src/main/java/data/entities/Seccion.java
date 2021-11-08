@@ -75,9 +75,9 @@ public class Seccion {
     @JsonIgnore
     private Set<User> docentes;
 
-    @ManyToMany(mappedBy = "seccionesAlumno")
+    @OneToMany(mappedBy = "seccionLleva")
     @JsonIgnore
-    private Set<Alumno> alumnos;
+    private Set<Lleva> lleva;
 
     public Seccion() {
     }
@@ -108,11 +108,11 @@ public class Seccion {
         this.docentes = docentes;
     }
 
-    public Set<Alumno> getAlumnos() {
-        return alumnos;
+    public Set<Lleva> getLleva() {
+        return lleva;
     }
 
-    public void setAlumnos(Set<Alumno> alumnos) {
-        this.alumnos = alumnos;
+    public void setLleva(Set<Lleva> lleva) {
+        this.lleva = lleva;
     }
 }

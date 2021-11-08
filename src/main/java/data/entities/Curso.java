@@ -15,9 +15,6 @@ public class Curso {
     @Column(name = "nombre", nullable = false, columnDefinition = "text")
     private String nombre;
 
-    @Column(name = "ciclo", nullable = false)
-    private Short ciclo;
-
     @OneToMany(mappedBy = "cursoSeccion")
     @JsonIgnore
     private Set<Seccion> secciones;
@@ -45,14 +42,6 @@ public class Curso {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public Short getCiclo() {
-        return ciclo;
-    }
-
-    public void setCiclo(Short ciclo) {
-        this.ciclo = ciclo;
     }
 
     public Set<Seccion> getSecciones() {

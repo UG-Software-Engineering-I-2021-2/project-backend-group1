@@ -21,33 +21,9 @@ public class Alumno {
     @Column(name = "nombre", nullable = false, columnDefinition = "text")
     private String nombre;
 
-    @ManyToMany
-    @JoinTable(
-            name = "LLevaAlumnoSeccion",
-            joinColumns = @JoinColumn(
-                    name = "codAlumno",
-                    referencedColumnName = "codAlumno"
-            ),
-            inverseJoinColumns = {
-                    @JoinColumn(
-                            name = "codSeccion",
-                            referencedColumnName = "codSeccion",
-                            columnDefinition = "text"
-                    ),
-                    @JoinColumn(
-                            name = "semestre",
-                            referencedColumnName = "semestre",
-                            columnDefinition = "text"
-                    ),
-                    @JoinColumn(
-                            name = "codCurso",
-                            referencedColumnName = "codCurso",
-                            columnDefinition = "text"
-                    )
-            }
-    )
+    @OneToMany(mappedBy = "alumnoLleva")
     @JsonIgnore
-    private Set<Seccion> seccionesAlumno;
+    private Set<Lleva> lleva;
 
     @OneToMany(mappedBy = "alumnoEvalua")
     @JsonIgnore
@@ -82,12 +58,12 @@ public class Alumno {
         this.nombre = nombre;
     }
 
-    public Set<Seccion> getSeccionesAlumno() {
-        return seccionesAlumno;
+    public Set<Lleva> getLleva() {
+        return lleva;
     }
 
-    public void setSeccionesAlumno(Set<Seccion> seccionesAlumno) {
-        this.seccionesAlumno = seccionesAlumno;
+    public void setLleva(Set<Lleva> lleva) {
+        this.lleva = lleva;
     }
 
     public Set<Evalua> getEvalua() {

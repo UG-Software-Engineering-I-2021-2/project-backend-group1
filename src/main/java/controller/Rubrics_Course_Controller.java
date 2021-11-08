@@ -57,7 +57,7 @@ public class Rubrics_Course_Controller {
             for (int j = 0; j < rubrics.length; j++) {
                 if (rubrics[j].getSemestre().equals(semester)) {
                     map.put(String.valueOf(cont),
-                            rubrics_base[i].getCodRubrica() + "|" + rubrics[j].getEstado() + "|" + rubrics_base[i].getEvaluacion() + "|" +  rubrics[j].getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "|Semana" + String.valueOf(rubrics_base[i].getSemana()));
+                            rubrics_base[i].getCodRubrica() + "|" + rubrics[j].getEstado() + "|" + rubrics_base[i].getEvaluacion() + "|" +  rubrics[j].getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + "|Semana " + String.valueOf(rubrics_base[i].getSemana()));
                     cont = cont + 1;
                 }
             }

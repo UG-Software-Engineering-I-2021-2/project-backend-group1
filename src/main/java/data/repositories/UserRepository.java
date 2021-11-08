@@ -17,10 +17,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
             nativeQuery = true
     )
     Optional<User> findTeacherUsername(@Param("username") String username);
-
-    @Query(
-            value = "SELECT * FROM usuario",
-            nativeQuery = true
-    )
-    List<User> findAll();
 }

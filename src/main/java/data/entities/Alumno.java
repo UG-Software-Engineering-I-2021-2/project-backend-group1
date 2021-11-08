@@ -35,6 +35,11 @@ public class Alumno {
                             columnDefinition = "text"
                     ),
                     @JoinColumn(
+                            name = "semestre",
+                            referencedColumnName = "semestre",
+                            columnDefinition = "text"
+                    ),
+                    @JoinColumn(
                             name = "codCurso",
                             referencedColumnName = "codCurso",
                             columnDefinition = "text"

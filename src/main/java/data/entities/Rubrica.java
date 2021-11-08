@@ -10,26 +10,42 @@ import java.util.Set;
 
 @Embeddable
 class RubricaPK implements Serializable {
-    @Column(name = "codRubrica", columnDefinition = "text")
-    private String codRubrica;
+    @Column(name = "semestre", columnDefinition = "text")
+    private String semestre;
 
-    @Column(name = "codCurso", columnDefinition = "text")
-    private String codCurso;
+    private RubricaBasePK rubricaBasePK;
 
-    @Column(name = "codCompetencia", columnDefinition = "text")
-    private String codCompetencia;
+    // Getters and setters
+
+    public String getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(String semestre) {
+        this.semestre = semestre;
+    }
+
+    public RubricaBasePK getRubricaBasePK() {
+        return rubricaBasePK;
+    }
+
+    public void setRubricaBasePK(RubricaBasePK rubricaBasePK) {
+        this.rubricaBasePK = rubricaBasePK;
+    }
+
+    // equals() and hashCode()
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RubricaPK rubricaPK = (RubricaPK) o;
-        return codRubrica.equals(rubricaPK.codRubrica) && codCurso.equals(rubricaPK.codCurso) && codCompetencia.equals(rubricaPK.codCompetencia);
+        return semestre.equals(rubricaPK.semestre) && rubricaBasePK.equals(rubricaPK.rubricaBasePK);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(codRubrica, codCurso, codCompetencia);
+        return Objects.hash(semestre, rubricaBasePK);
     }
 }
 
@@ -39,46 +55,44 @@ public class Rubrica {
     @EmbeddedId
     private RubricaPK rubricaPK;
 
-    @Column(name = "actividad", columnDefinition = "text", nullable = false)
-    private String actividad;
-
-    @Column(name = "semana", nullable = false)
-    private Short semana;
-
     @Column(name = "dimensiones", nullable = false)
     private Short dimensiones;
 
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
 
-    @Column(name = "nivel", nullable = false)
-    private Short nivel;
-
     @Column(name = "estado", columnDefinition = "text", nullable = false)
     private String estado;
-
-    @Column(name = "criterioDesempeno", columnDefinition = "text", nullable = false)
-    private String criterioDesempeno;
 
     @Column(name = "descriptores", columnDefinition = "text", nullable = false)
     private String descriptores;
 
-    @MapsId("codCurso")
-    @JoinColumn(name = "codCurso", referencedColumnName = "codCurso", columnDefinition = "text")
+    @JoinColumns(value = {
+            @JoinColumn(
+                    name = "codRubrica",
+                    referencedColumnName = "codRubrica",
+                    insertable = false,
+                    updatable = false
+            ),
+            @JoinColumn(
+                    name = "codCurso",
+                    referencedColumnName = "codCurso",
+                    insertable = false,
+                    updatable = false
+            ),
+            @JoinColumn(
+                    name = "codCompetencia",
+                    referencedColumnName = "codCompetencia",
+                    insertable = false,
+                    updatable = false
+            )
+    })
     @ManyToOne
-    private Curso cursoRubrica;
-
-    @MapsId("codCompetencia")
-    @JoinColumn(name = "codCompetencia", referencedColumnName = "codCompetencia", columnDefinition = "text")
-    @ManyToOne
-    private Competencia competenciaRubrica;
+    private RubricaBase rubricaBase;
 
     @OneToMany(mappedBy = "rubricaEvalua")
     @JsonIgnore
     private Set<Evalua> evalua;
-
-    public Rubrica() {
-    }
 
     // Getters and setters
 
@@ -88,22 +102,6 @@ public class Rubrica {
 
     public void setRubricaPK(RubricaPK rubricaPK) {
         this.rubricaPK = rubricaPK;
-    }
-
-    public String getActividad() {
-        return actividad;
-    }
-
-    public void setActividad(String actividad) {
-        this.actividad = actividad;
-    }
-
-    public Short getSemana() {
-        return semana;
-    }
-
-    public void setSemana(Short semana) {
-        this.semana = semana;
     }
 
     public Short getDimensiones() {
@@ -122,28 +120,12 @@ public class Rubrica {
         this.fecha = fecha;
     }
 
-    public Short getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(Short nivel) {
-        this.nivel = nivel;
-    }
-
     public String getEstado() {
         return estado;
     }
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public String getCriterioDesempeno() {
-        return criterioDesempeno;
-    }
-
-    public void setCriterioDesempeno(String criterioDesempeno) {
-        this.criterioDesempeno = criterioDesempeno;
     }
 
     public String getDescriptores() {
@@ -154,20 +136,12 @@ public class Rubrica {
         this.descriptores = descriptores;
     }
 
-    public Curso getCursoRubrica() {
-        return cursoRubrica;
+    public RubricaBase getRubricaBase() {
+        return rubricaBase;
     }
 
-    public void setCursoRubrica(Curso cursoRubrica) {
-        this.cursoRubrica = cursoRubrica;
-    }
-
-    public Competencia getCompetenciaRubrica() {
-        return competenciaRubrica;
-    }
-
-    public void setCompetenciaRubrica(Competencia competenciaRubrica) {
-        this.competenciaRubrica = competenciaRubrica;
+    public void setRubricaBase(RubricaBase rubricaBase) {
+        this.rubricaBase = rubricaBase;
     }
 
     public Set<Evalua> getEvalua() {

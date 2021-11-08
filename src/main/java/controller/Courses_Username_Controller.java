@@ -4,6 +4,7 @@ import business.UserService;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import data.entities.Seccion;
 import data.entities.User;
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,16 +44,18 @@ public class Courses_Username_Controller {
     private UserService userService;
 
     @PostMapping("/courses_username")
-    public ResponseEntity<JSONObject> courses_username_controller(@RequestHeader(value="Authorization") String authorization, @RequestBody Courses_Username_Body courses_username_body) throws JSONException, GeneralSecurityException, IOException {
+    public ResponseEntity<HashMap<String, String>> courses_username_controller(@RequestHeader(value="Authorization") String authorization, @RequestBody Courses_Username_Body courses_username_body) throws JSONException, GeneralSecurityException, IOException {
         Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        //System.out.println("Token course: " + authorization);
         if(payload == null){
-            JSONObject errorJson = new JSONObject();
-            errorJson.put("error", "token not verified");
-            return  ResponseEntity.status(404).body(errorJson);
+            //JSONObject errorJson = new JSONObject();
+            //errorJson.put("error", "token not verified");
+            HashMap<String, String> errorMap = new HashMap<>();
+            errorMap.put("error", "token not verified");
+            return  ResponseEntity.status(404).body(errorMap);
         }
 
-        JSONObject json = new JSONObject();
-
+        //System.out.println("Token course fall");
         String email = payload.getEmail();
         String semestre = courses_username_body.getSemestre();
         String username = email.substring(0,email.indexOf('@'));
@@ -60,16 +64,18 @@ public class Courses_Username_Controller {
 
         Set<Seccion> set_secciones = user.getSeccionesDocente();
         Seccion [] secciones = set_secciones.toArray(new Seccion[set_secciones.size()]);
-        ArrayList<Course> courses = new ArrayList<Course>();
+        //ArrayList<Course> courses = new ArrayList<Course>();
 
+        HashMap<String, String> response = new HashMap<>();
         for(int i = 0; i < secciones.length; i++){
-            Course course = new Course(secciones[i].getCursoSeccion().getNombre(), secciones[i].getCursoSeccion().getCodCurso());
-            courses.add(course);
+            //Course course = new Course(secciones[i].getCursoSeccion().getNombre(), secciones[i].getCursoSeccion().getCodCurso());
+            //courses.add(course);
+            response.put(secciones[i].getCursoSeccion().getCodCurso(), secciones[i].getCursoSeccion().getNombre());
         }
 
-        json.put("courses", courses);
+        //json.put("courses", array);
 
-        return ResponseEntity.status(200).body(json);
+        return ResponseEntity.status(200).body(response);
     }
 }
 

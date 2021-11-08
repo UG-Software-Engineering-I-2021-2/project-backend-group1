@@ -21,7 +21,7 @@ public class Competencia {
 
     @OneToMany(mappedBy = "competenciaRubrica")
     @JsonIgnore
-    private Set<Rubrica> rubricas;
+    private Set<RubricaBase> rubricas;
 
     public Competencia() {
     }
@@ -52,11 +52,11 @@ public class Competencia {
         this.descripcion = descripcion;
     }
 
-    public Set<Rubrica> getRubricas() {
+    public Set<RubricaBase> getRubricas() {
         return rubricas;
     }
 
-    public void setRubricas(Set<Rubrica> rubricas) {
+    public void setRubricas(Set<RubricaBase> rubricas) {
         this.rubricas = rubricas;
     }
 }

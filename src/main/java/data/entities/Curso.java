@@ -12,14 +12,11 @@ public class Curso {
     @Column(name = "codCurso", columnDefinition = "text")
     private String codCurso;
 
-    @Column(name = "nombre", nullable = false, columnDefinition = "text", unique = true)
+    @Column(name = "nombre", nullable = false, columnDefinition = "text")
     private String nombre;
 
     @Column(name = "ciclo", nullable = false)
     private Short ciclo;
-
-    @Column(name = "semestre", nullable = false, columnDefinition = "text")
-    private String semestre;
 
     @OneToMany(mappedBy = "cursoSeccion")
     @JsonIgnore
@@ -27,7 +24,7 @@ public class Curso {
 
     @OneToMany(mappedBy = "cursoRubrica")
     @JsonIgnore
-    private Set<Rubrica> rubricas;
+    private Set<RubricaBase> rubricasBase;
 
     public Curso() {
     }
@@ -58,14 +55,6 @@ public class Curso {
         this.ciclo = ciclo;
     }
 
-    public String getSemestre() {
-        return semestre;
-    }
-
-    public void setSemestre(String semestre) {
-        this.semestre = semestre;
-    }
-
     public Set<Seccion> getSecciones() {
         return secciones;
     }
@@ -74,11 +63,11 @@ public class Curso {
         this.secciones = secciones;
     }
 
-    public Set<Rubrica> getRubricas() {
-        return rubricas;
+    public Set<RubricaBase> getRubricasBase() {
+        return rubricasBase;
     }
 
-    public void setRubricas(Set<Rubrica> rubricas) {
-        this.rubricas = rubricas;
+    public void setRubricasBase(Set<RubricaBase> rubricasBase) {
+        this.rubricasBase = rubricasBase;
     }
 }

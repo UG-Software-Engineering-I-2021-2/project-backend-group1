@@ -13,6 +13,26 @@ class EvaluaPK implements Serializable {
 
     private RubricaPK rubricaPK;
 
+    // Getters and setters
+
+    public String getCodAlumno() {
+        return codAlumno;
+    }
+
+    public void setCodAlumno(String codAlumno) {
+        this.codAlumno = codAlumno;
+    }
+
+    public RubricaPK getRubricaPK() {
+        return rubricaPK;
+    }
+
+    public void setRubricaPK(RubricaPK rubricaPK) {
+        this.rubricaPK = rubricaPK;
+    }
+
+    // equals() and hashCode()
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,6 +62,12 @@ public class Evalua {
     private Alumno alumnoEvalua;
 
     @JoinColumns(value = {
+            @JoinColumn(
+                    name = "semestre",
+                    referencedColumnName = "semestre",
+                    insertable = false,
+                    updatable = false
+            ),
             @JoinColumn(
                     name = "codRubrica",
                     referencedColumnName = "codRubrica",

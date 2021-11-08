@@ -46,18 +46,18 @@ public class Courses_Username_Controller {
 
     @PostMapping("/courses_username")
     public ResponseEntity<JSONObject> courses_username_controller(@RequestHeader(value="Authorization") String authorization, @RequestBody Courses_Username courses_username) throws JSONException, GeneralSecurityException, IOException {
-        JSONObject json = new JSONObject();
-
-        String email = courses_username.getEmail();
-        String semestre = courses_username.getSemestre();
-        String username = email.substring(0,email.indexOf('@'));
-
         Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         if(payload == null){
             JSONObject errorJson = new JSONObject();
             errorJson.put("error", "token not verified");
             return  ResponseEntity.status(404).body(errorJson);
         }
+
+        JSONObject json = new JSONObject();
+
+        String email = payload.getEmail();
+        String semestre = courses_username.getSemestre();
+        String username = email.substring(0,email.indexOf('@'));
 
         User user = userService.findByUsername(username);
 
@@ -71,7 +71,7 @@ public class Courses_Username_Controller {
             System.out.println("Curso: " + secciones[i].getCursoSeccion().getNombre());
             System.out.println("Código: " + secciones[i].getSeccionPK());*/
         }
-        json.put("email", courses_username.getEmail());
+
         json.put("rol", user.getRol().toString());
         json.put("cursos", courses);
         /*map.put("name", payload.get("name").toString());

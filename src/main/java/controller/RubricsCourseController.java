@@ -15,6 +15,7 @@ import java.security.GeneralSecurityException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 class Rubric{
@@ -115,7 +116,7 @@ class RubricsCourseBody {
     private String semester;
     private String courseCode;
     public String getSemester() {return semester;}
-    public String getCoursecode() {return courseCode;}
+    public String getCourseCode() {return courseCode;}
 }
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -125,6 +126,8 @@ public class RubricsCourseController {
 
     private final Gson gson = new Gson();
 
+    private final ErrorReturn errorReturn = new ErrorReturn();
+
     @Autowired
     private CourseService courseService;
 
@@ -133,39 +136,41 @@ public class RubricsCourseController {
 
     @PostMapping("/rubrics_course")
     public ResponseEntity<String> rubricsCourseController(@RequestHeader(value="Authorization") String authorization, @RequestBody RubricsCourseBody rubricsCourseBody) throws JSONException, GeneralSecurityException, IOException {
+        System.out.println("\nTEST RUBRIC");
         GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
-
-        if(payload == null){
-            HashMap<String, String> errorMap = new HashMap<>();
-            errorMap.put("error", "token not verified");
-            return  ResponseEntity.status(404).body(gson.toJson(errorMap));
-        }
-
-        ArrayList<Rubric> response = new ArrayList<>();
+        if(payload == null)
+            return errorReturn.callError(404, "token not verified");
 
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));
 
-        if(!userService.isUser(username)){
-            HashMap<String, String> errorMap = new HashMap<>();
-            errorMap.put("error", "user is not valid");
-            return  ResponseEntity.status(404).body(gson.toJson(errorMap));
-        }
+        if(!userService.isUser(username))
+            return errorReturn.callError(404, "user is not valid");
 
-        User user = userService.findByUsername(username);
-        Set<Seccion> seccionesCoordina = user.getSeccionesCoordina(rubricsCourseBody.getSemester());
-        boolean coordina = false;
-        for(Seccion seccion : seccionesCoordina){
-            if(seccion.getCursoSeccion().getCodCurso().equals(rubricsCourseBody.getCoursecode())){
-                coordina = true;
+        String semester = "2021 - 2"; //rubricsCourseBody.getSemester()
+        String courseCode = "EN0022"; // rubricsCourseBody.getCourseCode()
+
+        if(semester.isEmpty())
+            return errorReturn.callError(404, "semester empty");
+        if(courseCode.isEmpty())
+            return errorReturn.callError(404, "course code empty");
+
+        List<Curso> listCursoCoordina = courseService.findCursoCoordinedByUsername(semester, username);
+
+        boolean coordinates = false;
+        for(Curso course : listCursoCoordina){
+            if(course.getCodCurso().equals(courseCode)){
+                coordinates = true;
                 break;
             }
         }
 
-        Curso course = courseService.findOneByCodCurso(rubricsCourseBody.getCoursecode());
+        List<Rubric> response = new ArrayList<>();
+
+        Curso course = courseService.findOneByCodCurso(courseCode);
         Set<RubricaBase> setRubricsBase = course.getRubricasBase();
         for(RubricaBase rubricaBase : setRubricsBase){
-            Set<Rubrica> setRubrics = rubricaBase.getRubricas(rubricsCourseBody.getSemester());
+            Set<Rubrica> setRubrics = rubricaBase.getRubricas(semester);
             for(Rubrica rubrica : setRubrics){
                 Rubric rubric = new Rubric(
                         rubricaBase.getCodRubrica(),
@@ -177,7 +182,7 @@ public class RubricsCourseController {
                         rubricaBase.getActividadBase()
                 );
 
-                rubric.setCanEdit((coordina) ? "1" : "0");
+                rubric.setCanEdit((coordinates) ? "1" : "0");
                 rubric.setStudents("0");
                 response.add(rubric);
             }

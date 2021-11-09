@@ -4,6 +4,7 @@ import business.custom_exceptions.CustomNotFoundException;
 import data.dtos.CourseDTO;
 import data.entities.Curso;
 import data.repositories.CourseRepository;
+import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,16 +36,21 @@ public class CourseService {
         else throw new CustomNotFoundException("No exite un curso con el codigo: " + codCurso + ".\n");
     }
 
-    public List<Curso> findCursoBySemestre(String semestre) {
-        List<Curso> courseList = courseRepository.findCursoBySemestre(semestre);
+    public List<Curso> findCursoBySemester(String semester) {
+        List<Curso> courseList = courseRepository.findCursoBySemester(semester);
         if (!courseList.isEmpty()) return courseList;
-        else throw new CustomNotFoundException("No existe ningun curso con el semestre: " + semestre + ".\n");
+        else throw new CustomNotFoundException("No existe ningun curso con el semestre: " + semester + ".\n");
     }
 
-    public List<Curso> findCursoBySemestreAndUsername(String semestre, String username, Boolean isDocent) {
+    public List<Curso> findCursoBySemesterAndUsername(String semester, String username, Boolean isDocent) {
         if(Boolean.TRUE.equals(isDocent))
-            return courseRepository.findCursoBySemestreAndUsernameDocente(semestre, username);
+            return courseRepository.findCursoBySemesterAndUsernameDocente(semester, username);
         else
-            return courseRepository.findCursoBySemestre(semestre);
+            return courseRepository.findCursoBySemester(semester);
     }
+
+    public List<Curso> findCursoCoordinedByUsername(String semester, String username) {
+        return courseRepository.findCursoCoordinedByUsername(semester, username);
+    }
+
 }

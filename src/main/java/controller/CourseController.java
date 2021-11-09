@@ -24,7 +24,7 @@ public class CourseController {
     }
 
     @GetMapping("/{semestre}")
-    public List<Curso> getCoursesBySemestre(@PathVariable String semestre) {
-        return courseService.findCursoBySemestre(semestre);
+    public List<Curso> getCoursesBySemester(@PathVariable String semester) {
+        return courseService.findCursoBySemester(semester);
     }
 }

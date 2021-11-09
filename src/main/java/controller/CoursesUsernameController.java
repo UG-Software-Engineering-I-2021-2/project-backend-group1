@@ -44,7 +44,7 @@ class Course{
 class CoursesUsernameBody {
     private String semester;
     public String getSemester() {return semester;}
-    public void setSemestre(String semester) {this.semester = semester;}
+    public void setSemester(String semester) {this.semester = semester;}
 }
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -74,14 +74,17 @@ public class CoursesUsernameController {
         String username = email.substring(0,email.indexOf('@'));
         String semester = coursesUsernameBody.getSemester();
 
+        System.out.println("Username: " + username);
+        System.out.println("Semestre: " +semester);
+
         if(!userService.isUser(username))
             return errorReturn.callError(404, "user is not valid");
 
-        if(semester.isEmpty())
+        if(semester == null || semester.isEmpty())
             return errorReturn.callError(404, "semester empty");
 
         List<Course> courses = new ArrayList<>();
-        List<Curso> cursos = courseService.findCursoBySemestreAndUsername(semester,
+        List<Curso> cursos = courseService.findCursoBySemesterAndUsername(semester,
                 username,
                 userService.findByUsername(username).getRol().toString().equals("Docente"));
         for(Curso curso : cursos)

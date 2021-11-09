@@ -17,23 +17,37 @@ public interface CourseRepository extends JpaRepository<Curso, String> {
             value = "SELECT * FROM curso " +
                     "WHERE curso.cod_curso IN (" +
                     "SELECT cod_curso FROM seccion " +
-                    "WHERE semestre = :#{#semestre}" +
+                    "WHERE semestre = :#{#semester}" +
                     ")",
             nativeQuery = true
     )
-    List<Curso> findCursoBySemestre(@Param("semestre") String semestre);
+    List<Curso> findCursoBySemester(@Param("semester") String semester);
 
     @Query(
             value = "SELECT * FROM curso " +
-                    "WHERE curso.cod_curso IN ( " +
+                    "WHERE cod_curso IN ( " +
                     "SELECT cod_curso FROM dicta_docente_seccion D " +
                     "INNER JOIN usuario U " +
                     "ON D.usuario_id = U.usuario_id " +
-                    "WHERE D.semestre = :#{#semestre} " +
+                    "WHERE D.semestre = :#{#semester} " +
                     "AND U.username = :#{#username}) ",
             nativeQuery = true
     )
-    List<Curso> findCursoBySemestreAndUsernameDocente(
-            @Param("semestre") String semestre,
+    List<Curso> findCursoBySemesterAndUsernameDocente(
+            @Param("semester") String semester,
+            @Param("username") String username);
+
+    @Query(
+            value = "SELECT * FROM curso " +
+                    "WHERE cod_curso IN ( " +
+                    "SELECT cod_curso FROM coordina_docente_seccion C " +
+                    "INNER JOIN usuario U " +
+                    "ON C.usuario_id = U.usuario_id " +
+                    "WHERE C.semestre = :#{#semester} " +
+                    "AND U.username = :#{#username}) ",
+            nativeQuery = true
+    )
+    List<Curso> findCursoCoordinedByUsername(
+            @Param("semester") String semester,
             @Param("username") String username);
 }

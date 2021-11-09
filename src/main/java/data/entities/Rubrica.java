@@ -1,53 +1,11 @@
 package data.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import data.entities.composite_keys.RubricaPK;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.Set;
-
-@Embeddable
-class RubricaPK implements Serializable {
-    @Column(name = "semestre", columnDefinition = "text")
-    private String semestre;
-
-    private RubricaBasePK rubricaBasePK;
-
-    // Getters and setters
-
-    public String getSemestre() {
-        return semestre;
-    }
-
-    public void setSemestre(String semestre) {
-        this.semestre = semestre;
-    }
-
-    public RubricaBasePK getRubricaBasePK() {
-        return rubricaBasePK;
-    }
-
-    public void setRubricaBasePK(RubricaBasePK rubricaBasePK) {
-        this.rubricaBasePK = rubricaBasePK;
-    }
-
-    // equals() and hashCode()
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RubricaPK rubricaPK = (RubricaPK) o;
-        return semestre.equals(rubricaPK.semestre) && rubricaBasePK.equals(rubricaPK.rubricaBasePK);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(semestre, rubricaBasePK);
-    }
-}
 
 @Entity
 @Table(name = "Rubrica")

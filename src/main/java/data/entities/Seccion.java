@@ -1,64 +1,10 @@
 package data.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import data.entities.composite_keys.SeccionPK;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 import java.util.Set;
-
-@Embeddable
-class SeccionPK implements Serializable {
-    @Column(name = "codSeccion", columnDefinition = "text")
-    private String codSeccion;
-
-    @Column(name = "semestre", columnDefinition = "text")
-    private String semestre;
-
-    @Column(name = "codCurso", columnDefinition = "text")
-    private String codCurso;
-
-    // Getters and setters
-
-    public String getCodSeccion() {
-        return codSeccion;
-    }
-
-    public void setCodSeccion(String codSeccion) {
-        this.codSeccion = codSeccion;
-    }
-
-    public String getSemestre() {
-        return semestre;
-    }
-
-    public void setSemestre(String semestre) {
-        this.semestre = semestre;
-    }
-
-    public String getCodCurso() {
-        return codCurso;
-    }
-
-    public void setCodCurso(String codCurso) {
-        this.codCurso = codCurso;
-    }
-
-    // equals() and hashCode()
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SeccionPK seccionPK = (SeccionPK) o;
-        return codSeccion.equals(seccionPK.codSeccion) && semestre.equals(seccionPK.semestre) && codCurso.equals(seccionPK.codCurso);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(codSeccion, semestre, codCurso);
-    }
-}
 
 @Entity
 @Table(name = "Seccion")
@@ -104,12 +50,20 @@ public class Seccion {
         this.cursoSeccion = cursoSeccion;
     }
 
-    public Set<User> getDocentes() {
+    public Set<User> getDocentesDicta() {
         return docentesDicta;
     }
 
-    public void setDocentes(Set<User> docentesDicta) {
+    public void setDocentesDicta(Set<User> docentesDicta) {
         this.docentesDicta = docentesDicta;
+    }
+
+    public Set<User> getDocentesCoordina() {
+        return docentesCoordina;
+    }
+
+    public void setDocentesCoordina(Set<User> docentesCoordina) {
+        this.docentesCoordina = docentesCoordina;
     }
 
     public Set<Lleva> getLleva() {

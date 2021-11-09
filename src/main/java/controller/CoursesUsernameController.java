@@ -65,7 +65,6 @@ public class CoursesUsernameController {
     @PostMapping(value = "/courses_username")
     public ResponseEntity<String> coursesUsernameController(@RequestHeader(value="Authorization") String authorization, @RequestBody CoursesUsernameBody coursesUsernameBody) throws JSONException, GeneralSecurityException, IOException {
         System.out.println("\nTEST COURSE");
-        HashMap<String, String> errorMap = new HashMap<>();
 
         Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         if(payload == null)
@@ -76,6 +75,9 @@ public class CoursesUsernameController {
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));
         String semester = coursesUsernameBody.getSemester();
+
+        if(!userService.isUser(username))
+            return errorReturn.callError(404, "user is not valid");
 
         if(semester.isEmpty())
             return errorReturn.callError(404, "semester empty");

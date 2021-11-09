@@ -70,8 +70,6 @@ public class CoursesUsernameController {
         if(payload == null)
             return errorReturn.callError(404, "token not verified");
 
-        List<Course> courses = new ArrayList<>();
-
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));
         String semester = coursesUsernameBody.getSemester();
@@ -82,6 +80,7 @@ public class CoursesUsernameController {
         if(semester.isEmpty())
             return errorReturn.callError(404, "semester empty");
 
+        List<Course> courses = new ArrayList<>();
         List<Curso> cursos = courseService.findCursoBySemestreAndUsername(semester,
                 username,
                 userService.findByUsername(username).getRol().toString().equals("Docente"));

@@ -26,7 +26,7 @@ class Rubric{
     private String week;
     private String evidence;
     private String activity;
-    private String canEdit;
+    private Boolean canEdit;
     private String students;
 
     public Rubric(String code, String state, String evaluation, String date, String week, String evidence, String activity) {
@@ -95,11 +95,11 @@ class Rubric{
         this.activity = activity;
     }
 
-    public String getCanEdit() {
+    public Boolean getCanEdit() {
         return canEdit;
     }
 
-    public void setCanEdit(String canEdit) {
+    public void setCanEdit(Boolean canEdit) {
         this.canEdit = canEdit;
     }
 
@@ -150,9 +150,9 @@ public class RubricsCourseController {
         String semester = rubricsCourseBody.getSemester();
         String courseCode = rubricsCourseBody.getCourseCode();
 
-        if(semester.isEmpty())
+        if(semester == null || semester.isEmpty())
             return errorReturn.callError(404, "semester empty");
-        if(courseCode.isEmpty())
+        if(courseCode == null || courseCode.isEmpty())
             return errorReturn.callError(404, "course code empty");
 
         List<Curso> listCursoCoordina = courseService.findCursoCoordinedByUsername(semester, username);
@@ -182,7 +182,7 @@ public class RubricsCourseController {
                         rubricaBase.getActividadBase()
                 );
 
-                rubric.setCanEdit((coordinates) ? "1" : "0");
+                rubric.setCanEdit(coordinates);
                 rubric.setStudents("0");
                 response.add(rubric);
             }

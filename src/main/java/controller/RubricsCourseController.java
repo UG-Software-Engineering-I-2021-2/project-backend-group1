@@ -147,8 +147,8 @@ public class RubricsCourseController {
         if(!userService.isUser(username))
             return errorReturn.callError(404, "user is not valid");
 
-        String semester = "2021 - 2"; //rubricsCourseBody.getSemester()
-        String courseCode = "EN0022"; // rubricsCourseBody.getCourseCode()
+        String semester = rubricsCourseBody.getSemester();
+        String courseCode = rubricsCourseBody.getCourseCode();
 
         if(semester.isEmpty())
             return errorReturn.callError(404, "semester empty");

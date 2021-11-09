@@ -1,21 +1,15 @@
 package controller;
 
-import business.CourseService;
 import business.UserService;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import data.entities.Seccion;
 import data.entities.User;
-import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -65,7 +59,7 @@ public class Courses_Username_Controller {
 
         User user = userService.findByUsername(username);
 
-        Set<Seccion> set_secciones = user.getSeccionesDocente();
+        Set<Seccion> set_secciones = user.getSeccionesDicta();
         Seccion [] secciones = set_secciones.toArray(new Seccion[set_secciones.size()]);
         //ArrayList<Course> courses = new ArrayList<Course>();
 

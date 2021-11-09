@@ -71,9 +71,13 @@ public class Seccion {
     @ManyToOne
     private Curso cursoSeccion;
 
-    @ManyToMany(mappedBy = "seccionesDocente")
+    @ManyToMany(mappedBy = "seccionesDicta")
     @JsonIgnore
-    private Set<User> docentes;
+    private Set<User> docentesDicta;
+
+    @ManyToMany(mappedBy = "seccionesCoordina")
+    @JsonIgnore
+    private Set<User> docentesCoordina;
 
     @OneToMany(mappedBy = "seccionLleva")
     @JsonIgnore
@@ -101,11 +105,11 @@ public class Seccion {
     }
 
     public Set<User> getDocentes() {
-        return docentes;
+        return docentesDicta;
     }
 
-    public void setDocentes(Set<User> docentes) {
-        this.docentes = docentes;
+    public void setDocentes(Set<User> docentesDicta) {
+        this.docentesDicta = docentesDicta;
     }
 
     public Set<Lleva> getLleva() {

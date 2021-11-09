@@ -51,7 +51,35 @@ public class User {
             }
     )
     @JsonIgnore
-    private Set<Seccion> seccionesDocente;
+    private Set<Seccion> seccionesDicta;
+
+    @ManyToMany
+    @JoinTable(
+            name = "CoordinaDocenteSeccion",
+            joinColumns = @JoinColumn(
+                    name = "usuarioId",
+                    referencedColumnName = "usuarioId"
+            ),
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "codSeccion",
+                            referencedColumnName = "codSeccion",
+                            columnDefinition = "text"
+                    ),
+                    @JoinColumn(
+                            name = "semestre",
+                            referencedColumnName = "semestre",
+                            columnDefinition = "text"
+                    ),
+                    @JoinColumn(
+                            name = "codCurso",
+                            referencedColumnName = "codCurso",
+                            columnDefinition = "text"
+                    )
+            }
+    )
+    @JsonIgnore
+    private Set<Seccion> seccionesCoordina;
 
     public User() {
     }
@@ -90,11 +118,11 @@ public class User {
         this.username = username;
     }
 
-    public Set<Seccion> getSeccionesDocente() {
-        return seccionesDocente;
+    public Set<Seccion> getSeccionesDicta() {
+        return seccionesDicta;
     }
 
-    public void setSeccionesDocente(Set<Seccion> seccionesDocente) {
-        this.seccionesDocente = seccionesDocente;
+    public void setSeccionesDicta(Set<Seccion> seccionesDicta) {
+        this.seccionesDicta = seccionesDicta;
     }
 }

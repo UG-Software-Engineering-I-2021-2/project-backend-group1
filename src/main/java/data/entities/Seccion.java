@@ -119,4 +119,6 @@ public class Seccion {
     public void setLleva(Set<Lleva> lleva) {
         this.lleva = lleva;
     }
+
+    public String getSemestre() { return seccionPK.getSemestre(); }
 }

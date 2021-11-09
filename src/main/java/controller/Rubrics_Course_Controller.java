@@ -128,21 +128,18 @@ public class Rubrics_Course_Controller {
         String semester = rubrics_course_body.getSemestre();
         Curso course = courseService.findOneByCodCurso(course_code);
         Set<RubricaBase> set_rubrics_base = course.getRubricasBase();
-        RubricaBase[] rubrics_base = set_rubrics_base.toArray(new RubricaBase[set_rubrics_base.size()]);
-        //int cont = 1;
-        for (int i = 0; i < rubrics_base.length; i++) {
-            Set<Rubrica> set_rubrics = rubrics_base[i].getRubricas();
-            Rubrica[] rubrics = set_rubrics.toArray(new Rubrica[set_rubrics.size()]);
-            for (int j = 0; j < rubrics.length; j++) {
-                if (rubrics[j].getSemestre().equals(semester)) {
+        for(RubricaBase rubricaBase : set_rubrics_base){
+            Set<Rubrica> set_rubrics = rubricaBase.getRubricas();
+            for(Rubrica rubrica : set_rubrics){
+                if (rubrica.getSemestre().equals(semester)) {
                     Rubric rubric = new Rubric(
-                            rubrics_base[i].getCodRubrica(),
-                            rubrics[j].getEstado(),
-                            rubrics_base[i].getEvaluacion(),
-                            rubrics[j].getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                            "Semana " + String.valueOf(rubrics_base[i].getSemana()),
-                            rubrics_base[i].getEvidencia(),
-                            rubrics_base[i].getActividadBase()
+                            rubricaBase.getCodRubrica(),
+                            rubrica.getEstado(),
+                            rubricaBase.getEvaluacion(),
+                            rubrica.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                            "Semana " + String.valueOf(rubricaBase.getSemana()),
+                            rubricaBase.getEvidencia(),
+                            rubricaBase.getActividadBase()
                     );
                     response.add(rubric);
                 }

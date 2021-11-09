@@ -3,6 +3,8 @@ package data.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -120,6 +122,16 @@ public class User {
 
     public Set<Seccion> getSeccionesDicta() {
         return seccionesDicta;
+    }
+
+    public Set<Seccion> getSeccionesDicta(String semestre) {
+        Set<Seccion> result = new HashSet<>();
+        for(Seccion seccion : seccionesDicta){
+            if(seccion.getSemestre().equals(semestre)){
+                result.add(seccion);
+            }
+        }
+        return result;
     }
 
     public void setSeccionesDicta(Set<Seccion> seccionesDicta) {

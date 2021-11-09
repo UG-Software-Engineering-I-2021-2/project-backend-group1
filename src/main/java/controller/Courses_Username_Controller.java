@@ -1,5 +1,6 @@
 package controller;
 
+import business.CourseService;
 import business.UserService;
 import data.entities.Seccion;
 import data.entities.User;
@@ -74,35 +75,32 @@ public class Courses_Username_Controller {
         System.out.println("TEST COURSE");
 
         Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
-        //System.out.println("Token course: " + authorization);
+
         if(payload == null){
             HashMap<String, String> errorMap = new HashMap<>();
             errorMap.put("error", "token not verified");
             return  ResponseEntity.status(404).body(gson.toJson(errorMap));
         }
 
-        //System.out.println("Token course fall");
+        ArrayList<Course> cursos = new ArrayList<>();
+
         String email = payload.getEmail();
         String semestre = courses_username_body.getSemestre();
         String username = email.substring(0,email.indexOf('@'));
 
         User user = userService.findByUsername(username);
 
-        Set<Seccion> set_secciones = user.getSeccionesDicta();
-        Seccion [] secciones = set_secciones.toArray(new Seccion[set_secciones.size()]);
+        if(user.getRol().toString().equals("Docente")){
+            Set<Seccion> set_secciones = user.getSeccionesDicta(semestre);
+            for(Seccion seccion : set_secciones){
+                Course curso = new Course(seccion.getCursoSeccion().getNombre(), seccion.getCursoSeccion().getCodCurso());
+                cursos.add(curso);
+            }
+        }else if(user.getRol().toString().equals("Calidad")){
 
-        HashMap<String, Course> response = new HashMap<>();
-        ArrayList<Course> cursos = new ArrayList<>();
-
-
-        for(int i = 0; i < secciones.length; i++){
-            Course curso = new Course(secciones[i].getCursoSeccion().getNombre(), secciones[i].getCursoSeccion().getCodCurso());
-            //response.put(secciones[i].getCursoSeccion().getCodCurso(), secciones[i].getCursoSeccion().getNombre());
-            //response.put(String.valueOf(i), curso);
-            cursos.add(curso);
+            //Set<Seccion> set_secciones =
         }
 
-        //json.put("courses", array);
         System.out.println(gson.toJson(cursos));
         return ResponseEntity.status(200).body(gson.toJson(cursos));
     }

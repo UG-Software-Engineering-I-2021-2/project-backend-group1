@@ -139,4 +139,15 @@ public class User {
     }
 
     public Set<Seccion> getSeccionesCoordina() { return seccionesCoordina; }
+
+    public Set<Seccion> getSeccionesCoordina(String semester) {
+        Set<Seccion> response = new HashSet<>();
+        for(Seccion seccion : seccionesDicta){
+            if(seccion.getSemestre().equals(semester)){
+                response.add(seccion);
+            }
+        }
+        return response;
+    }
+
 }

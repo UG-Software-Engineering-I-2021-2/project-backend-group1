@@ -1,6 +1,7 @@
 package controller;
 
 import business.CourseService;
+import business.UserService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
 import data.entities.*;
@@ -127,6 +128,9 @@ public class RubricsCourseController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/rubrics_course")
     public ResponseEntity<String> rubricsCourseController(@RequestHeader(value="Authorization") String authorization, @RequestBody RubricsCourseBody rubricsCourseBody) throws JSONException, GeneralSecurityException, IOException {
         GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
@@ -139,27 +143,43 @@ public class RubricsCourseController {
 
         ArrayList<Rubric> response = new ArrayList<>();
 
-        String courseCode = rubricsCourseBody.getCoursecode();
-        String semester = rubricsCourseBody.getSemester();
-        Curso course = courseService.findOneByCodCurso(courseCode);
+        String email = payload.getEmail();
+        String username = email.substring(0,email.indexOf('@'));
+
+        if(!userService.isUser(username)){
+            HashMap<String, String> errorMap = new HashMap<>();
+            errorMap.put("error", "user is not valid");
+            return  ResponseEntity.status(404).body(gson.toJson(errorMap));
+        }
+
+        User user = userService.findByUsername(username);
+        Set<Seccion> seccionesCoordina = user.getSeccionesCoordina(rubricsCourseBody.getSemester());
+        boolean coordina = false;
+        for(Seccion seccion : seccionesCoordina){
+            if(seccion.getCursoSeccion().getCodCurso().equals(rubricsCourseBody.getCoursecode())){
+                coordina = true;
+                break;
+            }
+        }
+
+        Curso course = courseService.findOneByCodCurso(rubricsCourseBody.getCoursecode());
         Set<RubricaBase> setRubricsBase = course.getRubricasBase();
         for(RubricaBase rubricaBase : setRubricsBase){
-            Set<Rubrica> setRubrics = rubricaBase.getRubricas();
+            Set<Rubrica> setRubrics = rubricaBase.getRubricas(rubricsCourseBody.getSemester());
             for(Rubrica rubrica : setRubrics){
-                if (rubrica.getSemestre().equals(semester)) {
-                    Rubric rubric = new Rubric(
-                            rubricaBase.getCodRubrica(),
-                            rubrica.getEstado(),
-                            rubricaBase.getEvaluacion(),
-                            rubrica.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
-                            "Semana " + rubricaBase.getSemana(),
-                            rubricaBase.getEvidencia(),
-                            rubricaBase.getActividadBase()
-                    );
-                    rubric.setCanEdit("1");
-                    rubric.setStudents("0");
-                    response.add(rubric);
-                }
+                Rubric rubric = new Rubric(
+                        rubricaBase.getCodRubrica(),
+                        rubrica.getEstado(),
+                        rubricaBase.getEvaluacion(),
+                        rubrica.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        "Semana " + rubricaBase.getSemana(),
+                        rubricaBase.getEvidencia(),
+                        rubricaBase.getActividadBase()
+                );
+
+                rubric.setCanEdit((coordina) ? "1" : "0");
+                rubric.setStudents("0");
+                response.add(rubric);
             }
         }
         //map.forEach((k,v) -> System.out.println("Key: " + k + ": Value: " + v));

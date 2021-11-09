@@ -12,12 +12,6 @@ import java.util.Optional;
 
 public interface CourseRepository extends JpaRepository<Curso, String> {
     Optional<Curso> findByCodCurso(String codCurso);
-    /*
-    @Query(
-            value = "SELECT * FROM usuario WHERE rol = 'Docente' and username = :#{#username}",
-            nativeQuery = true
-    )
-    Optional<User> findTeacherUsername(@Param("username") String username);*/
 
     @Query(
             value = "SELECT * FROM curso " +
@@ -28,4 +22,18 @@ public interface CourseRepository extends JpaRepository<Curso, String> {
             nativeQuery = true
     )
     List<Curso> findCursoBySemestre(@Param("semestre") String semestre);
+
+    @Query(
+            value = "SELECT * FROM curso " +
+                    "WHERE curso.cod_curso IN ( " +
+                    "SELECT cod_curso FROM dicta_docente_seccion D " +
+                    "INNER JOIN usuario U " +
+                    "ON D.usuario_id = U.usuario_id " +
+                    "WHERE D.semestre = :#{#semestre} " +
+                    "AND U.username = :#{#username}) ",
+            nativeQuery = true
+    )
+    List<Curso> findCursoBySemestreAndUsernameDocente(
+            @Param("semestre") String semestre,
+            @Param("username") String username);
 }

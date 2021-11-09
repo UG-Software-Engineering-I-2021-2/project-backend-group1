@@ -25,7 +25,7 @@ public class CourseService {
 
     public List<Curso> findAll() {
         List<Curso> courseList = courseRepository.findAll();
-        if (courseList.size() > 0) return courseList;
+        if (!courseList.isEmpty()) return courseList;
         else throw new CustomNotFoundException("No existe ningun curso.\n");
     }
 
@@ -37,7 +37,14 @@ public class CourseService {
 
     public List<Curso> findCursoBySemestre(String semestre) {
         List<Curso> courseList = courseRepository.findCursoBySemestre(semestre);
-        if (courseList.size() > 0) return courseList;
+        if (!courseList.isEmpty()) return courseList;
         else throw new CustomNotFoundException("No existe ningun curso con el semestre: " + semestre + ".\n");
+    }
+
+    public List<Curso> findCursoBySemestreAndUsername(String semestre, String username, Boolean isDocent) {
+        if(Boolean.TRUE.equals(isDocent))
+            return courseRepository.findCursoBySemestreAndUsernameDocente(semestre, username);
+        else
+            return courseRepository.findCursoBySemestre(semestre);
     }
 }

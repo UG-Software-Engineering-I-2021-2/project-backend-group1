@@ -1,31 +1,17 @@
 package controller;
 
-import business.CourseService;
 import business.UserService;
-import data.entities.Curso;
-import data.entities.Rubrica;
-import data.entities.RubricaBase;
 import data.entities.User;
-import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -48,7 +34,7 @@ public class LoginController {
             errorMap.put("error", "token not verified");
             return  ResponseEntity.status(404).body(errorMap);
         }
-//        System.out.println("Token login: " + authorization);
+
         HashMap<String, String> map = new HashMap<>();
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));

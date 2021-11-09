@@ -1,8 +1,8 @@
 package controller;
 
+import business.CourseService;
 import business.UserService;
-import data.entities.Seccion;
-import data.entities.User;
+import data.entities.Curso;
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 
@@ -54,42 +54,40 @@ public class CoursesUsernameController {
 
     private final Gson gson = new Gson();
 
+    private final ErrorReturn errorReturn = new ErrorReturn();
+
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CourseService courseService;
+
     @PostMapping(value = "/courses_username")
     public ResponseEntity<String> coursesUsernameController(@RequestHeader(value="Authorization") String authorization, @RequestBody CoursesUsernameBody coursesUsernameBody) throws JSONException, GeneralSecurityException, IOException {
-        System.out.println("TEST COURSE");
+        System.out.println("\nTEST COURSE");
+        HashMap<String, String> errorMap = new HashMap<>();
 
         Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        if(payload == null)
+            return errorReturn.callError(404, "token not verified");
 
-        if(payload == null){
-            HashMap<String, String> errorMap = new HashMap<>();
-            errorMap.put("error", "token not verified");
-            return  ResponseEntity.status(404).body(gson.toJson(errorMap));
-        }
-
-        ArrayList<Course> cursos = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
 
         String email = payload.getEmail();
-        String semester = coursesUsernameBody.getSemester();
         String username = email.substring(0,email.indexOf('@'));
+        String semester = coursesUsernameBody.getSemester();
 
-        User user = userService.findByUsername(username);
+        if(semester.isEmpty())
+            return errorReturn.callError(404, "semester empty");
 
-        if(user.getRol().toString().equals("Docente")){
-            Set<Seccion> setSecciones = user.getSeccionesDicta(semester);
-            for(Seccion seccion : setSecciones){
-                Course curso = new Course(seccion.getCursoSeccion().getNombre(), seccion.getCursoSeccion().getCodCurso());
-                cursos.add(curso);
-            }
-        }else if(user.getRol().toString().equals("Calidad")){
+        List<Curso> cursos = courseService.findCursoBySemestreAndUsername(semester,
+                username,
+                userService.findByUsername(username).getRol().toString().equals("Docente"));
+        for(Curso curso : cursos)
+            courses.add(new Course(curso.getNombre(), curso.getCodCurso()));
 
-            //Set<Seccion> set_secciones =
-        }
-
-        System.out.println(gson.toJson(cursos));
-        return ResponseEntity.status(200).body(gson.toJson(cursos));
+        System.out.println(gson.toJson(courses));
+        return ResponseEntity.status(200).body(gson.toJson(courses));
     }
 }
 

@@ -18,4 +18,14 @@ public interface CourseRepository extends JpaRepository<Curso, String> {
             nativeQuery = true
     )
     Optional<User> findTeacherUsername(@Param("username") String username);*/
+
+    @Query(
+            value = "SELECT * FROM curso " +
+                    "WHERE curso.cod_curso IN (" +
+                    "SELECT cod_curso FROM seccion " +
+                    "WHERE semestre = :#{#semestre}" +
+                    ")",
+            nativeQuery = true
+    )
+    List<Curso> findCursoBySemestre(@Param("semestre") String semestre);
 }

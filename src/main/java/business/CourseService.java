@@ -34,4 +34,10 @@ public class CourseService {
         if (cursoOptional.isPresent()) return cursoOptional.get();
         else throw new CustomNotFoundException("No exite un curso con el codigo: " + codCurso + ".\n");
     }
+
+    public List<Curso> findCursoBySemestre(String semestre) {
+        List<Curso> courseList = courseRepository.findCursoBySemestre(semestre);
+        if (courseList.size() > 0) return courseList;
+        else throw new CustomNotFoundException("No existe ningun curso con el semestre: " + semestre + ".\n");
+    }
 }

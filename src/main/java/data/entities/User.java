@@ -124,10 +124,10 @@ public class User {
         return seccionesDicta;
     }
 
-    public Set<Seccion> getSeccionesDicta(String semestre) {
+    public Set<Seccion> getSeccionesDicta(String semester) {
         Set<Seccion> result = new HashSet<>();
         for(Seccion seccion : seccionesDicta){
-            if(seccion.getSemestre().equals(semestre)){
+            if(seccion.getSemestre().equals(semester)){
                 result.add(seccion);
             }
         }
@@ -137,4 +137,17 @@ public class User {
     public void setSeccionesDicta(Set<Seccion> seccionesDicta) {
         this.seccionesDicta = seccionesDicta;
     }
+
+    public Set<Seccion> getSeccionesCoordina() { return seccionesCoordina; }
+
+    public Set<Seccion> getSeccionesCoordina(String semester) {
+        Set<Seccion> response = new HashSet<>();
+        for(Seccion seccion : seccionesDicta){
+            if(seccion.getSemestre().equals(semester)){
+                response.add(seccion);
+            }
+        }
+        return response;
+    }
+
 }

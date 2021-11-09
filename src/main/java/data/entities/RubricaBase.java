@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import data.entities.composite_keys.RubricaBasePK;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -105,8 +108,16 @@ public class RubricaBase {
         this.competenciaRubrica = competenciaRubrica;
     }
 
-    public Set<Rubrica> getRubricas() {
-        return rubricas;
+    public Set<Rubrica> getRubricas() { return rubricas; }
+
+    public Set<Rubrica> getRubricas(String semester) {
+        Set<Rubrica> response = new HashSet<>();
+        for(Rubrica rubrica : rubricas){
+            if(rubrica.getSemestre().equals(semester)){
+                response.add(rubrica);
+            }
+        }
+        return response;
     }
 
     public void setRubricas(Set<Rubrica> rubricas) {

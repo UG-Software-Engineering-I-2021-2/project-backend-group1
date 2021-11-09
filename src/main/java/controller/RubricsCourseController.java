@@ -5,6 +5,8 @@ import business.UserService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
 import data.entities.*;
+import data.repositories.RubricBaseRepository;
+import data.repositories.RubricRepository;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -134,6 +136,12 @@ public class RubricsCourseController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RubricBaseRepository rubricBaseRepository;
+
+    @Autowired
+    private RubricRepository rubricRepository;
+
     @PostMapping("/rubrics_course")
     public ResponseEntity<String> rubricsCourseController(@RequestHeader(value="Authorization") String authorization, @RequestBody RubricsCourseBody rubricsCourseBody) throws JSONException, GeneralSecurityException, IOException {
         System.out.println("\nTEST RUBRIC");
@@ -167,11 +175,10 @@ public class RubricsCourseController {
 
         List<Rubric> response = new ArrayList<>();
 
-        Curso course = courseService.findOneByCodCurso(courseCode);
-        Set<RubricaBase> setRubricsBase = course.getRubricasBase();
-        for(RubricaBase rubricaBase : setRubricsBase){
-            Set<Rubrica> setRubrics = rubricaBase.getRubricas(semester);
-            for(Rubrica rubrica : setRubrics){
+        List<RubricaBase> listRubricaBase = rubricBaseRepository.getRubricBaseByCodCourse(courseCode);
+        for(RubricaBase rubricaBase : listRubricaBase){
+            List<Rubrica> listRubrica = rubricRepository.getRubricByCodRubricBaseAndSemester(rubricaBase.getCodRubrica(), semester);
+            for(Rubrica rubrica : listRubrica){
                 Rubric rubric = new Rubric(
                         rubricaBase.getCodRubrica(),
                         rubrica.getEstado(),
@@ -187,7 +194,6 @@ public class RubricsCourseController {
                 response.add(rubric);
             }
         }
-        //map.forEach((k,v) -> System.out.println("Key: " + k + ": Value: " + v));
 
         System.out.println(gson.toJson(response));
         return ResponseEntity.status(200).body(gson.toJson(response));

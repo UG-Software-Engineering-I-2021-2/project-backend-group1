@@ -34,9 +34,6 @@ public class LoginController {
     private TokenValidator tokenValidator = new TokenValidator();
 
     @Autowired
-    private CourseService courseService;
-
-    @Autowired
     private UserService userService;
 
     @PostMapping("/login")

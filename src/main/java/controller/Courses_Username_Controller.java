@@ -3,6 +3,15 @@ package controller;
 import business.UserService;
 import data.entities.Seccion;
 import data.entities.User;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import data.entities.Curso;
+import data.entities.Seccion;
+import data.entities.User;
+import org.checkerframework.checker.units.qual.A;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+
+import javax.persistence.criteria.CriteriaBuilder;
 
 class Course{
     private String name;
@@ -21,6 +33,22 @@ class Course{
     Course(String _name, String _code){
         name = _name;
         code = _code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
 
@@ -35,21 +63,21 @@ class Courses_Username_Body {
 public class Courses_Username_Controller {
     private TokenValidator tokenValidator = new TokenValidator();
 
+    private Gson gson = new Gson();
+
     @Autowired
     private UserService userService;
 
-    @PostMapping("/courses_username")
-    public ResponseEntity<HashMap<String, String>> courses_username_controller(@RequestHeader(value="Authorization") String authorization, @RequestBody Courses_Username_Body courses_username_body) throws JSONException, GeneralSecurityException, IOException {
+    @PostMapping(value = "/courses_username")
+    public ResponseEntity<String> courses_username_controller(@RequestHeader(value="Authorization") String authorization, @RequestBody Courses_Username_Body courses_username_body) throws JSONException, GeneralSecurityException, IOException {
         System.out.println("TEST COURSE");
 
         Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         //System.out.println("Token course: " + authorization);
         if(payload == null){
-            //JSONObject errorJson = new JSONObject();
-            //errorJson.put("error", "token not verified");
             HashMap<String, String> errorMap = new HashMap<>();
             errorMap.put("error", "token not verified");
-            return  ResponseEntity.status(404).body(errorMap);
+            return  ResponseEntity.status(404).body(gson.toJson(errorMap));
         }
 
         //System.out.println("Token course fall");
@@ -61,18 +89,21 @@ public class Courses_Username_Controller {
 
         Set<Seccion> set_secciones = user.getSeccionesDicta();
         Seccion [] secciones = set_secciones.toArray(new Seccion[set_secciones.size()]);
-        //ArrayList<Course> courses = new ArrayList<Course>();
 
-        HashMap<String, String> response = new HashMap<>();
+        HashMap<String, Course> response = new HashMap<>();
+        ArrayList<Course> cursos = new ArrayList<>();
+
+
         for(int i = 0; i < secciones.length; i++){
-            //Course course = new Course(secciones[i].getCursoSeccion().getNombre(), secciones[i].getCursoSeccion().getCodCurso());
-            //courses.add(course);
-            response.put(secciones[i].getCursoSeccion().getCodCurso(), secciones[i].getCursoSeccion().getNombre());
+            Course curso = new Course(secciones[i].getCursoSeccion().getNombre(), secciones[i].getCursoSeccion().getCodCurso());
+            //response.put(secciones[i].getCursoSeccion().getCodCurso(), secciones[i].getCursoSeccion().getNombre());
+            //response.put(String.valueOf(i), curso);
+            cursos.add(curso);
         }
 
         //json.put("courses", array);
-
-        return ResponseEntity.status(200).body(response);
+        System.out.println(gson.toJson(cursos));
+        return ResponseEntity.status(200).body(gson.toJson(cursos));
     }
 }
 

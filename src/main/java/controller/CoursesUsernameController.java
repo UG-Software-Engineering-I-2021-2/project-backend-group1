@@ -43,8 +43,9 @@ class Course{
 
 class CoursesUsernameBody {
     private String semester;
-    public String getSemester() {return semester;}
-    public void setSemester(String semester) {this.semester = semester;}
+    private String role;
+    public String getSemester() { return semester; }
+    public String getRole() { return role; }
 }
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -55,9 +56,6 @@ public class CoursesUsernameController {
     private final Gson gson = new Gson();
 
     private final ErrorReturn errorReturn = new ErrorReturn();
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private CourseService courseService;
@@ -73,12 +71,7 @@ public class CoursesUsernameController {
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));
         String semester = coursesUsernameBody.getSemester();
-
-        System.out.println("Username: " + username);
-        System.out.println("Semestre: " +semester);
-
-        if(!userService.isUser(username))
-            return errorReturn.callError(404, "user is not valid");
+        String role = coursesUsernameBody.getRole();
 
         if(semester == null || semester.isEmpty())
             return errorReturn.callError(404, "semester empty");
@@ -86,7 +79,7 @@ public class CoursesUsernameController {
         List<Course> courses = new ArrayList<>();
         List<Curso> cursos = courseService.findCursoBySemesterAndUsername(semester,
                 username,
-                userService.findByUsername(username).getRol().toString().equals("Docente"));
+                role.equals("Docente"));
         for(Curso curso : cursos)
             courses.add(new Course(curso.getNombre(), curso.getCodCurso()));
 

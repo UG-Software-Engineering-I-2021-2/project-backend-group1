@@ -165,6 +165,10 @@ public class RubricsCourseController {
                         rubricaBase.getEvidencia(),
                         rubricaBase.getActividadBase()
                 );
+                if(rubric.getState().equals("Sin asignar"))
+                    rubric.setCanEdit(coordinates);
+                else
+                    rubric.setCanEdit(!rubric.getState().equals("Aprobacion pendiente"));
                 rubric.setStudents("0");
                 response.add(rubric);
             }

@@ -16,9 +16,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 class Rubric{
     private String code;
@@ -189,7 +187,11 @@ public class RubricsCourseController {
                         rubricaBase.getActividadBase()
                 );
 
-                rubric.setCanEdit(coordinates);
+                if(rubric.getState().equals("Sin asignar"))
+                    rubric.setCanEdit(coordinates);
+                else
+                    rubric.setCanEdit(!rubric.getState().equals("Aprobacion pendiente"));
+
                 rubric.setStudents("0");
                 response.add(rubric);
             }

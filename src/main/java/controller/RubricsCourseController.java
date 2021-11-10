@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -163,23 +165,12 @@ public class RubricsCourseController {
                         rubricaBase.getEvidencia(),
                         rubricaBase.getActividadBase()
                 );
-
-                if(rubric.getState().equals("Sin asignar"))
-                    rubric.setCanEdit(coordinates);
-                else
-                    rubric.setCanEdit(!rubric.getState().equals("Aprobacion pendiente"));
-
                 rubric.setStudents("0");
                 response.add(rubric);
             }
         }
 
         response.sort((c1, c2) -> {
-            if(c1.getState().equals("Sin asignar") || c1.getState().equals("Fuera de fecha"))
-                return (c2.getState().equals("Sin asignar") || c2.getState().equals("Fuera de fecha")) ?
-                        -c1.getState().compareToIgnoreCase(c2.getState()) :
-                        -1;
-
             Date date1 = null;
             Date date2 = null;
             try {
@@ -189,7 +180,22 @@ public class RubricsCourseController {
                 e.printStackTrace();
             }
             assert date1 != null;
-            return date1.compareTo(date2);
+            if(c1.getState().equals("Sin asignar") || c2.getState().equals("Sin asignar")){
+                if(c1.getState().equals("Sin asignar") && c2.getState().equals("Sin asignar"))
+                    return date1.compareTo(date2);
+                else
+                    return (c1.getState().equals("Sin asignar")) ? -1 : 1;
+            }else if(c1.getState().equals("Fuera de fecha") || c2.getState().equals("Fuera de fecha")){
+                if(c1.getState().equals("Fuera de fecha") && c2.getState().equals("Fuera de fecha"))
+                    return date1.compareTo(date2);
+                else
+                    return (c1.getState().equals("Fuera de fecha")) ? -1 : 1;
+            }else if(c1.getState().equals("Cumplidos") || c2.getState().equals("Cumplidos")){
+                if(c1.getState().equals("Cumplidos") && c2.getState().equals("Cumplidos"))
+                    return date1.compareTo(date2);
+                else
+                    return (c1.getState().equals("Cumplidos")) ? 1 : -1;
+            }else return date1.compareTo(date2);
         });
 
         System.out.println(gson.toJson(response));

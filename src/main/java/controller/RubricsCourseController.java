@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 class Rubric{
     private String code;
@@ -172,6 +173,24 @@ public class RubricsCourseController {
                 response.add(rubric);
             }
         }
+
+        response.sort((c1, c2) -> {
+            if(c1.getState().equals("Sin asignar") || c1.getState().equals("Fuera de fecha"))
+                return (c2.getState().equals("Sin asignar") || c2.getState().equals("Fuera de fecha")) ?
+                        -c1.getState().compareToIgnoreCase(c2.getState()) :
+                        -1;
+
+            Date date1 = null;
+            Date date2 = null;
+            try {
+                date1 = new SimpleDateFormat("dd/MM/yyyy").parse(c1.getDate());
+                date2 = new SimpleDateFormat("dd/MM/yyyy").parse(c2.getDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            assert date1 != null;
+            return date1.compareTo(date2);
+        });
 
         System.out.println(gson.toJson(response));
         return ResponseEntity.status(200).body(gson.toJson(response));

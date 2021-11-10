@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -75,15 +76,17 @@ public class CoursesUsernameController {
         if(role == null || role.isEmpty())
             return errorReturn.callError(404, "role empty");
 
-        List<Course> courses = new ArrayList<>();
+        List<Course> response = new ArrayList<>();
         List<Curso> cursos = courseService.findCursoBySemesterAndUsername(semester,
                 username,
                 role.equals("Docente"));
         for(Curso curso : cursos)
-            courses.add(new Course(curso.getNombre(), curso.getCodCurso()));
+            response.add(new Course(curso.getNombre(), curso.getCodCurso()));
 
-        System.out.println(gson.toJson(courses));
-        return ResponseEntity.status(200).body(gson.toJson(courses));
+        response.sort((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()));
+
+        System.out.println(gson.toJson(response));
+        return ResponseEntity.status(200).body(gson.toJson(response));
     }
 }
 

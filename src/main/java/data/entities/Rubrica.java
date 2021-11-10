@@ -25,6 +25,9 @@ public class Rubrica {
     @Column(name = "descriptores", columnDefinition = "text", nullable = false)
     private String descriptores;
 
+    @Column(name = "actividad", columnDefinition = "text", nullable = false)
+    private String actividad;
+
     @JoinColumns(value = {
             @JoinColumn(
                     name = "codRubrica",
@@ -111,4 +114,12 @@ public class Rubrica {
     }
 
     public String getSemestre() { return this.rubricaPK.getSemestre(); }
+
+    public String getActividad() {
+        return actividad;
+    }
+
+    public void setActividad(String actividad) {
+        this.actividad = actividad;
+    }
 }

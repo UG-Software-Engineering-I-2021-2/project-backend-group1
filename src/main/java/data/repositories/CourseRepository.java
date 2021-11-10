@@ -30,7 +30,13 @@ public interface CourseRepository extends JpaRepository<Curso, String> {
                     "INNER JOIN usuario U " +
                     "ON D.usuario_id = U.usuario_id " +
                     "WHERE D.semestre = :#{#semester} " +
-                    "AND U.username = :#{#username}) ",
+                    "AND U.username = :#{#username} " +
+                    "UNION " +
+                    "SELECT cod_curso FROM coordina_docente_seccion C " +
+                    "INNER JOIN usuario U " +
+                    "ON C.usuario_id = U.usuario_id " +
+                    "WHERE C.semestre = :#{#semester} " +
+                    "AND U.username = :#{#username} )",
             nativeQuery = true
     )
     List<Curso> findCursoBySemesterAndUsernameDocente(
@@ -44,7 +50,7 @@ public interface CourseRepository extends JpaRepository<Curso, String> {
                     "INNER JOIN usuario U " +
                     "ON C.usuario_id = U.usuario_id " +
                     "WHERE C.semestre = :#{#semester} " +
-                    "AND U.username = :#{#username}) ",
+                    "AND U.username = :#{#username} ) ",
             nativeQuery = true
     )
     List<Curso> findCursoCoordinedByUsername(

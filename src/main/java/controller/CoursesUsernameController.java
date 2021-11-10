@@ -75,6 +75,8 @@ public class CoursesUsernameController {
 
         if(semester == null || semester.isEmpty())
             return errorReturn.callError(404, "semester empty");
+        if(role == null || role.isEmpty())
+            return errorReturn.callError(404, "role empty");
 
         List<Course> courses = new ArrayList<>();
         List<Curso> cursos = courseService.findCursoBySemesterAndUsername(semester,

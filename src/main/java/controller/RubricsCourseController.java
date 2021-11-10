@@ -132,9 +132,6 @@ public class RubricsCourseController {
     private CourseService courseService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private RubricBaseRepository rubricBaseRepository;
 
     @Autowired
@@ -149,9 +146,6 @@ public class RubricsCourseController {
 
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));
-
-        if(!userService.isUser(username))
-            return errorReturn.callError(404, "user is not valid");
 
         String semester = rubricsCourseBody.getSemester();
         String courseCode = rubricsCourseBody.getCourseCode();

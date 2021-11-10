@@ -1,7 +1,6 @@
 package controller;
 
 import business.CourseService;
-import business.UserService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
 import data.entities.*;
@@ -42,71 +41,54 @@ class Rubric{
     public String getCode() {
         return code;
     }
-
     public void setCode(String code) {
         this.code = code;
     }
-
     public String getState() {
         return state;
     }
-
     public void setState(String state) {
         this.state = state;
     }
-
     public String getEvaluation() {
         return evaluation;
     }
-
     public void setEvaluation(String evaluation) {
         this.evaluation = evaluation;
     }
-
     public String getDate() {
         return date;
     }
-
     public void setDate(String date) {
         this.date = date;
     }
-
     public String getWeek() {
         return week;
     }
-
     public void setWeek(String week) {
         this.week = week;
     }
-
     public String getEvidence() {
         return evidence;
     }
-
     public void setEvidence(String evidence) {
         this.evidence = evidence;
     }
-
     public String getActivity() {
         return activity;
     }
-
     public void setActivity(String activity) {
         this.activity = activity;
     }
-
     public Boolean getCanEdit() {
         return canEdit;
     }
-
     public void setCanEdit(Boolean canEdit) {
         this.canEdit = canEdit;
     }
-
     public String getStudents() {
         return students;
     }
-
     public void setStudents(String students) {
         this.students = students;
     }

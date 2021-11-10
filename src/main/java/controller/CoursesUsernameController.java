@@ -1,7 +1,6 @@
 package controller;
 
 import business.CourseService;
-import business.UserService;
 import data.entities.Curso;
 import com.google.gson.Gson;
 import org.json.JSONException;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -26,16 +24,15 @@ class Course{
         this.code = code;
     }
 
-    public String getName() { return name; }
-
+    public String getName() {
+        return name;
+    }
     public void setName(String name) {
         this.name = name;
     }
-
     public String getCode() {
         return code;
     }
-
     public void setCode(String code) {
         this.code = code;
     }

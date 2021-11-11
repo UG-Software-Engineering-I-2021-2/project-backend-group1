@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -115,6 +116,16 @@ public class RubricaBase {
         for(Rubrica rubrica : rubricas){
             if(rubrica.getSemestre().equals(semester)){
                 response.add(rubrica);
+            }
+        }
+        return response;
+    }
+
+    public Rubrica getRubrica(String semester){
+        Rubrica response = null;
+        for(Rubrica rubrica : rubricas){
+            if(rubrica.getSemestre().equals(semester)){
+                response = rubrica;
             }
         }
         return response;

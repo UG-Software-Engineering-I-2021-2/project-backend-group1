@@ -1,6 +1,7 @@
 package controller;
 
 import business.CourseService;
+import business.UserService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
 import data.entities.*;
@@ -15,8 +16,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -30,6 +29,7 @@ class Rubric{
     private String activity;
     private Boolean canEdit;
     private String students;
+    private String level;
 
     public Rubric(String code, String state, String evaluation, String date, String week, String evidence, String activity) {
         this.code = code;
@@ -41,67 +41,30 @@ class Rubric{
         this.activity = activity;
     }
 
-    public String getCode() {
-        return code;
-    }
-    public void setCode(String code) {
-        this.code = code;
-    }
     public String getState() {
         return state;
-    }
-    public void setState(String state) {
-        this.state = state;
-    }
-    public String getEvaluation() {
-        return evaluation;
-    }
-    public void setEvaluation(String evaluation) {
-        this.evaluation = evaluation;
     }
     public String getDate() {
         return date;
     }
-    public void setDate(String date) {
-        this.date = date;
-    }
-    public String getWeek() {
-        return week;
-    }
-    public void setWeek(String week) {
-        this.week = week;
-    }
-    public String getEvidence() {
-        return evidence;
-    }
-    public void setEvidence(String evidence) {
-        this.evidence = evidence;
-    }
-    public String getActivity() {
-        return activity;
-    }
-    public void setActivity(String activity) {
-        this.activity = activity;
-    }
-    public Boolean getCanEdit() {
-        return canEdit;
-    }
     public void setCanEdit(Boolean canEdit) {
         this.canEdit = canEdit;
     }
-    public String getStudents() {
-        return students;
-    }
     public void setStudents(String students) {
         this.students = students;
+    }
+    public void setLevel(String level) {
+        this.level = level;
     }
 }
 
 class RubricsCourseBody {
     private String semester;
     private String courseCode;
+    private String role;
     public String getSemester() {return semester;}
     public String getCourseCode() {return courseCode;}
+    public String getRole() {return role;}
 }
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -112,6 +75,9 @@ public class RubricsCourseController {
     private final Gson gson = new Gson();
 
     private final ErrorReturn errorReturn = new ErrorReturn();
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CourseService courseService;
@@ -134,12 +100,76 @@ public class RubricsCourseController {
 
         String semester = rubricsCourseBody.getSemester();
         String courseCode = rubricsCourseBody.getCourseCode();
+        String role = rubricsCourseBody.getRole();
+
+        System.out.println("\nSemester " + semester);
+        System.out.println("\nCourseCode " + courseCode);
+        System.out.println("\nRole " + role);
 
         if(semester == null || semester.isEmpty())
             return errorReturn.callError(404, "semester empty");
         if(courseCode == null || courseCode.isEmpty())
             return errorReturn.callError(404, "course code empty");
+        if(role == null || role.isEmpty())
+            return errorReturn.callError(404, "role empty");
 
+
+        boolean coordinates = false;
+        Curso curso = null;
+
+        if(role.equals("Docente")){
+            User user = userService.findByUsername(username);
+            Set<Seccion> seccionesCoordina = user.getSeccionesCoordina(semester);
+            for(Seccion seccion : seccionesCoordina){
+                if(seccion.getCursoSeccion().getCodCurso().equals(courseCode)){
+                    coordinates = true;
+                    curso = seccion.getCursoSeccion();
+                    break;
+                }
+            }
+            if(curso == null){
+                Set<Seccion> seccionesDicta = user.getSeccionesDicta(semester);
+                for(Seccion seccion : seccionesDicta){
+                    if(seccion.getCursoSeccion().getCodCurso().equals(courseCode)){
+                        curso = seccion.getCursoSeccion();
+                        break;
+                    }
+                }
+            }
+
+        }else{
+            curso = courseService.findOneByCodCurso(courseCode);
+        }
+
+        List<Rubric> response = new ArrayList<>();
+
+        Set<RubricaBase> rubricaBaseSet = curso.getRubricasBase();
+        for(RubricaBase rubricaBase : rubricaBaseSet) {
+            Rubrica rubrica = rubricaBase.getRubrica(semester);
+            if(rubrica != null){
+                Rubric rubric = new Rubric(
+                        rubricaBase.getCodRubrica(),
+                        rubrica.getEstado(),
+                        rubricaBase.getEvaluacion(),
+                        rubrica.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        "Semana " + rubricaBase.getSemana(),
+                        rubricaBase.getEvidencia(),
+                        rubrica.getActividad()
+                );
+                if(rubric.getState().equals("Sin asignar"))
+                    rubric.setCanEdit(coordinates);
+                else
+                    rubric.setCanEdit(!rubric.getState().equals("Aprobacion pendiente"));
+                rubric.setStudents("0");
+                rubric.setLevel(String.valueOf(rubricaBase.getNivel()));
+
+                response.add(rubric);
+            }
+        }
+
+
+
+/*
         List<Curso> listCursoCoordina = courseService.findCursoCoordinedByUsername(semester, username);
 
         boolean coordinates = false;
@@ -173,7 +203,7 @@ public class RubricsCourseController {
                 response.add(rubric);
             }
         }
-
+*/
         response.sort((c1, c2) -> {
             Date date1 = null;
             Date date2 = null;
@@ -206,4 +236,3 @@ public class RubricsCourseController {
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 }
-

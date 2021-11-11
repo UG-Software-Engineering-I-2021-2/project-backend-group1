@@ -24,6 +24,22 @@ public class Carrera {
     @JsonIgnore
     private Set<Competencia> competencias;
 
+    @ManyToMany
+    @JoinTable(
+            name = "PerteneceCursoCarrera",
+            joinColumns = @JoinColumn(
+                    name = "carreraId",
+                    referencedColumnName = "carreraId"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "codCurso",
+                    referencedColumnName = "codCurso",
+                    columnDefinition = "text"
+            )
+    )
+    @JsonIgnore
+    private Set<Curso> cursosPertenece;
+
     public Carrera() {
     }
 
@@ -59,5 +75,13 @@ public class Carrera {
 
     public void setCompetencias(Set<Competencia> competencias) {
         this.competencias = competencias;
+    }
+
+    public Set<Curso> getCursosPertenece() {
+        return cursosPertenece;
+    }
+
+    public void setCursosPertenece(Set<Curso> cursosPertenece) {
+        this.cursosPertenece = cursosPertenece;
     }
 }

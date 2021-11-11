@@ -1,11 +1,11 @@
 package data.dtos;
 
-import data.entities.User;
+import config.enums.Role;
 
 public class UserDTO {
     Long codEmpleado;
     String username;
-    User.Role rol;
+    Role rol;
 
     public UserDTO() {}
 
@@ -25,11 +25,11 @@ public class UserDTO {
         this.username = username;
     }
 
-    public User.Role getRol() {
+    public Role getRol() {
         return rol;
     }
 
-    public void setRol(User.Role rol) {
+    public void setRol(Role rol) {
         this.rol = rol;
     }
 }

@@ -23,6 +23,10 @@ public class Curso {
     @JsonIgnore
     private Set<RubricaBase> rubricasBase;
 
+    @ManyToMany(mappedBy = "cursosPertenece")
+    @JsonIgnore
+    private Set<Carrera> carrerasPertenece;
+
     public Curso() {
     }
 
@@ -58,5 +62,13 @@ public class Curso {
 
     public void setRubricasBase(Set<RubricaBase> rubricasBase) {
         this.rubricasBase = rubricasBase;
+    }
+
+    public Set<Carrera> getCarrerasPertenece() {
+        return carrerasPertenece;
+    }
+
+    public void setCarrerasPertenece(Set<Carrera> carrerasPertenece) {
+        this.carrerasPertenece = carrerasPertenece;
     }
 }

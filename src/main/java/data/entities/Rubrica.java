@@ -1,6 +1,7 @@
 package data.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import config.enums.State;
 import data.entities.composite_keys.RubricaPK;
 
 import javax.persistence.*;
@@ -20,7 +21,7 @@ public class Rubrica {
     private LocalDate fecha;
 
     @Column(name = "estado", columnDefinition = "text", nullable = false)
-    private String estado;
+    private State estado;
 
     @Column(name = "descriptores", columnDefinition = "text", nullable = false)
     private String descriptores;
@@ -82,11 +83,11 @@ public class Rubrica {
     }
 
     public String getEstado() {
-        return estado;
+        return estado.toString();
     }
 
     public void setEstado(String estado) {
-        this.estado = estado;
+        this.estado = State.valueOf(estado.replaceAll(" ", "_"));
     }
 
     public String getDescriptores() {

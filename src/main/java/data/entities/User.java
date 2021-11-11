@@ -1,17 +1,15 @@
 package data.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import config.enums.Role;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "Usuario")
 public class User {
-    public static enum Role {Docente, Calidad};
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usuarioId")

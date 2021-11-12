@@ -85,23 +85,8 @@ public class CoursesUsernameController {
         List<Curso> cursos = courseService.findCursoBySemesterAndUsername(semester,
                 username,
                 role == Role.Docente);
-        Set<String> codes = new HashSet<>();
-        codes.add("EG0005");
-        codes.add("EN0022");
-        codes.add("EN0023");
-        codes.add("EN0032");
-        codes.add("EN0038");
-        codes.add("EN1011");
-        codes.add("EN2012");
-        codes.add("EN3004");
-        codes.add("EN4003");
-        codes.add("EN5001");
-        codes.add("EN5002");
 
         for(Curso curso : cursos){
-            if(codes.contains(curso.getCodCurso())){
-                System.out.println("\nCurso " + curso.getNombre() + "\n");
-            }
             List<String> career = new ArrayList<>();
             List<Integer> nState = new ArrayList<>();
             nState.add(0);
@@ -113,19 +98,8 @@ public class CoursesUsernameController {
             Set<RubricaBase> rubricaBases = curso.getRubricasBase();
             for(RubricaBase rubricaBase: rubricaBases){
                 Rubrica rubric = rubricaBase.getRubrica(semester);
-                if(codes.contains(curso.getCodCurso())){
-                    System.out.println("\nRúbrica Base " + rubricaBase.getCodRubrica() + "\n");
-                }
                 if(rubric != null){
-                    String state_2 = rubric.getEstado();
-                    if(codes.contains(curso.getCodCurso())){
-                        System.out.println("\nRubric not null");
-                        System.out.println("state: " + state_2 + "\n");
-                    }
-                    State state = State.valueOf(state_2);
-                    if(codes.contains(curso.getCodCurso())){
-                        System.out.println("\nAfter if\n");
-                    }
+                    State state = rubric.getEstado();
                     switch (state){
                         case SinAsignar:
                             nState.set(0, nState.get(0) + 1);
@@ -152,9 +126,6 @@ public class CoursesUsernameController {
                             break;
                     }
                 }
-            }
-            if(codes.contains(curso.getCodCurso())){
-                System.out.println(gson.toJson(nState));
             }
             State state = State.SinAsignar;
             switch (stateMaxNumber) {

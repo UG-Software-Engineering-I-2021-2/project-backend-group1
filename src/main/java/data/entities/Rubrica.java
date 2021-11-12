@@ -22,7 +22,8 @@ public class Rubrica {
     private LocalDate fecha;
 
     @Column(name = "estado", columnDefinition = "text", nullable = false)
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    private State estado;
 
     @Column(name = "descriptores", columnDefinition = "text", nullable = false)
     private String descriptores;
@@ -83,13 +84,12 @@ public class Rubrica {
         this.fecha = fecha;
     }
 
-    public String getEstado() {
+    public State getEstado() {
         return estado;
     }
 
-    public void setEstado(String  estado) {
+    public void setEstado(State  estado) {
         this.estado = estado;
-        //this.estado = State.valueOf(estado.replaceAll(" ", "_"));
     }
 
     public String getDescriptores() {

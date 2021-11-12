@@ -1,10 +1,10 @@
 package config.enums;
 
 public enum State {
-    SinAsignar("Sin asignar"),
-    AprobacionPendiente("Aprobacion pendiente"),
-    DisponibleParaCalificar("Disponible para calificar"),
-    FueraDeFecha("Fuera de fecha"),
+    SinAsignar("SinAsignar"),
+    AprobacionPendiente("AprobacionPendiente"),
+    DisponibleParaCalificar("DisponibleParaCalificar"),
+    FueraDeFecha("FueraDeFecha"),
     Cumplidos("Cumplidos");
 
     private String name;
@@ -19,11 +19,24 @@ public enum State {
 
     @Override
     public String toString() {
+        switch (name){
+            case "SinAsignar":
+                return "Sin asignar";
+            case "AprobacionPendiente":
+                return "Aprobacion pendiente";
+            case "DisponibleParaCalificar":
+                return "Disponible para calificar";
+            case "FueraDeFecha":
+                return "Fuera de fecha";
+            case "Cumplidos":
+                return "Cumplidos";
+        }
+
         return name;
     }
 
     public static State getByName(String name){
-        return State.valueOf(name);
+        return State.valueOf(name.replaceAll(" ", "_"));
     }
 
 }

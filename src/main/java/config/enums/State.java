@@ -1,10 +1,10 @@
 package config.enums;
 
 public enum State {
-    Sin_asignar("Sin asignar"),
-    Aprobacion_pendiente("Aprobacion pendiente"),
-    Disponible_para_calificar("Disponible para calificar"),
-    Fuera_de_fecha("Fuera de fecha"),
+    SinAsignar("Sin asignar"),
+    AprobacionPendiente("Aprobacion pendiente"),
+    DisponibleParaCalificar("Disponible para calificar"),
+    FueraDeFecha("Fuera de fecha"),
     Cumplidos("Cumplidos");
 
     private String name;
@@ -21,4 +21,9 @@ public enum State {
     public String toString() {
         return name;
     }
+
+    public static State getByName(String name){
+        return State.valueOf(name);
+    }
+
 }

@@ -149,7 +149,7 @@ public class RubricsCourseController {
             if(rubrica != null){
                 Rubric rubric = new Rubric(
                         rubricaBase.getCodRubrica(),
-                        rubrica.getEstado(),
+                        rubrica.getEstado().toString(),
                         rubricaBase.getEvaluacion(),
                         rubrica.getFecha().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
                         "Semana " + rubricaBase.getSemana(),

@@ -18,11 +18,6 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @GetMapping
-    public List<Curso> getAllCourses() {
-        return courseService.findAll();
-    }
-
     @GetMapping("/{semestre}")
     public List<Curso> getCoursesBySemester(@PathVariable String semester) {
         return courseService.findCursoBySemester(semester);

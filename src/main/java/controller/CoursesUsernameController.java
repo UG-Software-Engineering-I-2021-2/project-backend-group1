@@ -1,44 +1,21 @@
 package controller;
 
 import business.CourseService;
+import config.endpointClasses.Course;
 import config.enums.Role;
-import config.enums.State;
-import data.entities.Carrera;
-import data.entities.Curso;
 import com.google.gson.Gson;
-import data.entities.Rubrica;
-import data.entities.RubricaBase;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-
-class Course{
-    private String name;
-    private String code;
-    private List<String> career;
-    private String state;
-    private List<Integer> nState;
-    public Course(String name, String code, List<String> career, String state, List<Integer> nState) {
-        this.name = name;
-        this.code = code;
-        this.career = career;
-        this.state = state;
-        this.nState = nState;
-    }
-    public String getName() {
-        return name;
-    }
-}
 
 class CoursesUsernameBody {
     private String semester;
@@ -81,12 +58,30 @@ public class CoursesUsernameController {
             return errorReturn.callError(404, "role empty");
         Role role = Role.valueOf(roleString);
 
+        List<Course> response;
+        if(role.equals(Role.Docente))
+            response = courseService.docenteCourseEndpoint(semester, username);
+        else
+            response = courseService.calidadCourseEndpoint(semester);
+
+
+        System.out.println(gson.toJson(response));
+
+        System.out.println("RETURN");
+        return ResponseEntity.status(200).body(gson.toJson(response));
+
+        /*
+
         List<Course> response = new ArrayList<>();
+
         List<Curso> cursos = courseService.findCursoBySemesterAndUsername(semester,
                 username,
                 role == Role.Docente);
 
+        System.out.println("Start for course");
+
         for(Curso curso : cursos){
+            System.out.println("Course " + curso.getNombre());
             List<String> career = new ArrayList<>();
             List<Integer> nState = new ArrayList<>();
             nState.add(0);
@@ -97,9 +92,11 @@ public class CoursesUsernameController {
             Integer stateMaxNumber = 4;
             Set<RubricaBase> rubricaBases = curso.getRubricasBase();
             for(RubricaBase rubricaBase: rubricaBases){
+                System.out.println("\tIn Course " + curso.getNombre() + " rubricBase " + rubricaBase.getCodRubrica());
                 Rubrica rubric = rubricaBase.getRubrica(semester);
                 if(rubric != null){
                     State state = rubric.getEstado();
+                    System.out.println("\tRubric not null in state " + rubric.getEstado().toString());
                     switch (state){
                         case SinAsignar:
                             nState.set(0, nState.get(0) + 1);
@@ -127,6 +124,7 @@ public class CoursesUsernameController {
                     }
                 }
             }
+
             State state = State.SinAsignar;
             switch (stateMaxNumber) {
                 case 0:
@@ -145,15 +143,19 @@ public class CoursesUsernameController {
                     state = State.Cumplidos;
                     break;
             }
+            System.out.println("Course " + curso.getNombre() + " before carreras");
             Set<Carrera> carreras = curso.getCarrerasPertenece();
             for(Carrera carrera : carreras)
                 career.add(carrera.getNombre());
+            System.out.println("Course " + curso.getNombre() + " before add to response");
             response.add(new Course(curso.getNombre(), curso.getCodCurso(),career, state.toString(), nState));
+            System.out.println("Course " + curso.getNombre() + " after add to response");
         }
-
+        System.out.println("Before order");
         response.sort((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()));
-
+        System.out.println("Finish order");
         System.out.println(gson.toJson(response));
         return ResponseEntity.status(200).body(gson.toJson(response));
+        */
     }
 }

@@ -1,7 +1,7 @@
 package data.repositories;
 
-import config.endpointClasses.CourseInterface;
-import config.endpointClasses.CourseInterface2;
+import config.endpointClasses.courseEndpoint.CourseInterface;
+import config.endpointClasses.courseEndpoint.CourseInterface2;
 import data.entities.Curso;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

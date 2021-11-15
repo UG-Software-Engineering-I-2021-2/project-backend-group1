@@ -1,7 +1,7 @@
 package controller;
 
 import business.CourseService;
-import config.endpointClasses.Course;
+import config.endpointClasses.courseEndpoint.Course;
 import config.enums.Role;
 import com.google.gson.Gson;
 import org.json.JSONException;
@@ -10,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;

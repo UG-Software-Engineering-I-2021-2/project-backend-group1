@@ -1,7 +1,6 @@
-package config.endpointClasses;
+package config.endpointClasses.courseEndpoint;
 
 import config.enums.State;
-import data.entities.Carrera;
 
 import java.util.*;
 

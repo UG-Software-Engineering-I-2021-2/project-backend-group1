@@ -1,4 +1,4 @@
-package config.endpointClasses;
+package config.endpointClasses.courseEndpoint;
 
 public interface CourseInterface {
     String getName();

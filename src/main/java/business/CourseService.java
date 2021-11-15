@@ -1,10 +1,9 @@
 package business;
 
 import business.custom_exceptions.CustomNotFoundException;
-import com.google.gson.Gson;
-import config.endpointClasses.Course;
-import config.endpointClasses.CourseInterface;
-import config.endpointClasses.CourseInterface2;
+import config.endpointClasses.courseEndpoint.Course;
+import config.endpointClasses.courseEndpoint.CourseInterface;
+import config.endpointClasses.courseEndpoint.CourseInterface2;
 import data.dtos.CourseDTO;
 import data.entities.Curso;
 import data.repositories.CourseRepository;

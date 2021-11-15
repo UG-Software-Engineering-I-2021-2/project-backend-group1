@@ -91,6 +91,7 @@ public class RubricsCourseController {
     @PostMapping("/rubrics_course")
     public ResponseEntity<String> rubricsCourseController(@RequestHeader(value="Authorization") String authorization, @RequestBody RubricsCourseBody rubricsCourseBody) throws JSONException, GeneralSecurityException, IOException {
         System.out.println("\nTEST RUBRIC");
+        System.out.println(authorization);
         GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         if(payload == null)
             return errorReturn.callError(404, "token not verified");

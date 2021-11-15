@@ -10,8 +10,14 @@ public class Evalua {
     @EmbeddedId
     private EvaluaPK evaluaPK;
 
-    @Column(name = "calificacion", columnDefinition = "text", nullable = false)
-    private String calificacion;
+    @Column(name = "calificacionAlumno", columnDefinition = "text")
+    private String calificacionAlumno;
+
+    @Column(name = "calificacionCompetencia", columnDefinition = "text")
+    private String calificacionCompetencia;
+
+    @Column(name = "evaluacionTotal", nullable = false)
+    private boolean evaluacionTotal;
 
     @MapsId("codAlumno")
     @JoinColumn(name = "codAlumno", referencedColumnName = "codAlumno")
@@ -60,14 +66,6 @@ public class Evalua {
         this.evaluaPK = evaluaPK;
     }
 
-    public String getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(String calificacion) {
-        this.calificacion = calificacion;
-    }
-
     public Alumno getAlumnoEvalua() {
         return alumnoEvalua;
     }
@@ -82,5 +80,29 @@ public class Evalua {
 
     public void setRubricaEvalua(Rubrica rubricaEvalua) {
         this.rubricaEvalua = rubricaEvalua;
+    }
+
+    public String getCalificacionAlumno() {
+        return calificacionAlumno;
+    }
+
+    public void setCalificacionAlumno(String calificacionAlumno) {
+        this.calificacionAlumno = calificacionAlumno;
+    }
+
+    public String getCalificacionCompetencia() {
+        return calificacionCompetencia;
+    }
+
+    public void setCalificacionCompetencia(String calificacionCompetencia) {
+        this.calificacionCompetencia = calificacionCompetencia;
+    }
+
+    public boolean isEvaluacionTotal() {
+        return evaluacionTotal;
+    }
+
+    public void setEvaluacionTotal(boolean evaluacionTotal) {
+        this.evaluacionTotal = evaluacionTotal;
     }
 }

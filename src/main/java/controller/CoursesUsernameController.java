@@ -45,23 +45,17 @@ public class CoursesUsernameController {
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));
         String semester = coursesUsernameBody.getSemester();
-        String roleString = coursesUsernameBody.getRole();
+        String role = coursesUsernameBody.getRole();
 
         System.out.println("\nSemester " + semester);
-        System.out.println("\nRole " + roleString);
+        System.out.println("\nRole " + role);
 
         if(semester == null || semester.isEmpty())
             return errorReturn.callError(404, "semester empty");
-        if(roleString == null || roleString.isEmpty())
+        if(role == null || role.isEmpty())
             return errorReturn.callError(404, "role empty");
-        Role role = Role.valueOf(roleString);
 
-        List<Course> response;
-        if(role.equals(Role.Docente))
-            response = courseService.docenteCourseEndpoint(semester, username);
-        else
-            response = courseService.calidadCourseEndpoint(semester);
-
+        List<Course> response = courseService.getCourse(semester, username, role);
 
         System.out.println(gson.toJson(response));
 

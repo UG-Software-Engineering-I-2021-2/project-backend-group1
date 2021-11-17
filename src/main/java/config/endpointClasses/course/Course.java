@@ -11,7 +11,6 @@ public class Course{
     List<String> careers;
     Map<String, Integer> nState;
 
-
     public Course(CourseInterface courseInterface){
         this.name = courseInterface.getName();
         this.code = courseInterface.getCode();
@@ -31,10 +30,7 @@ public class Course{
             state = State.FueraDeFecha.toString();
         else
             state = State.Cumplidos.toString();
+        this.careers = new ArrayList<>();
+        this.careers.addAll(Arrays.asList(courseInterface.getCareers().split("\\|")));
     }
-    public void setCaeers(List<String> carreras){
-        this.careers = carreras;
-    }
-
-
 }

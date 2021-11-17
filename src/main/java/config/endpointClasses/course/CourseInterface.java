@@ -8,4 +8,5 @@ public interface CourseInterface {
     String getCount3();
     String getCount4();
     String getCount5();
+    String getCareers();
 }

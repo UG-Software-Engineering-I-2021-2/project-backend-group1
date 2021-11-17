@@ -16,7 +16,7 @@ public class RubricCreation {
     String descriptors;
     String evaluation;
     String evidence;
-    List<String> cycles;
+    String cycles;
 
     public RubricCreation(RubricCreationInterface rubricInterface){
         this.course = rubricInterface.getCourse();
@@ -30,16 +30,18 @@ public class RubricCreation {
         this.descriptors = rubricInterface.getDescriptors();
         this.evaluation = rubricInterface.getEvaluation();
         this.evidence = rubricInterface.getEvidence();
-        this.cycles = new ArrayList<>();
+        this.cycles = "";
     }
 
     public void setCycles(List<RubricCreationInterface> rubricInterfaceList){
-        for(RubricCreationInterface rubricInterface : rubricInterfaceList){
-            if(rubricInterface.getCycle() <= 10)
-                this.cycles.add(String.valueOf(rubricInterface.getCycle()));
-            else
-                this.cycles.add("Electivo");
+        StringBuilder bld = new StringBuilder();
+        for(int i = 0; i < rubricInterfaceList.size(); i++){
+            String cycle = (rubricInterfaceList.get(i).getCycle() <= 10) ? String.valueOf(rubricInterfaceList.get(i).getCycle()) :"Electivo";
+            if(i != rubricInterfaceList.size() - 1)
+                cycle += ", ";
+            bld.append(cycle);
         }
+        this.cycles = bld.toString();
     }
 
 }

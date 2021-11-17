@@ -1,4 +1,4 @@
-package config.endpointClasses.courseEndpoint;
+package config.endpointClasses.course;
 
 import config.enums.State;
 

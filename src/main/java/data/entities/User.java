@@ -140,7 +140,7 @@ public class User {
 
     public Set<Seccion> getSeccionesCoordina(String semester) {
         Set<Seccion> response = new HashSet<>();
-        for(Seccion seccion : seccionesDicta){
+        for(Seccion seccion : seccionesCoordina){
             if(seccion.getSemestre().equals(semester)){
                 response.add(seccion);
             }

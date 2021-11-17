@@ -1,6 +1,7 @@
 package data.repositories;
 
-import config.endpointClasses.rubricCreationEndpoint.RubricInterface;
+import config.endpointClasses.rubric.RubricInterface;
+import config.endpointClasses.rubricCreation.RubricCreationInterface;
 import data.entities.Rubrica;
 import data.entities.composite_keys.RubricaPK;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,15 +12,40 @@ import java.util.List;
 
 public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
     @Query(
-            value = "SELECT * FROM rubrica " +
-                    "WHERE cod_rubrica = :#{#codRubricBase} " +
-                    "AND semestre = :#{#semester} ",
+            value = "SELECT " +
+                    "R.cod_rubrica AS code, " +
+                    "R.estado AS state, " +
+                    "RB.evaluacion AS evaluation, " +
+                    "R.fecha AS ddate, " +
+                    "RB.semana AS week, " +
+                    "RB.evidencia AS evidence, " +
+                    "R.actividad AS activity, " +
+                    "CASE WHEN :#{#courseCode} IN (SELECT DISTINCT " +
+                    " cod_curso " +
+                    " FROM( " +
+                    " SELECT " +
+                    " usuario_id  " +
+                    " FROM usuario " +
+                    " WHERE username = :#{#username} " +
+                    "  ) AS user_id " +
+                    " INNER JOIN coordina_docente_seccion AS CDS " +
+                    " ON user_id.usuario_id = CDS.usuario_id " +
+                    ") THEN 1 ELSE 0 END AS coordinates, " +
+                    "0 AS students, " +
+                    "RB.nivel AS dlevel " +
+                    "FROM " +
+                    "rubrica AS R " +
+                    "LEFT JOIN rubrica_base AS RB " +
+                    "ON R.cod_rubrica = RB.cod_rubrica " +
+                    "WHERE R.semestre = :#{#semester} " +
+                    "AND R.cod_curso = :#{#courseCode} ",
             nativeQuery = true
     )
-    List<Rubrica> getRubricByCodRubricBaseAndSemester(
-            @Param("codRubricBase") String codRubricBase,
-            @Param("semester") String semester
-            );
+    List<RubricInterface> getRubric(
+            @Param("semester") String semester,
+            @Param("courseCode") String courseCode,
+            @Param("username") String username
+    );
 
     @Query(
             value = "SELECT  " +
@@ -66,7 +92,7 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
                     " ) AS R2 ",
             nativeQuery = true
     )
-    List<RubricInterface> getRubricCreation(
+    List<RubricCreationInterface> getRubricCreation(
             @Param("codRubrica") String codRubrica,
             @Param("semester") String semester,
             @Param("codCourse") String codCourse

@@ -3,10 +3,7 @@ package controller;
 import business.RubricService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
-import config.endpointClasses.rubricCreationEndpoint.Rubric;
-import data.entities.Curso;
-import data.entities.Rubrica;
-import data.entities.RubricaBase;
+import config.endpointClasses.rubricCreation.RubricCreation;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +54,7 @@ public class RubricCreationController {
         System.out.println("CourseCode " + courseCode);
         System.out.println("RubricCode " + rubricCode);
 
-        List<Rubric> response = new ArrayList<>();
+        List<RubricCreation> response = new ArrayList<>();
         response.add(rubricService.getRubricCreation(rubricCode, semester, courseCode));
         System.out.println(gson.toJson(response));
         return ResponseEntity.status(200).body(gson.toJson(response));

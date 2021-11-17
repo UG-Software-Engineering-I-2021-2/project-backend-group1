@@ -1,8 +1,8 @@
-package config.endpointClasses.rubricCreationEndpoint;
+package config.endpointClasses.rubricCreation;
 
 import java.time.LocalDate;
 
-public interface RubricInterface {
+public interface RubricCreationInterface {
     String getCourse();
     String getActivity();
     Integer getWeek();

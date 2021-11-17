@@ -1,11 +1,10 @@
-package config.endpointClasses.rubricCreationEndpoint;
+package config.endpointClasses.rubricCreation;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rubric {
+public class RubricCreation {
     String course;
     String activity;
     Integer week;
@@ -19,7 +18,7 @@ public class Rubric {
     String evidence;
     List<String> cycles;
 
-    public Rubric(RubricInterface rubricInterface){
+    public RubricCreation(RubricCreationInterface rubricInterface){
         this.course = rubricInterface.getCourse();
         this.activity = rubricInterface.getActivity();
         this.week = rubricInterface.getWeek();
@@ -34,8 +33,8 @@ public class Rubric {
         this.cycles = new ArrayList<>();
     }
 
-    public void setCycles(List<RubricInterface> rubricInterfaceList){
-        for(RubricInterface rubricInterface : rubricInterfaceList){
+    public void setCycles(List<RubricCreationInterface> rubricInterfaceList){
+        for(RubricCreationInterface rubricInterface : rubricInterfaceList){
             if(rubricInterface.getCycle() <= 10)
                 this.cycles.add(String.valueOf(rubricInterface.getCycle()));
             else

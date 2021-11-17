@@ -65,7 +65,7 @@ public class RubricsCourseController {
         if(role == null || role.isEmpty())
             return errorReturn.callError(404, "role empty");
 
-        List<Rubric> response = rubricService.getRubric(semester, courseCode, username);
+        List<Rubric> response = rubricService.getRubric(semester, courseCode, username, role);
 
         response.sort((c1, c2) -> {
             Date date1 = null;

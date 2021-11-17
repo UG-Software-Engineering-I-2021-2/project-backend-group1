@@ -1,5 +1,6 @@
 package config.endpointClasses.rubric;
 
+import config.enums.Role;
 import config.enums.State;
 
 import java.time.format.DateTimeFormatter;
@@ -16,7 +17,7 @@ public class Rubric {
     private String students;
     private String level;
 
-    public Rubric(RubricInterface rubricInterface){
+    public Rubric(RubricInterface rubricInterface, String role){
         this.code = rubricInterface.getCode();
         this.state = State.valueOf(rubricInterface.getState()).toString();
         this.evaluation = rubricInterface.getEvaluation();
@@ -24,7 +25,14 @@ public class Rubric {
         this.week = String.valueOf(rubricInterface.getWeek());
         this.evidence = rubricInterface.getEvidence();
         this.activity = rubricInterface.getActivity();
-        this.canEdit = rubricInterface.getCoordinates() == 1;
+        if(this.state.equals(State.SinAsignar.toString())){
+            if(role.equals(Role.Docente.toString()))
+                this.canEdit = rubricInterface.getCoordinates() == 1;
+            else
+                this.canEdit = false;
+        }else {
+            this.canEdit = true;
+        }
         this.students = String.valueOf(rubricInterface.getStudents());
         this.level = String.valueOf(rubricInterface.getDlevel());
     }

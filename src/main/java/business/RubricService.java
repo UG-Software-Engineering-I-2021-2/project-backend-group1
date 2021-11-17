@@ -25,11 +25,11 @@ public class RubricService {
         return response;
     }
 
-    public List<Rubric> getRubric(String semester, String courseCode, String username){
+    public List<Rubric> getRubric(String semester, String courseCode, String username, String role){
         List<RubricInterface> rubricInterfaceList = rubricRepository.getRubric(semester, courseCode, username);
         List<Rubric> response = new ArrayList<>();
         for(RubricInterface rubricInterface : rubricInterfaceList){
-            Rubric rubric = new Rubric(rubricInterface);
+            Rubric rubric = new Rubric(rubricInterface, role);
             response.add(rubric);
         }
         return response;

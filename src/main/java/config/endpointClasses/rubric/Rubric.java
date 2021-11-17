@@ -22,7 +22,7 @@ public class Rubric {
         this.state = State.valueOf(rubricInterface.getState()).toString();
         this.evaluation = rubricInterface.getEvaluation();
         this.date = rubricInterface.getDdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.week = String.valueOf(rubricInterface.getWeek());
+        this.week = "Semana " + rubricInterface.getWeek();
         this.evidence = rubricInterface.getEvidence();
         this.activity = rubricInterface.getActivity();
         if(this.state.equals(State.SinAsignar.toString())){

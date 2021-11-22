@@ -2,8 +2,10 @@ package business;
 
 import config.endpointClasses.rubric.Rubric;
 import config.endpointClasses.rubric.RubricInterface;
+import config.endpointClasses.rubric.RubricUpdate;
 import config.endpointClasses.rubricCreation.RubricCreation;
 import config.endpointClasses.rubricCreation.RubricCreationInterface;
+import data.entities.Rubrica;
 import data.repositories.RubricRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +35,13 @@ public class RubricService {
             response.add(rubric);
         }
         return response;
+    }
+
+    public void updateRubric(String rubricCode, String semester, RubricUpdate rubricUpdate){
+        Rubrica rubrica = rubricRepository.getRubricByRubricCodeAndSemester(rubricCode, semester);
+        rubrica.setActividad(rubricUpdate.getActividad());
+        rubrica.setDimensiones(rubricUpdate.getDimensiones());
+        rubrica.setDescriptores(rubricUpdate.getDescriptores());
+        rubricRepository.save(rubrica);
     }
 }

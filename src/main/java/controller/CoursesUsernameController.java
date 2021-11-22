@@ -2,7 +2,6 @@ package controller;
 
 import business.CourseService;
 import config.endpointClasses.course.Course;
-import config.enums.Role;
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class CoursesUsernameController {
 
     private final Gson gson = new Gson();
 
-    private final ErrorReturn errorReturn = new ErrorReturn();
+    private final MsgReturn msgReturn = new MsgReturn();
 
     @Autowired
     private CourseService courseService;
@@ -40,7 +39,7 @@ public class CoursesUsernameController {
 
         Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         if(payload == null)
-            return errorReturn.callError(404, "token not verified");
+            return msgReturn.callError(404, "token not verified");
 
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));
@@ -51,9 +50,9 @@ public class CoursesUsernameController {
         System.out.println("\nRole " + role);
 
         if(semester == null || semester.isEmpty())
-            return errorReturn.callError(404, "semester empty");
+            return msgReturn.callError(404, "semester empty");
         if(role == null || role.isEmpty())
-            return errorReturn.callError(404, "role empty");
+            return msgReturn.callError(404, "role empty");
 
         List<Course> response = courseService.getCourse(semester, username, role);
 

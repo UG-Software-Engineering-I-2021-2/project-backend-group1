@@ -99,4 +99,10 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
             @Param("semester") String semester,
             @Param("codCourse") String codCourse
     );
+
+    @Query(
+            value = "SELECT * FROM rubrica WHERE cod_rubrica = :#{#rubricCode} AND semestre = :#{#semester} ",
+            nativeQuery = true
+    )
+    Rubrica getRubricByRubricCodeAndSemester(@Param("rubricCode") String rubricCode, @Param("semester") String semester);
 }

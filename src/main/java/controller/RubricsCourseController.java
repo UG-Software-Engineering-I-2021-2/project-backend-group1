@@ -32,7 +32,7 @@ public class RubricsCourseController {
 
     private final Gson gson = new Gson();
 
-    private final ErrorReturn errorReturn = new ErrorReturn();
+    private final MsgReturn msgReturn = new MsgReturn();
 
     @Autowired
     private RubricService rubricService;
@@ -44,7 +44,7 @@ public class RubricsCourseController {
         System.out.println(authorization);
         GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         if(payload == null)
-            return errorReturn.callError(404, "token not verified");
+            return msgReturn.callError(404, "token not verified");
 
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));
@@ -59,11 +59,11 @@ public class RubricsCourseController {
         System.out.println("\nUsername " + username);
 
         if(semester == null || semester.isEmpty())
-            return errorReturn.callError(404, "semester empty");
+            return msgReturn.callError(404, "semester empty");
         if(courseCode == null || courseCode.isEmpty())
-            return errorReturn.callError(404, "course code empty");
+            return msgReturn.callError(404, "course code empty");
         if(role == null || role.isEmpty())
-            return errorReturn.callError(404, "role empty");
+            return msgReturn.callError(404, "role empty");
 
         List<Rubric> response = rubricService.getRubric(semester, courseCode, username, role);
 

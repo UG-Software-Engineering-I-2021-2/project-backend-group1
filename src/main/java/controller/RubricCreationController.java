@@ -22,7 +22,6 @@ class RubricCreationBody {
     private String activity;
     private String rubricCode;
     private String semester;
-    private String courseCode;
     private boolean onlySave;
 
     public List<HashMap<String, HashMap<String, String>>> getContent() {
@@ -39,10 +38,6 @@ class RubricCreationBody {
 
     public String getSemester() {
         return semester;
-    }
-
-    public String getCourseCode() {
-        return courseCode;
     }
 
     public boolean isOnlySave() {
@@ -100,13 +95,11 @@ public class RubricCreationController {
         if(payload == null)
             return msgReturn.callError(404, "token not verified");
 
-        String courseCode = rubricCreationBody.getCourseCode();
         String semester = rubricCreationBody.getSemester();
         String rubricCode = rubricCreationBody.getRubricCode();
         String activity = rubricCreationBody.getActivity();
         List<HashMap<String, HashMap<String, String>>> content = rubricCreationBody.getContent();
 
-        System.out.println("\ncourseCode: " + courseCode);
         System.out.println("\nsemester: " + semester);
         System.out.println("\nrubricCode: " + rubricCode);
         System.out.println("\nactivity: " + activity);

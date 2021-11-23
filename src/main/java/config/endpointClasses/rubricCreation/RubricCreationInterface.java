@@ -10,8 +10,7 @@ public interface RubricCreationInterface {
     String getCriteria();
     Integer getcriteriaLevel();
     LocalDate getDate();
-    Integer getDimensions();
-    String getDescriptors();
+    String getContent();
     String getEvaluation();
     String getEvidence();
     Integer getCycle();

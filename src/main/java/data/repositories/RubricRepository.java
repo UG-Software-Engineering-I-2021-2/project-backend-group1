@@ -58,8 +58,7 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
                     "R1.criterio AS criteria, " +
                     "R1.criterio_nivel AS criteriaLevel, " +
                     "R1.fecha AS date, " +
-                    "R1.dimensiones AS dimensions, " +
-                    "R1.descriptores AS descriptors, " +
+                    "R1.descriptores AS content, " +
                     "R1.evaluacion AS evaluation, " +
                     "R1.evidencia AS evidence, " +
                     "R2.ciclo AS cycle " +

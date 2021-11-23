@@ -31,6 +31,9 @@ public class Rubrica {
     @Column(name = "actividad", columnDefinition = "text", nullable = false)
     private String actividad;
 
+    @Column(name = "titulo", columnDefinition = "text", nullable = false)
+    private String titulo;
+
     @JoinColumns(value = {
             @JoinColumn(
                     name = "codRubrica",
@@ -124,5 +127,13 @@ public class Rubrica {
 
     public void setActividad(String actividad) {
         this.actividad = actividad;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 }

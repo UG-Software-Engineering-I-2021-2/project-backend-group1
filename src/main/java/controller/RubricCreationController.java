@@ -63,23 +63,24 @@ public class RubricCreationController {
     private RubricService rubricService;
 
     @GetMapping("/rubric_creation")
-    public ResponseEntity<String> rubricCreationController(@RequestHeader(value="Authorization") String authorization, @RequestParam Map<String, String> requestParam) throws JSONException, GeneralSecurityException, IOException {
+    public ResponseEntity<String> rubricCreationController(@RequestHeader(value = "Authorization") String authorization,
+            @RequestParam Map<String, String> requestParam)
+            throws JSONException, GeneralSecurityException, IOException {
         System.out.println("\nTEST RUBRIC CREATION GET");
 
         GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
-        if(payload == null)
+        if (payload == null)
             return msgReturn.callError(404, "token not verified");
 
         String semester = requestParam.get("semester");
         String courseCode = requestParam.get("courseCode");
         String rubricCode = requestParam.get("rubricCode");
 
-
-        if(semester == null || semester.isEmpty())
+        if (semester == null || semester.isEmpty())
             return msgReturn.callError(404, "semester empty");
-        if(courseCode == null || courseCode.isEmpty())
+        if (courseCode == null || courseCode.isEmpty())
             return msgReturn.callError(404, "course code empty");
-        if(rubricCode == null || rubricCode.isEmpty())
+        if (rubricCode == null || rubricCode.isEmpty())
             return msgReturn.callError(404, "rubric code empty");
 
         System.out.println("Semester " + semester);
@@ -93,11 +94,14 @@ public class RubricCreationController {
     }
 
     @PostMapping("/rubric_creation")
-    public ResponseEntity<String> rubricCreationControllerPost(@RequestHeader(value="Authorization") String authorization, @RequestBody RubricCreationBody rubricCreationBody) throws JSONException, GeneralSecurityException, IOException {
+    public ResponseEntity<String> rubricCreationControllerPost(
+            @RequestHeader(value = "Authorization") String authorization,
+            @RequestBody RubricCreationBody rubricCreationBody)
+            throws JSONException, GeneralSecurityException, IOException {
         System.out.println("\nTEST RUBRIC CREATION POST");
 
         GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
-        if(payload == null)
+        if (payload == null)
             return msgReturn.callError(404, "token not verified");
 
         String semester = rubricCreationBody.getSemester();
@@ -111,12 +115,13 @@ public class RubricCreationController {
         System.out.println("\nactivity: " + activity);
         System.out.println("\ncontent: " + gson.toJson(content));
 
-        rubricService.updateRubric(rubricCode, semester, new RubricUpdate((short) content.size(), gson.toJson(content), activity, title));
+        rubricService.updateRubric(rubricCode, semester,
+                new RubricUpdate((short) content.size(), gson.toJson(content), activity, title));
         System.out.println("\nRETURN");
-        if(rubricCreationBody.isOnlySave()){
+        if (rubricCreationBody.isOnlySave()) {
             return msgReturn.callMsg(200, "msg", "Rúbrica guardada correctamente");
-        }else{
-            //TODO: Función para enviar correo
+        } else {
+            // TODO: Función para enviar correo
             return msgReturn.callMsg(200, "msg", "Solicitud enviada correctamente");
         }
     }

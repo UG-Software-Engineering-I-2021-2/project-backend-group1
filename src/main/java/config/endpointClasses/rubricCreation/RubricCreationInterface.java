@@ -1,5 +1,7 @@
 package config.endpointClasses.rubricCreation;
 
+import config.enums.State;
+
 import java.time.LocalDate;
 
 public interface RubricCreationInterface {
@@ -15,4 +17,5 @@ public interface RubricCreationInterface {
     String getEvidence();
     Integer getCycle();
     String getTitle();
+    State getState();
 }

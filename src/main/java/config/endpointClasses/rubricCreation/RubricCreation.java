@@ -16,6 +16,7 @@ public class RubricCreation {
     String evidence;
     String cycles;
     String title;
+    String state;
 
     public RubricCreation(RubricCreationInterface rubricInterface){
         this.course = rubricInterface.getCourse();
@@ -30,6 +31,7 @@ public class RubricCreation {
         this.evidence = rubricInterface.getEvidence();
         this.cycles = "";
         this.title = rubricInterface.getTitle();
+        this.state = rubricInterface.getState().toString();
     }
 
     public void setCycles(List<RubricCreationInterface> rubricInterfaceList){

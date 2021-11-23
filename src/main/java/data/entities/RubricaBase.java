@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import data.entities.composite_keys.RubricaBasePK;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -33,6 +30,9 @@ public class RubricaBase {
 
     @Column(name = "evidencia", columnDefinition = "text")
     private String evidencia;
+
+    @Column(name = "tituloBase", columnDefinition = "text", nullable = false)
+    private String tituloBase;
 
     @MapsId("codCurso")
     @JoinColumn(name = "codCurso", referencedColumnName = "codCurso", columnDefinition = "text")
@@ -152,4 +152,12 @@ public class RubricaBase {
     }
 
     public String getCodRubrica() { return this.rubricaPK.getCodRubrica(); }
+
+    public String getTituloBase() {
+        return tituloBase;
+    }
+
+    public void setTituloBase(String tituloBase) {
+        this.tituloBase = tituloBase;
+    }
 }

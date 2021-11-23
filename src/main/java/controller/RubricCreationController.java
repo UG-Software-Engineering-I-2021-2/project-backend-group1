@@ -1,5 +1,6 @@
 package controller;
 
+import business.MailSenderService;
 import business.RubricService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
@@ -62,6 +63,9 @@ public class RubricCreationController {
     @Autowired
     private RubricService rubricService;
 
+    @Autowired
+    private MailSenderService mailSenderService;
+
     @GetMapping("/rubric_creation")
     public ResponseEntity<String> rubricCreationController(@RequestHeader(value = "Authorization") String authorization,
             @RequestParam Map<String, String> requestParam)
@@ -122,6 +126,7 @@ public class RubricCreationController {
             return msgReturn.callMsg(200, "msg", "Rúbrica guardada correctamente");
         } else {
             // TODO: Función para enviar correo
+            // mailSenderService.sendEmail(to, subject, body);
             return msgReturn.callMsg(200, "msg", "Solicitud enviada correctamente");
         }
     }

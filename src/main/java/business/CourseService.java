@@ -1,10 +1,8 @@
 package business;
 
-import business.custom_exceptions.CustomNotFoundException;
 import config.endpointClasses.course.Course;
 import config.endpointClasses.course.CourseInterface;
 import config.enums.Role;
-import data.entities.Curso;
 import data.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

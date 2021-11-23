@@ -6,6 +6,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
 import config.endpointClasses.rubric.RubricUpdate;
 import config.endpointClasses.rubricCreation.RubricCreation;
+import config.enums.State;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,8 @@ class RubricCreationBody {
     private String semester;
     private String title;
     private boolean onlySave;
+    private String courseCode;
+    private String courseName;
 
     public List<HashMap<String, HashMap<String, String>>> getContent() {
         return content;
@@ -48,6 +51,14 @@ class RubricCreationBody {
 
     public boolean isOnlySave() {
         return onlySave;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public String getCourseName() {
+        return courseName;
     }
 }
 
@@ -113,20 +124,37 @@ public class RubricCreationController {
         String activity = rubricCreationBody.getActivity();
         String title = rubricCreationBody.getTitle();
         List<HashMap<String, HashMap<String, String>>> content = rubricCreationBody.getContent();
+        String courseCode = rubricCreationBody.getCourseCode();
+        String courseName = rubricCreationBody.getCourseName();
 
         System.out.println("\nsemester: " + semester);
         System.out.println("\nrubricCode: " + rubricCode);
         System.out.println("\nactivity: " + activity);
         System.out.println("\ncontent: " + gson.toJson(content));
+        System.out.println("\ncourseCode: " + courseCode);
+        System.out.println("\ncourseName: " + courseName);
 
-        rubricService.updateRubric(rubricCode, semester,
-                new RubricUpdate((short) content.size(), gson.toJson(content), activity, title));
-        System.out.println("\nRETURN");
         if (rubricCreationBody.isOnlySave()) {
+            rubricService.updateRubric(rubricCode, semester,
+                    new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.SinAsignar));
+            System.out.println("\nRETURN");
             return msgReturn.callMsg(200, "msg", "Rúbrica guardada correctamente");
         } else {
-            // TODO: Función para enviar correo
-            // mailSenderService.sendEmail(to, subject, body);
+            String[] to = new String[1];
+            to[0] = "jorge.neira@utec.edu.pe";
+            String subject = "Nueva rúbrica creada requiere revisión. Rúbrica: " + title + " del curso " + courseCode + " " + courseName;
+            String body = "Buen día\n\n" +
+                    "El profesor " + payload.getEmail() + " acaba de crear una nueva rúbrica y requiere de una aprobación.\n\n" +
+                    "Curso: " + courseCode + " " + courseName + "\n" +
+                    "Código de rúbrica: " + rubricCode + "\n" +
+                    "Título de rúbrica: " + title + "\n\n" +
+                    "Para aprobar o rechazar la solicitud se requiere ingresar al sistema https://group1-ingsort1.herokuapp.com/login\n\n" +
+                    "Atentamente.\n" +
+                    "Sistema de gestión de rúbricas";
+            mailSenderService.sendEmail(to, subject, body);
+            rubricService.updateRubric(rubricCode, semester,
+                    new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.AprobacionPendiente));
+            System.out.println("\nRETURN");
             return msgReturn.callMsg(200, "msg", "Solicitud enviada correctamente");
         }
     }

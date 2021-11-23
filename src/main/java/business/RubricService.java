@@ -43,6 +43,7 @@ public class RubricService {
         rubrica.setDimensiones(rubricUpdate.getDimensiones());
         rubrica.setDescriptores(rubricUpdate.getDescriptores());
         rubrica.setTitulo(rubricUpdate.getTitle());
+        rubrica.setEstado(rubricUpdate.getState());
         rubricRepository.save(rubrica);
     }
 }

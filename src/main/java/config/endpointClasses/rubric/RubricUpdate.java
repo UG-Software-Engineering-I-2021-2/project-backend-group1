@@ -1,16 +1,20 @@
 package config.endpointClasses.rubric;
 
+import config.enums.State;
+
 public class RubricUpdate {
     Short dimensiones;
     String descriptores;
     String actividad;
     String title;
+    State state;
 
-    public RubricUpdate(Short dimensiones, String descriptores, String actividad, String title) {
+    public RubricUpdate(Short dimensiones, String descriptores, String actividad, String title, State state) {
         this.dimensiones = dimensiones;
         this.descriptores = descriptores;
         this.actividad = actividad;
         this.title = title;
+        this.state = state;
     }
 
     public Short getDimensiones() {
@@ -44,4 +48,8 @@ public class RubricUpdate {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public State getState() { return state; }
+
+    public void setState(State state) { this.state = state; }
 }

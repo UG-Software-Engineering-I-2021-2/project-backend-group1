@@ -35,6 +35,7 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
                     "WHERE cod_curso = :#{#courseCode} " +
                     "AND semestre = :#{#semester}) AS students, " +
                     "RB.nivel AS dlevel " +
+                    "R.titulo AS title " +
                     "FROM " +
                     "rubrica AS R " +
                     "LEFT JOIN rubrica_base AS RB " +
@@ -58,11 +59,11 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
                     "R1.criterio AS criteria, " +
                     "R1.criterio_nivel AS criteriaLevel, " +
                     "R1.fecha AS date, " +
-                    "R1.dimensiones AS dimensions, " +
-                    "R1.descriptores AS descriptors, " +
+                    "R1.descriptores AS content, " +
                     "R1.evaluacion AS evaluation, " +
                     "R1.evidencia AS evidence, " +
                     "R2.ciclo AS cycle " +
+                    "R1.title AS title " +
                     "FROM " +
                     "( " +
                     "SELECT  " +
@@ -73,10 +74,10 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
                     " RB.criterio_desempeno AS criterio, " +
                     " RB.nivel AS criterio_nivel, " +
                     " R.fecha AS fecha, " +
-                    " R.dimensiones AS dimensiones, " +
                     " R.descriptores AS descriptores, " +
                     " RB.evaluacion AS evaluacion, " +
                     " RB.evidencia AS evidencia " +
+                    " R.titulo AS title " +
                     "FROM rubrica R " +
                     "INNER JOIN rubrica_base RB " +
                     "ON R.cod_rubrica = RB.cod_rubrica  " +

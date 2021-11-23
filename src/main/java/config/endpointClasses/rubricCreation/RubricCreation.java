@@ -11,11 +11,11 @@ public class RubricCreation {
     String criteria;
     Integer criteriaLevel;
     String date;
-    Integer dimensions;
-    String descriptors;
+    String content;
     String evaluation;
     String evidence;
     String cycles;
+    String title;
 
     public RubricCreation(RubricCreationInterface rubricInterface){
         this.course = rubricInterface.getCourse();
@@ -25,11 +25,11 @@ public class RubricCreation {
         this.criteria = rubricInterface.getCriteria();
         this.criteriaLevel = rubricInterface.getcriteriaLevel();
         this.date = rubricInterface.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.dimensions = rubricInterface.getDimensions();
-        this.descriptors = rubricInterface.getDescriptors();
+        this.content = rubricInterface.getContent();
         this.evaluation = rubricInterface.getEvaluation();
         this.evidence = rubricInterface.getEvidence();
         this.cycles = "";
+        this.title = rubricInterface.getTitle();
     }
 
     public void setCycles(List<RubricCreationInterface> rubricInterfaceList){

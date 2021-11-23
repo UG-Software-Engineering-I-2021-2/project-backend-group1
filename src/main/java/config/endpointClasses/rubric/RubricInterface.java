@@ -13,4 +13,5 @@ public interface RubricInterface {
     Integer getCoordinates();
     Integer getStudents();
     Integer getDlevel();
+    String getTitle();
 }

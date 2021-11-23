@@ -4,11 +4,13 @@ public class RubricUpdate {
     Short dimensiones;
     String descriptores;
     String actividad;
+    String title;
 
-    public RubricUpdate(Short dimensiones, String descriptores, String actividad) {
+    public RubricUpdate(Short dimensiones, String descriptores, String actividad, String title) {
         this.dimensiones = dimensiones;
         this.descriptores = descriptores;
         this.actividad = actividad;
+        this.title = title;
     }
 
     public Short getDimensiones() {
@@ -33,5 +35,13 @@ public class RubricUpdate {
 
     public void setActividad(String actividad) {
         this.actividad = actividad;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

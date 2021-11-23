@@ -16,6 +16,7 @@ public class Rubric {
     private Boolean canEdit;
     private String students;
     private String level;
+    private String title;
 
     public Rubric(RubricInterface rubricInterface, String role){
         this.code = rubricInterface.getCode();
@@ -35,6 +36,7 @@ public class Rubric {
         }
         this.students = String.valueOf(rubricInterface.getStudents());
         this.level = String.valueOf(rubricInterface.getDlevel());
+        this.title = rubricInterface.getTitle();
     }
 
     public String getDate(){

@@ -22,7 +22,7 @@ class RubricCreationBody {
     private String activity;
     private String rubricCode;
     private String semester;
-    private String courseCode;
+    private String title;
     private boolean onlySave;
 
     public List<HashMap<String, HashMap<String, String>>> getContent() {
@@ -41,8 +41,8 @@ class RubricCreationBody {
         return semester;
     }
 
-    public String getCourseCode() {
-        return courseCode;
+    public String getTitle() {
+        return title;
     }
 
     public boolean isOnlySave() {
@@ -100,19 +100,18 @@ public class RubricCreationController {
         if(payload == null)
             return msgReturn.callError(404, "token not verified");
 
-        String courseCode = rubricCreationBody.getCourseCode();
         String semester = rubricCreationBody.getSemester();
         String rubricCode = rubricCreationBody.getRubricCode();
         String activity = rubricCreationBody.getActivity();
+        String title = rubricCreationBody.getTitle();
         List<HashMap<String, HashMap<String, String>>> content = rubricCreationBody.getContent();
 
-        System.out.println("\ncourseCode: " + courseCode);
         System.out.println("\nsemester: " + semester);
         System.out.println("\nrubricCode: " + rubricCode);
         System.out.println("\nactivity: " + activity);
         System.out.println("\ncontent: " + gson.toJson(content));
 
-        rubricService.updateRubric(rubricCode, semester, new RubricUpdate((short) content.size(), gson.toJson(content), activity));
+        rubricService.updateRubric(rubricCode, semester, new RubricUpdate((short) content.size(), gson.toJson(content), activity, title));
         System.out.println("\nRETURN");
         if(rubricCreationBody.isOnlySave()){
             return msgReturn.callMsg(200, "msg", "Rúbrica guardada correctamente");

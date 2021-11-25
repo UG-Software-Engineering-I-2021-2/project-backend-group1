@@ -8,6 +8,7 @@ public interface RubricCreationInterface {
     String getCourse();
     String getActivity();
     Integer getWeek();
+    String getCodCompetence();
     String getCompetence();
     String getCriteria();
     Integer getcriteriaLevel();

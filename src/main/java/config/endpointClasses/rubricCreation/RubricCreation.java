@@ -7,6 +7,7 @@ public class RubricCreation {
     String course;
     String activity;
     Integer week;
+    String codCompetence;
     String competence;
     String criteria;
     Integer criteriaLevel;
@@ -22,6 +23,7 @@ public class RubricCreation {
         this.course = rubricInterface.getCourse();
         this.activity = rubricInterface.getActivity();
         this.week = rubricInterface.getWeek();
+        this.codCompetence = rubricInterface.getCodCompetence();
         this.competence = rubricInterface.getCompetence();
         this.criteria = rubricInterface.getCriteria();
         this.criteriaLevel = rubricInterface.getcriteriaLevel();

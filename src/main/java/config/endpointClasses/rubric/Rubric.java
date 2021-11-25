@@ -17,6 +17,8 @@ public class Rubric {
     private String students;
     private String level;
     private String title;
+    private String competenceCode;
+    private String criteriaCode;
 
     public Rubric(RubricInterface rubricInterface, String role){
         this.code = rubricInterface.getCode();
@@ -37,6 +39,10 @@ public class Rubric {
         this.students = String.valueOf(rubricInterface.getStudents());
         this.level = String.valueOf(rubricInterface.getDlevel());
         this.title = rubricInterface.getTitle();
+        this.competenceCode = rubricInterface.getCompetenceCode();
+        //4.1. Conduce estudios de problemas
+        String[] criteriaCodeParts = rubricInterface.getCriteriaCode().split("\\.");
+        this.criteriaCode = criteriaCodeParts[0] + "." + criteriaCodeParts[1] + ".";
     }
 
     public String getDate(){

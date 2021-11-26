@@ -2,6 +2,7 @@ package data.repositories;
 
 import config.endpointClasses.rubric.RubricInterface;
 import config.endpointClasses.rubricCreation.RubricCreationInterface;
+import config.endpointClasses.rubricImport.RubricImportInterface;
 import data.entities.Rubrica;
 import data.entities.composite_keys.RubricaPK;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -112,4 +113,49 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
             nativeQuery = true
     )
     Rubrica getRubricByRubricCodeAndSemester(@Param("rubricCode") String rubricCode, @Param("semester") String semester);
+
+    @Query(
+            value = "SELECT  " +
+                    "C.nombre AS course, " +
+                    "R.cod_curso AS codCourse, " +
+                    "R.titulo AS title, " +
+                    "R.descriptores AS content, " +
+                    "R.semestre AS semester " +
+                    "FROM rubrica R LEFT JOIN curso C ON R.cod_curso = C.cod_curso WHERE R.cod_curso IN( " +
+                    " SELECT cod_curso FROM coordina_docente_seccion CDS LEFT JOIN usuario U ON CDS.usuario_id = U.usuario_id " +
+                    " WHERE U.username = :#{#username} AND CDS.semestre = :#{#semester} " +
+                    ") AND R.semestre = :#{#semester} " +
+                    "UNION " +
+                    "SELECT  " +
+                    "C.nombre AS course, " +
+                    "R.cod_curso AS codCourse, " +
+                    "R.titulo AS title, " +
+                    "R.descriptores AS content, " +
+                    "R.semestre AS semester " +
+                    "FROM rubrica R LEFT JOIN curso C ON R.cod_curso = C.cod_curso WHERE R.cod_curso IN( " +
+                    " SELECT cod_curso FROM coordina_docente_seccion CDS LEFT JOIN usuario U ON CDS.usuario_id = U.usuario_id " +
+                    " WHERE U.username = :#{#username} AND CDS.semestre = :#{#semesterPrev} " +
+                    ") AND R.semestre = :#{#semesterPrev} " +
+                    "UNION " +
+                    "SELECT  " +
+                    "C.nombre AS course, " +
+                    "R.cod_curso AS codCourse, " +
+                    "R.titulo AS title, " +
+                    "R.descriptores AS content , " +
+                    "R.semestre AS semester " +
+                    "FROM rubrica R LEFT JOIN curso C ON R.cod_curso = C.cod_curso WHERE R.cod_rubrica = :#{#rubricCode} " +
+                    "AND R.cod_curso = :#{#courseCode} AND R.semestre = :#{#semesterPrev} ",
+            nativeQuery = true
+    )
+    List<RubricImportInterface> getRubricImport(
+            @Param("username") String username,
+            @Param("semester") String semester,
+            @Param("semesterPrev") String semesterPrev,
+            @Param("courseCode") String courseCode,
+            @Param("rubricCode") String rubricCode
+    );
+
+
+
+
 }

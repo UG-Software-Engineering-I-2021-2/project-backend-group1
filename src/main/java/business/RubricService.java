@@ -5,6 +5,8 @@ import config.endpointClasses.rubric.RubricInterface;
 import config.endpointClasses.rubric.RubricUpdate;
 import config.endpointClasses.rubricCreation.RubricCreation;
 import config.endpointClasses.rubricCreation.RubricCreationInterface;
+import config.endpointClasses.rubricImport.RubricImport;
+import config.endpointClasses.rubricImport.RubricImportInterface;
 import data.entities.Rubrica;
 import data.repositories.RubricRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +47,26 @@ public class RubricService {
         rubrica.setTitulo(rubricUpdate.getTitle());
         rubrica.setEstado(rubricUpdate.getState());
         rubricRepository.save(rubrica);
+    }
+
+    public List<RubricImport> getRubricImport(String username, String semester, String courseCode, String rubricCode){
+        String semesterPrev = "";
+        if(semester.charAt(semester.length()-1) == '2'){
+            semesterPrev = semester.substring(0, semester.length() - 1);
+            semesterPrev += '1';
+        }else {
+            String[] parts = semester.split("-");
+            semesterPrev = String.valueOf(Integer.parseInt(parts[0].trim()) - 1) + " - 2";
+        }
+        System.out.println("Semester: " + semester);
+        System.out.println("SemesterPrev: " + semesterPrev);
+        List<RubricImportInterface> rubricImportInterfaceList = rubricRepository.getRubricImport(username, semester, semesterPrev, courseCode, rubricCode);
+        List<RubricImport> response = new ArrayList<>();
+        for(RubricImportInterface rubricImportInterface : rubricImportInterfaceList){
+            RubricImport rubricImport = new RubricImport(rubricImportInterface);
+            if(!rubricImport.getContent().equals(""))
+                response.add(rubricImport);
+        }
+        return response;
     }
 }

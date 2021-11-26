@@ -7,6 +7,7 @@ import config.endpointClasses.rubricCreation.RubricCreation;
 import config.endpointClasses.rubricCreation.RubricCreationInterface;
 import config.endpointClasses.rubricImport.RubricImport;
 import config.endpointClasses.rubricImport.RubricImportInterface;
+import config.enums.State;
 import data.entities.Rubrica;
 import data.repositories.RubricRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,11 @@ public class RubricService {
                 response.add(rubricImport);
         }
         return response;
+    }
+
+    public void updateRubricState(String rubricCode, String semester, State newState) {
+        Rubrica rubrica = rubricRepository.getRubricByRubricCodeAndSemester(rubricCode, semester);
+        rubrica.setEstado(newState);
+        rubricRepository.save(rubrica);
     }
 }

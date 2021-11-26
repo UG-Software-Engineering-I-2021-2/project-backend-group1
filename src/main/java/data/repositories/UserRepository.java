@@ -1,5 +1,6 @@
 package data.repositories;
 
+import config.endpointClasses.user.CoordinatorInterface;
 import data.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findByCodEmpleado(Long codEmpleado);
     Optional<User> findByUsername(String username);
 
     @Query(
-            value = "SELECT * FROM usuario WHERE rol = 'Docente' and username = :#{#username}",
+            value = "SELECT cooremail FROM project.coordinador_cursos " +
+                    "WHERE codcurso = :#{#courseCode};",
             nativeQuery = true
     )
-    Optional<User> findTeacherUsername(@Param("username") String username);
+    List<CoordinatorInterface> findCourseCoordinatorsUsername(@Param("courseCode") String courseCode);
 }

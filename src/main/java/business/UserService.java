@@ -1,11 +1,15 @@
 package business;
 
 import business.custom_exceptions.CustomNotFoundException;
+import config.endpointClasses.user.CoordinatorInterface;
 import data.entities.User;
 import data.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,5 +27,18 @@ public class UserService {
     public boolean isUser(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         return userOptional.isPresent();
+    }
+
+    public List<String> getCourseCoordinators(String courseCode) {
+        List<CoordinatorInterface> coordinatorList = userRepository.findCourseCoordinatorsUsername(courseCode);
+        if (coordinatorList.isEmpty())
+            throw new CustomNotFoundException("No existen coordinadores para el curso con el código: " + courseCode + ".\n");
+
+        List<String> response = new ArrayList<>();
+        for (CoordinatorInterface ci : coordinatorList) {
+            String username = ci.getUsername().split("\\@")[0] + "@utec.edu.pe";
+            response.add(username);
+        }
+        return response;
     }
 }

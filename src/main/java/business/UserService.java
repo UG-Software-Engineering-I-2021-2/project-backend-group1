@@ -29,8 +29,8 @@ public class UserService {
         return userOptional.isPresent();
     }
 
-    public List<String> getCourseCoordinators(String courseCode, String semester) {
-        List<CoordinatorInterface> coordinatorList = userRepository.findCourseCoordinatorsUsername(courseCode, semester);
+    public List<String> getCourseCoordinators(String semester, String courseCode) {
+        List<CoordinatorInterface> coordinatorList = userRepository.findCourseCoordinatorsUsername(semester, courseCode);
         if (coordinatorList.isEmpty())
             throw new CustomNotFoundException("No existen coordinadores para el curso con el código: " + courseCode + ".\n");
 

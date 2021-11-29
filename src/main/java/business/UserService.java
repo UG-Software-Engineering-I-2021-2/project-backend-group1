@@ -29,14 +29,14 @@ public class UserService {
         return userOptional.isPresent();
     }
 
-    public List<String> getCourseCoordinators(String courseCode) {
-        List<CoordinatorInterface> coordinatorList = userRepository.findCourseCoordinatorsUsername(courseCode);
+    public List<String> getCourseCoordinators(String courseCode, String semester) {
+        List<CoordinatorInterface> coordinatorList = userRepository.findCourseCoordinatorsUsername(courseCode, semester);
         if (coordinatorList.isEmpty())
             throw new CustomNotFoundException("No existen coordinadores para el curso con el código: " + courseCode + ".\n");
 
         List<String> response = new ArrayList<>();
         for (CoordinatorInterface ci : coordinatorList) {
-            String username = ci.getUsername().split("\\@")[0] + "@utec.edu.pe";
+            String username = ci.getUsername() + "@utec.edu.pe";
             response.add(username);
         }
         return response;

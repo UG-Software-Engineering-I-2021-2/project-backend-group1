@@ -78,7 +78,7 @@ public class RubricRevisionController {
         String title = rubricRevisionBody.getTitle();
         String comment = rubricRevisionBody.getComment();
 
-        String[] to = userService.getCourseCoordinators(courseCode).toArray(new String[0]);
+        String[] to = userService.getCourseCoordinators(courseCode, semester).toArray(new String[0]);
         String subject = "Resultado de revisión. Rúbrica: " + title + " del curso " + courseCode + " " + courseName;
         String body;
         String msg;

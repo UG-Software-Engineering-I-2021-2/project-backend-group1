@@ -13,9 +13,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
     @Query(
-            value = "SELECT cooremail FROM project.coordinador_cursos " +
-                    "WHERE codcurso = :#{#courseCode};",
+            value = "SELECT username FROM (" +
+                    "SELECT DISTINCT usuario_id " +
+                    "FROM coordina_docente_seccion " +
+                    "WHERE semestre = :#{#semester} " +
+                    "AND cod_curso = :#{#courseCode} " +
+                    ") u1 " +
+                    "JOIN usuario u2 " +
+                    "ON u1.usuario_id = u2.usuario_id;",
             nativeQuery = true
     )
-    List<CoordinatorInterface> findCourseCoordinatorsUsername(@Param("courseCode") String courseCode);
+    List<CoordinatorInterface> findCourseCoordinatorsUsername(
+            @Param("semester") String semester,
+            @Param("courseCode") String courseCode
+    );
 }

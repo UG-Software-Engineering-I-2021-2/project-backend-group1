@@ -67,6 +67,7 @@ public class RubricRevisionController {
             @RequestHeader(value = "Authorization") String authorization,
             @RequestBody RubricRevisionBody rubricRevisionBody
     ) {
+        System.out.println("\nTEST RUBRIC REVISION");
         GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         if (payload == null)
             return msgReturn.callError(404, "token not verified");
@@ -79,16 +80,20 @@ public class RubricRevisionController {
         String comment = rubricRevisionBody.getComment();
 
         String[] to = userService.getCourseCoordinators(semester, courseCode).toArray(new String[0]);
+
+
         String subject = "Resultado de revisión. Rúbrica: " + title + " del curso " + courseCode + " " + courseName;
         String body;
         String msg;
 
         if (rubricRevisionBody.isAccepted()) {
+            System.out.println("\nAceptar");
             body = "Buen día,\n\n" +
                 "Una rúbrica asignada para su revisión ha sido aceptada.\n\n";
             msg = "La rúbrica fue aceptada";
             rubricService.updateRubricState(rubricCode, semester, State.DisponibleParaCalificar);
         } else {
+            System.out.println("\nRechazar");
             body = "Buen día,\n\n" +
                 "Una rúbrica asignada para su revisión ha sido rechazada con el " +
                 "siguiente comentario:\n\n \"" + comment + "\"\n\n";
@@ -103,7 +108,9 @@ public class RubricRevisionController {
             "Atentamente.\n" +
             "Sistema de gestión de rúbricas";
 
+        System.out.println("\nAntes de enviar email");
         mailSenderService.sendEmail(to, subject, body);
+        System.out.println("\nRETURN");
         return msgReturn.callMsg(200, "msg", msg);
     }
 }

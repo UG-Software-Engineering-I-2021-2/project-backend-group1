@@ -7,9 +7,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import config.enums.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 class RubricRevisionBody {
     private String rubricCode;
@@ -49,6 +47,8 @@ class RubricRevisionBody {
     }
 }
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@RestController
 public class RubricRevisionController {
     private final TokenValidator tokenValidator = new TokenValidator();
     private final MsgReturn msgReturn = new MsgReturn();

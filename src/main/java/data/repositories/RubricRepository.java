@@ -31,6 +31,7 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
                     "  ) AS user_id " +
                     " INNER JOIN coordina_docente_seccion AS CDS " +
                     " ON user_id.usuario_id = CDS.usuario_id " +
+                    " WHERE semestre = :#{#semester} " +
                     ") THEN 1 ELSE 0 END AS coordinates, " +
                     "(SELECT COUNT(DISTINCT cod_alumno) FROM lleva_alumno_seccion " +
                     "WHERE cod_curso = :#{#courseCode} " +
@@ -38,7 +39,19 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
                     "RB.nivel AS dlevel, " +
                     "R.titulo AS title," +
                     "R.cod_competencia AS competenceCode, " +
-                    "RB.criterio_desempeno AS criteriaCode " +
+                    "RB.criterio_desempeno AS criteriaCode," +
+                    "CASE WHEN :#{#courseCode} IN (SELECT DISTINCT  " +
+                    " cod_curso  " +
+                    " FROM(  " +
+                    " SELECT  " +
+                    " usuario_id   " +
+                    " FROM usuario  " +
+                    " WHERE username = :#{#username}  " +
+                    "  ) AS user_id  " +
+                    " INNER JOIN dicta_docente_seccion AS DDS  " +
+                    " ON user_id.usuario_id = DDS.usuario_id " +
+                    " WHERE semestre = :#{#semester} " +
+                    ") THEN 1 ELSE 0 END AS grade " +
                     "FROM " +
                     "rubrica AS R " +
                     "LEFT JOIN rubrica_base AS RB " +

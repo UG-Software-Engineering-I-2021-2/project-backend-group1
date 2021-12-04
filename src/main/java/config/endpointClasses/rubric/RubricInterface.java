@@ -16,4 +16,5 @@ public interface RubricInterface {
     String getTitle();
     String getCompetenceCode();
     String getCriteriaCode();
+    Integer getGrade();
 }

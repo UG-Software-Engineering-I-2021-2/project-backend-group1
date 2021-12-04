@@ -19,6 +19,7 @@ public class Rubric {
     private String title;
     private String competenceCode;
     private String criteriaCode;
+    private Boolean canGrade;
 
     public Rubric(RubricInterface rubricInterface, String role){
         this.code = rubricInterface.getCode();
@@ -43,6 +44,10 @@ public class Rubric {
         //4.1. Conduce estudios de problemas
         String[] criteriaCodeParts = rubricInterface.getCriteriaCode().split("\\.");
         this.criteriaCode = criteriaCodeParts[0] + "." + criteriaCodeParts[1] + ".";
+        if(role.equals(Role.Calidad.toString()))
+            this.canGrade = Boolean.FALSE;
+        else
+            this.canGrade = rubricInterface.getGrade() == 1;
     }
 
     public String getDate(){

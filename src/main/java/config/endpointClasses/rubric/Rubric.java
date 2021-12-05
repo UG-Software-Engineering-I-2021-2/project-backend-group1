@@ -48,6 +48,8 @@ public class Rubric {
             this.canGrade = Boolean.FALSE;
         else
             this.canGrade = rubricInterface.getGrade() == 1;
+        if(this.state.equals(State.SinAsignar.toString()) || this.state.equals(State.AprobacionPendiente.toString()))
+            this.canGrade = false;
     }
 
     public String getDate(){

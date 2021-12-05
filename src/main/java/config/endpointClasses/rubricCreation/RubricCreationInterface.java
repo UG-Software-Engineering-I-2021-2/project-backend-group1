@@ -16,7 +16,10 @@ public interface RubricCreationInterface {
     String getContent();
     String getEvaluation();
     String getEvidence();
-    Integer getCycle();
+    String getCycle();
     String getTitle();
     State getState();
+    String getSections();
+    String getAllSections();
+    Integer getGrade();
 }

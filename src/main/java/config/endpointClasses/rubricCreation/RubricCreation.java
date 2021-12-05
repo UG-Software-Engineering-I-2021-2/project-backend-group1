@@ -1,6 +1,8 @@
 package config.endpointClasses.rubricCreation;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RubricCreation {
@@ -15,7 +17,7 @@ public class RubricCreation {
     String content;
     String evaluation;
     String evidence;
-    String cycles;
+    List<String> cycles;
     String title;
     String state;
 
@@ -31,20 +33,9 @@ public class RubricCreation {
         this.content = rubricInterface.getContent();
         this.evaluation = rubricInterface.getEvaluation();
         this.evidence = rubricInterface.getEvidence();
-        this.cycles = "";
+        this.cycles = new ArrayList<>();
+        this.cycles.addAll(Arrays.asList(rubricInterface.getCycle().split("\\|")));
         this.title = rubricInterface.getTitle();
         this.state = rubricInterface.getState().toString();
     }
-
-    public void setCycles(List<RubricCreationInterface> rubricInterfaceList){
-        StringBuilder bld = new StringBuilder();
-        for(int i = 0; i < rubricInterfaceList.size(); i++){
-            String cycle = (rubricInterfaceList.get(i).getCycle() <= 10) ? String.valueOf(rubricInterfaceList.get(i).getCycle()) :"Electivo";
-            if(i != rubricInterfaceList.size() - 1)
-                cycle += ", ";
-            bld.append(cycle);
-        }
-        this.cycles = bld.toString();
-    }
-
 }

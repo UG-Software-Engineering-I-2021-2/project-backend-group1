@@ -3,6 +3,7 @@ package data.repositories;
 import config.endpointClasses.rubric.RubricInterface;
 import config.endpointClasses.rubricCreation.RubricCreationInterface;
 import config.endpointClasses.rubricImport.RubricImportInterface;
+import config.endpointClasses.rubricStudents.RubricStudentsInterface;
 import data.entities.Rubrica;
 import data.entities.composite_keys.RubricaPK;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -67,58 +68,56 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
     );
 
     @Query(
-            value = "SELECT  " +
-                    "R1.curso AS course, " +
-                    "R1.actividad AS activity, " +
-                    "R1.semana AS week, " +
-                    "R1.cod_competencia AS codCompetence, " +
-                    "R1.competencia AS competence, " +
-                    "R1.criterio AS criteria, " +
-                    "R1.criterio_nivel AS criteriaLevel, " +
-                    "R1.fecha AS date, " +
-                    "R1.descriptores AS content, " +
-                    "R1.evaluacion AS evaluation, " +
-                    "R1.evidencia AS evidence, " +
-                    "R2.ciclo AS cycle, " +
-                    "R1.titulo AS title, " +
-                    "R1.estado AS state " +
-                    "FROM " +
-                    "( " +
-                    "SELECT  " +
-                    " C.nombre AS curso, " +
-                    " R.actividad AS actividad, " +
-                    " RB.semana AS semana, " +
-                    " Co.cod_competencia AS cod_competencia, " +
-                    " Co.descripcion AS competencia, " +
-                    " RB.criterio_desempeno AS criterio, " +
-                    " RB.nivel AS criterio_nivel, " +
-                    " R.fecha AS fecha, " +
-                    " R.descriptores AS descriptores, " +
-                    " RB.evaluacion AS evaluacion, " +
-                    " RB.evidencia AS evidencia, " +
-                    " R.titulo AS titulo, " +
-                    " R.estado AS estado " +
-                    "FROM rubrica R " +
-                    "INNER JOIN rubrica_base RB " +
-                    "ON R.cod_rubrica = RB.cod_rubrica " +
-                    "AND R.cod_rubrica = :#{#codRubrica} " +
-                    "AND R.semestre = :#{#semester} " +
-                    "INNER JOIN curso C " +
-                    "ON C.cod_curso = :#{#codCourse} " +
-                    "INNER JOIN competencia Co " +
-                    "ON R.cod_competencia = Co.cod_competencia " +
-                    " ) AS R1, " +
-                    "( " +
-                    "select distinct ciclo from lleva_alumno_seccion " +
-                    "where semestre = :#{#semester} " +
-                    "and cod_curso = :#{#codCourse} " +
-                    " ) AS R2 ",
+            value = "SELECT   " +
+                    " C.nombre AS course,  " +
+                    " R.actividad AS activity,  " +
+                    " RB.semana AS week,  " +
+                    " Co.cod_competencia AS codCompetence,  " +
+                    " Co.descripcion AS competence,  " +
+                    " RB.criterio_desempeno AS criteria,  " +
+                    " RB.nivel AS criteriaLevel,  " +
+                    " R.fecha AS date,  " +
+                    " R.descriptores AS content,  " +
+                    " RB.evaluacion AS evaluation,  " +
+                    " RB.evidencia AS evidence,  " +
+                    " (SELECT STRING_AGG(DISTINCT CAST(ciclo AS VARCHAR),'|') FROM lleva_alumno_seccion  " +
+                    " WHERE semestre = :#{#semester} AND cod_curso = :#{#codCourse} ) AS cycle, " +
+                    " R.titulo AS title,  " +
+                    " R.estado AS state, " +
+                    " (SELECT STRING_AGG(cod_seccion,'|') FROM dicta_docente_seccion WHERE semestre = :#{#semester}  " +
+                    "  AND cod_curso = :#{#codCourse} AND usuario_id = (SELECT usuario_id FROM usuario WHERE username = :#{#username})) AS sections, " +
+                    " (SELECT STRING_AGG(cod_seccion,'|') FROM ( " +
+                    "   SELECT DISTINCT cod_seccion FROM dicta_docente_seccion WHERE semestre = :#{#semester} AND cod_curso = :#{#codCourse} UNION " +
+                    "   SELECT DISTINCT cod_seccion FROM coordina_docente_seccion WHERE semestre = :#{#semester} AND cod_curso = :#{#codCourse}) AS sec " +
+                    " ) AS allSections, " +
+                    "CASE WHEN :#{#codCourse} IN (SELECT DISTINCT  " +
+                    " cod_curso  " +
+                    " FROM(  " +
+                    " SELECT  " +
+                    " usuario_id   " +
+                    " FROM usuario  " +
+                    " WHERE username = :#{#username}  " +
+                    "  ) AS user_id  " +
+                    " INNER JOIN dicta_docente_seccion AS DDS  " +
+                    " ON user_id.usuario_id = DDS.usuario_id " +
+                    " WHERE semestre = :#{#semester} " +
+                    ") THEN 1 ELSE 0 END AS grade " +
+                    "FROM rubrica R  " +
+                    "INNER JOIN rubrica_base RB  " +
+                    "ON R.cod_rubrica = RB.cod_rubrica  " +
+                    "AND R.cod_rubrica = :#{#codRubrica}  " +
+                    "AND R.semestre = :#{#semester}  " +
+                    "INNER JOIN curso C  " +
+                    "ON C.cod_curso = :#{#codCourse}  " +
+                    "INNER JOIN competencia Co  " +
+                    "ON R.cod_competencia = Co.cod_competencia  ",
             nativeQuery = true
     )
-    List<RubricCreationInterface> getRubricCreation(
+    RubricCreationInterface getRubricCreation(
             @Param("codRubrica") String codRubrica,
             @Param("semester") String semester,
-            @Param("codCourse") String codCourse
+            @Param("codCourse") String codCourse,
+            @Param("username") String username
     );
 
     @Query(
@@ -168,6 +167,25 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
             @Param("rubricCode") String rubricCode
     );
 
+    @Query(
+            value = "SELECT " +
+                    "EAR.cod_alumno AS codAlumno, " +
+                    "A.nombre AS alumno, " +
+                    "EAR.calificacion_alumno AS calificacionAlumno, " +
+                    "EAR.calificacion_competencia AS calificacionCompetencia, " +
+                    "EAR.evaluacion_total AS EvaluacionTotal " +
+                    "FROM evalua_alumno_rubrica EAR " +
+                    "LEFT JOIN alumno A ON EAR.cod_alumno = A.cod_alumno " +
+                    "WHERE EAR.semestre = :#{#semester} " +
+                    "AND EAR.cod_curso = :#{#courseCode} " +
+                    "AND EAR.cod_rubrica = :#{#rubricCode}",
+            nativeQuery = true
+    )
+    List<RubricStudentsInterface> getRubricStudents(
+            @Param("rubricCode") String rubricCode,
+            @Param("semester") String semester,
+            @Param("courseCode") String courseCode
+    );
 
 
 

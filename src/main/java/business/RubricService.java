@@ -7,6 +7,9 @@ import config.endpointClasses.rubricCreation.RubricCreation;
 import config.endpointClasses.rubricCreation.RubricCreationInterface;
 import config.endpointClasses.rubricImport.RubricImport;
 import config.endpointClasses.rubricImport.RubricImportInterface;
+import config.endpointClasses.rubricSection.RubricSection;
+import config.endpointClasses.rubricStudents.RubricStudents;
+import config.endpointClasses.rubricStudents.RubricStudentsInterface;
 import config.enums.State;
 import data.entities.Rubrica;
 import data.repositories.RubricRepository;
@@ -24,10 +27,8 @@ public class RubricService {
     private RubricRepository rubricRepository;
 
     public RubricCreation getRubricCreation(String codRubrica, String semester, String codCourse){
-        List<RubricCreationInterface> rubricInterfaceList = rubricRepository.getRubricCreation(codRubrica, semester, codCourse);
-        RubricCreation response = new RubricCreation(rubricInterfaceList.get(0));
-        response.setCycles(rubricInterfaceList);
-        return response;
+        RubricCreationInterface rubricCreationInterface = rubricRepository.getRubricCreation(codRubrica, semester, codCourse, "");
+        return new RubricCreation(rubricCreationInterface);
     }
 
     public List<Rubric> getRubric(String semester, String courseCode, String username, String role){
@@ -75,5 +76,20 @@ public class RubricService {
         Rubrica rubrica = rubricRepository.getRubricByRubricCodeAndSemester(rubricCode, semester);
         rubrica.setEstado(newState);
         rubricRepository.save(rubrica);
+    }
+
+    public RubricSection getRubricSection(String rubricCode, String semester, String courseCode, String username, String role){
+        RubricCreationInterface rubricCreationInterface = rubricRepository.getRubricCreation(rubricCode, semester, courseCode, username);
+        return new RubricSection(rubricCreationInterface, role);
+    }
+
+    public List<RubricStudents> getRubricStudents(String rubricCode, String semester, String courseCode){
+        List<RubricStudentsInterface> rubricStudentsInterfaceList = rubricRepository.getRubricStudents(rubricCode, semester, courseCode);
+        List<RubricStudents> response = new ArrayList<>();
+        for(RubricStudentsInterface rubricStudentsInterface : rubricStudentsInterfaceList){
+            RubricStudents rubricStudents = new RubricStudents(rubricStudentsInterface);
+            response.add(rubricStudents);
+        }
+        return response;
     }
 }

@@ -168,23 +168,32 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
     );
 
     @Query(
-            value = "SELECT " +
-                    "EAR.cod_alumno AS codAlumno, " +
-                    "A.nombre AS alumno, " +
-                    "EAR.calificacion_alumno AS calificacionAlumno, " +
-                    "EAR.calificacion_competencia AS calificacionCompetencia, " +
-                    "EAR.evaluacion_total AS EvaluacionTotal " +
-                    "FROM evalua_alumno_rubrica EAR " +
-                    "LEFT JOIN alumno A ON EAR.cod_alumno = A.cod_alumno " +
+            value = "SELECT  " +
+                    "EAR.cod_rubrica as cod_rubrica, " +
+                    "EAR.cod_alumno AS codAlumno,  " +
+                    "A.nombre AS alumno,  " +
+                    "EAR.calificacion_alumno AS calificacionAlumno,  " +
+                    "EAR.calificacion_competencia AS calificacionCompetencia,  " +
+                    "EAR.evaluacion_total AS EvaluacionTotal  " +
+                    "FROM evalua_alumno_rubrica EAR  " +
+                    "LEFT JOIN alumno A ON EAR.cod_alumno = A.cod_alumno  " +
                     "WHERE EAR.semestre = :#{#semester} " +
                     "AND EAR.cod_curso = :#{#courseCode} " +
-                    "AND EAR.cod_rubrica = :#{#rubricCode}",
+                    "AND EAR.cod_rubrica = :#{#rubricCode} " +
+                    "AND EAR.cod_alumno IN ( " +
+                    " SELECT cod_alumno " +
+                    " FROM lleva_alumno_seccion " +
+                    " WHERE cod_curso = :#{#courseCode} " +
+                    " AND semestre = :#{#semester} " +
+                    " AND cod_seccion = :#{#section} " +
+                    ") ",
             nativeQuery = true
     )
     List<RubricStudentsInterface> getRubricStudents(
             @Param("rubricCode") String rubricCode,
             @Param("semester") String semester,
-            @Param("courseCode") String courseCode
+            @Param("courseCode") String courseCode,
+            @Param("section") String section
     );
 
 

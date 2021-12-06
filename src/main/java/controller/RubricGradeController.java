@@ -113,6 +113,7 @@ public class RubricGradeController {
         String semester = requestParam.get("semester");
         String courseCode = requestParam.get("courseCode");
         String rubricCode = requestParam.get("rubricCode");
+        String section = requestParam.get("section");
 
         if (semester == null || semester.isEmpty())
             return msgReturn.callError(404, "semester empty");
@@ -120,12 +121,15 @@ public class RubricGradeController {
             return msgReturn.callError(404, "course code empty");
         if (rubricCode == null || rubricCode.isEmpty())
             return msgReturn.callError(404, "rubric code empty");
+        if (section == null || section.isEmpty())
+            return msgReturn.callError(404, "section empty");
 
         System.out.println("Semester " + semester);
         System.out.println("CourseCode " + courseCode);
         System.out.println("RubricCode " + rubricCode);
+        System.out.println("Section " + section);
 
-        List<RubricStudents> response = rubricService.getRubricStudents(rubricCode, semester, courseCode);
+        List<RubricStudents> response = rubricService.getRubricStudents(rubricCode, semester, courseCode, section);
         System.out.println(gson.toJson(response));
         System.out.println("RETURN");
         return ResponseEntity.status(200).body(gson.toJson(response));

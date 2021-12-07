@@ -5,7 +5,8 @@ import business.RubricService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
 import config.endpointClasses.rubricSection.RubricSection;
-import config.endpointClasses.rubricStudents.RubricStudents;
+import config.endpointClasses.rubricStudents.RubricStudent;
+import config.endpointClasses.student.Student;
 import config.enums.State;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ class RubricGradeBody {
     private String semester;
     private String courseCode;
     private Boolean onlySave;
+    private String studentCode;
 
     public List<HashMap<String, HashMap<String, String>>> getContent() {
         return content;
@@ -43,6 +45,8 @@ class RubricGradeBody {
     }
 
     public Boolean getOnlySave() { return onlySave; }
+
+    public String getStudentCode() { return studentCode; }
 }
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -129,14 +133,49 @@ public class RubricGradeController {
         System.out.println("RubricCode " + rubricCode);
         System.out.println("Section " + section);
 
-        List<RubricStudents> response = rubricService.getRubricStudents(rubricCode, semester, courseCode, section);
+        List<Student> response = rubricService.getStudents(rubricCode, semester, courseCode, section);
+        System.out.println(gson.toJson(response));
+        System.out.println("RETURN");
+        return ResponseEntity.status(200).body(gson.toJson(response));
+    }
+
+    @GetMapping("/rubric_grade")
+    public ResponseEntity<String> rubricGradeControllerGet(@RequestHeader(value = "Authorization") String authorization,
+                                                               @RequestParam Map<String, String> requestParam)
+            throws JSONException, GeneralSecurityException, IOException {
+        System.out.println("\nTEST RUBRIC GRADE GET");
+
+        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        if (payload == null)
+            return msgReturn.callError(404, "token not verified");
+
+        String semester = requestParam.get("semester");
+        String courseCode = requestParam.get("courseCode");
+        String rubricCode = requestParam.get("rubricCode");
+        String studentCode = requestParam.get("studentCode");
+
+        if (semester == null || semester.isEmpty())
+            return msgReturn.callError(404, "semester empty");
+        if (courseCode == null || courseCode.isEmpty())
+            return msgReturn.callError(404, "course code empty");
+        if (rubricCode == null || rubricCode.isEmpty())
+            return msgReturn.callError(404, "rubric code empty");
+        if (studentCode == null || studentCode.isEmpty())
+            return msgReturn.callError(404, "student code empty");
+
+        System.out.println("Semester " + semester);
+        System.out.println("CourseCode " + courseCode);
+        System.out.println("RubricCode " + rubricCode);
+        System.out.println("StudentCode " + studentCode);
+
+        RubricStudent response = rubricService.getRubricStudent(rubricCode, semester, courseCode, studentCode);
         System.out.println(gson.toJson(response));
         System.out.println("RETURN");
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 
     @PostMapping("/rubric_grade")
-    public ResponseEntity<String> rubricGradeController(
+    public ResponseEntity<String> rubricGradeControllerPost(
             @RequestHeader(value = "Authorization") String authorization,
             @RequestBody RubricGradeBody rubricGradeBody)
             throws JSONException, GeneralSecurityException, IOException {
@@ -150,20 +189,22 @@ public class RubricGradeController {
         String rubricCode = rubricGradeBody.getRubricCode();
         List<HashMap<String, HashMap<String, String>>> content = rubricGradeBody.getContent();
         String courseCode = rubricGradeBody.getCourseCode();
+        String studentCode = rubricGradeBody.getStudentCode();
 
         System.out.println("\nsemester: " + semester);
         System.out.println("\nrubricCode: " + rubricCode);
         System.out.println("\ncourseCode: " + courseCode);
+        System.out.println("\nstudentCode: " + studentCode);
         System.out.println("\ncontent: " + gson.toJson(content));
         System.out.println("\nonlySave: " + rubricGradeBody.getOnlySave());
 
         if(Boolean.FALSE.equals(rubricGradeBody.getOnlySave())){
             rubricService.updateRubricState(rubricCode, semester, State.Cumplidos);
         }
-        evaluationService.updateEvaluation(rubricCode, semester, courseCode, content);
+        evaluationService.updateEvaluation(rubricCode, semester, courseCode, studentCode, content);
 
         System.out.println("\nRETURN");
-        return msgReturn.callMsg(200, "msg", "Rúbrica guardada correctamente");
+        return msgReturn.callMsg(200, "msg", "Evaluación guardada correctamente");
     }
 }
 

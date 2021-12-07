@@ -3,7 +3,8 @@ package data.repositories;
 import config.endpointClasses.rubric.RubricInterface;
 import config.endpointClasses.rubricCreation.RubricCreationInterface;
 import config.endpointClasses.rubricImport.RubricImportInterface;
-import config.endpointClasses.rubricStudents.RubricStudentsInterface;
+import config.endpointClasses.rubricStudents.RubricStudentInterface;
+import config.endpointClasses.student.StudentInterface;
 import data.entities.Rubrica;
 import data.entities.composite_keys.RubricaPK;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -169,12 +170,8 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
 
     @Query(
             value = "SELECT  " +
-                    "EAR.cod_rubrica as cod_rubrica, " +
-                    "EAR.cod_alumno AS codAlumno,  " +
-                    "A.nombre AS alumno,  " +
-                    "EAR.calificacion_alumno AS calificacionAlumno,  " +
-                    "EAR.calificacion_competencia AS calificacionCompetencia,  " +
-                    "EAR.evaluacion_total AS EvaluacionTotal  " +
+                    "EAR.cod_alumno AS studentCode,  " +
+                    "A.nombre AS studentName,  " +
                     "FROM evalua_alumno_rubrica EAR  " +
                     "LEFT JOIN alumno A ON EAR.cod_alumno = A.cod_alumno  " +
                     "WHERE EAR.semestre = :#{#semester} " +
@@ -189,13 +186,32 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
                     ") ",
             nativeQuery = true
     )
-    List<RubricStudentsInterface> getRubricStudents(
+    List<StudentInterface> getStudents(
             @Param("rubricCode") String rubricCode,
             @Param("semester") String semester,
             @Param("courseCode") String courseCode,
             @Param("section") String section
     );
 
+    @Query(
+            value = "SELECT  " +
+                    "EAR.cod_alumno AS studentCode,  " +
+                    "EAR.calificacion_alumno AS calificacionAlumno,  " +
+                    "EAR.calificacion_competencia AS calificacionCompetencia,  " +
+                    "EAR.evaluacion_total AS EvaluacionTotal  " +
+                    "FROM evalua_alumno_rubrica EAR  " +
+                    "WHERE EAR.semestre = :#{#semester} " +
+                    "AND EAR.cod_curso = :#{#courseCode} " +
+                    "AND EAR.cod_rubrica = :#{#rubricCode} " +
+                    "AND EAR.cod_alumno = :#{#studentCode} ",
+            nativeQuery = true
+    )
+    RubricStudentInterface getRubricStudent(
+            @Param("rubricCode") String rubricCode,
+            @Param("semester") String semester,
+            @Param("courseCode") String courseCode,
+            @Param("studentCode") String studentCode
+    );
 
 
 }

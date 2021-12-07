@@ -8,8 +8,10 @@ import config.endpointClasses.rubricCreation.RubricCreationInterface;
 import config.endpointClasses.rubricImport.RubricImport;
 import config.endpointClasses.rubricImport.RubricImportInterface;
 import config.endpointClasses.rubricSection.RubricSection;
-import config.endpointClasses.rubricStudents.RubricStudents;
-import config.endpointClasses.rubricStudents.RubricStudentsInterface;
+import config.endpointClasses.rubricStudents.RubricStudent;
+import config.endpointClasses.rubricStudents.RubricStudentInterface;
+import config.endpointClasses.student.Student;
+import config.endpointClasses.student.StudentInterface;
 import config.enums.State;
 import data.entities.Rubrica;
 import data.repositories.RubricRepository;
@@ -83,13 +85,17 @@ public class RubricService {
         return new RubricSection(rubricCreationInterface, role);
     }
 
-    public List<RubricStudents> getRubricStudents(String rubricCode, String semester, String courseCode, String section){
-        List<RubricStudentsInterface> rubricStudentsInterfaceList = rubricRepository.getRubricStudents(rubricCode, semester, courseCode, section);
-        List<RubricStudents> response = new ArrayList<>();
-        for(RubricStudentsInterface rubricStudentsInterface : rubricStudentsInterfaceList){
-            RubricStudents rubricStudents = new RubricStudents(rubricStudentsInterface);
-            response.add(rubricStudents);
+    public List<Student> getStudents(String rubricCode, String semester, String courseCode, String section){
+        List<StudentInterface> studentInterfaceList = rubricRepository.getStudents(rubricCode, semester, courseCode, section);
+        List<Student> response = new ArrayList<>();
+        for(StudentInterface studentInterface : studentInterfaceList){
+            response.add(new Student(studentInterface));
         }
         return response;
+    }
+
+    public RubricStudent getRubricStudent(String rubricCode, String semester, String courseCode, String studentCode){
+        RubricStudentInterface rubricStudentInterface = rubricRepository.getRubricStudent(rubricCode, semester, courseCode, studentCode);
+        return new RubricStudent(rubricStudentInterface);
     }
 }

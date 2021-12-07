@@ -1,8 +1,7 @@
 package config.endpointClasses.rubricStudents;
 
-public interface RubricStudentsInterface {
-    String getCodAlumno();
-    String getAlumno();
+public interface RubricStudentInterface {
+    String getStudentCode();
     String getCalificacionAlumno();
     String getCalificacionCompetencia();
     Boolean getEvaluacionTotal();

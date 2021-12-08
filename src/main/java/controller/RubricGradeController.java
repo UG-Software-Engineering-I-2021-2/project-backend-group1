@@ -21,15 +21,25 @@ import java.util.List;
 import java.util.Map;
 
 class RubricGradeBody {
-    private List<HashMap<String, HashMap<String, String>>> content;
+    private String studentGrade;
+    private String competenceGrade;
+    private Boolean finished;
     private String rubricCode;
     private String semester;
     private String courseCode;
     private Boolean onlySave;
     private String studentCode;
 
-    public List<HashMap<String, HashMap<String, String>>> getContent() {
-        return content;
+    public String getStudentGrade() {
+        return studentGrade;
+    }
+
+    public String getCompetenceGrade() {
+        return competenceGrade;
+    }
+
+    public Boolean getFinished() {
+        return finished;
     }
 
     public String getRubricCode() {
@@ -187,7 +197,9 @@ public class RubricGradeController {
 
         String semester = rubricGradeBody.getSemester();
         String rubricCode = rubricGradeBody.getRubricCode();
-        List<HashMap<String, HashMap<String, String>>> content = rubricGradeBody.getContent();
+        String studentGrade = rubricGradeBody.getStudentGrade();
+        String competenceGrade = rubricGradeBody.getCompetenceGrade();
+        Boolean finished = rubricGradeBody.getFinished();
         String courseCode = rubricGradeBody.getCourseCode();
         String studentCode = rubricGradeBody.getStudentCode();
 
@@ -195,13 +207,12 @@ public class RubricGradeController {
         System.out.println("\nrubricCode: " + rubricCode);
         System.out.println("\ncourseCode: " + courseCode);
         System.out.println("\nstudentCode: " + studentCode);
-        System.out.println("\ncontent: " + gson.toJson(content));
         System.out.println("\nonlySave: " + rubricGradeBody.getOnlySave());
 
         if(Boolean.FALSE.equals(rubricGradeBody.getOnlySave())){
             rubricService.updateRubricState(rubricCode, semester, State.Cumplidos);
         }
-        evaluationService.updateEvaluation(rubricCode, semester, courseCode, studentCode, content);
+        evaluationService.updateEvaluation(rubricCode, semester, courseCode, studentCode, studentGrade, competenceGrade, finished);
 
         System.out.println("\nRETURN");
         return msgReturn.callMsg(200, "msg", "Evaluación guardada correctamente");

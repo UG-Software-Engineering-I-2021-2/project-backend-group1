@@ -19,13 +19,12 @@ public class EvaluationService {
     @Autowired
     private EvaluationRepository evaluationRepository;
 
-    public void updateEvaluation(String rubricCode, String semester, String courseCode, String studentCode, List<HashMap<String, HashMap<String, String>>> content) {
+    public void updateEvaluation(String rubricCode, String semester, String courseCode, String studentCode, String studentGrade, String competenceGrade, Boolean finished) {
         Gson gson = new Gson();
-        HashMap<String, HashMap<String, String>> student = content.get(0);
         Evalua evalua = evaluationRepository.getEvalua(rubricCode, semester, courseCode, studentCode);
-        evalua.setCalificacionAlumno(gson.toJson(student.get("studentGrade")));
-        evalua.setCalificacionCompetencia(gson.toJson(student.get("competenceGrade")));
-        evalua.setEvaluacionTotal(Objects.equals(student.get("student").get("finished"), "1"));
+        evalua.setCalificacionAlumno(studentGrade);
+        evalua.setCalificacionCompetencia(competenceGrade);
+        evalua.setEvaluacionTotal(finished);
         evaluationRepository.save(evalua);
     }
 

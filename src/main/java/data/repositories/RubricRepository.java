@@ -171,7 +171,7 @@ public interface RubricRepository extends JpaRepository<Rubrica, RubricaPK> {
     @Query(
             value = "SELECT  " +
                     "EAR.cod_alumno AS studentCode,  " +
-                    "A.nombre AS studentName,  " +
+                    "A.nombre AS studentName  " +
                     "FROM evalua_alumno_rubrica EAR  " +
                     "LEFT JOIN alumno A ON EAR.cod_alumno = A.cod_alumno  " +
                     "WHERE EAR.semestre = :#{#semester} " +

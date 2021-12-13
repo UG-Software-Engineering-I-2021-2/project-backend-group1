@@ -217,6 +217,30 @@ public class RubricGradeController {
         System.out.println("\nRETURN");
         return msgReturn.callMsg(200, "msg", "Evaluación guardada correctamente");
     }
+
+    @PostMapping("/rubric_finish")
+    public ResponseEntity<String> rubricFinishControllerPost(
+            @RequestHeader(value = "Authorization") String authorization,
+            @RequestBody RubricGradeBody rubricGradeBody)
+            throws JSONException, GeneralSecurityException, IOException {
+        System.out.println("\nTEST RUBRIC FINISH POST");
+
+        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        if (payload == null)
+            return msgReturn.callError(404, "token not verified");
+
+        String semester = rubricGradeBody.getSemester();
+        String rubricCode = rubricGradeBody.getRubricCode();
+
+        System.out.println("\nsemester: " + semester);
+        System.out.println("\nrubricCode: " + rubricCode);
+
+
+        rubricService.updateRubricState(rubricCode, semester, State.Cumplidos);
+
+        System.out.println("\nRETURN");
+        return msgReturn.callMsg(200, "msg", "Rúbrica finalizada correctamente");
+    }
 }
 
 

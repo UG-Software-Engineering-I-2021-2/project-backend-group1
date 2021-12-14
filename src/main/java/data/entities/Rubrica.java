@@ -61,6 +61,52 @@ public class Rubrica {
     @JsonIgnore
     private Set<Evalua> evalua;
 
+    @ManyToMany
+    @JoinTable(
+            name = "RubricFinish",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "semestreRubrica",
+                            referencedColumnName = "semestre",
+                            columnDefinition = "text"
+                    ),
+                    @JoinColumn(
+                            name = "codRubrica",
+                            referencedColumnName = "codRubrica",
+                            columnDefinition = "text"
+                    ),
+                    @JoinColumn(
+                            name = "codCursoRubrica",
+                            referencedColumnName = "codCurso",
+                            columnDefinition = "text"
+                    ),
+                    @JoinColumn(
+                            name = "codCompetencia",
+                            referencedColumnName = "codCompetencia",
+                            columnDefinition = "text"
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "codSeccion",
+                            referencedColumnName = "codSeccion",
+                            columnDefinition = "text"
+                    ),
+                    @JoinColumn(
+                            name = "semestreSeccion",
+                            referencedColumnName = "semestre",
+                            columnDefinition = "text"
+                    ),
+                    @JoinColumn(
+                            name = "codCursoSeccion",
+                            referencedColumnName = "codCurso",
+                            columnDefinition = "text"
+                    )
+            }
+    )
+    @JsonIgnore
+    private Set<Seccion> seccionesRubricFinish;
+
     // Getters and setters
 
     public RubricaPK getRubricaPK() {
@@ -135,5 +181,13 @@ public class Rubrica {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public Set<Seccion> getSeccionesRubricFinish() {
+        return seccionesRubricFinish;
+    }
+
+    public void setSeccionesRubricFinish(Set<Seccion> seccionesRubricFinish) {
+        this.seccionesRubricFinish = seccionesRubricFinish;
     }
 }

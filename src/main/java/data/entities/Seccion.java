@@ -29,6 +29,10 @@ public class Seccion {
     @JsonIgnore
     private Set<Lleva> lleva;
 
+    @ManyToMany(mappedBy = "seccionesRubricFinish")
+    @JsonIgnore
+    private Set<Rubrica> rubricasRubricFinish;
+
     public Seccion() {
     }
 
@@ -75,4 +79,12 @@ public class Seccion {
     }
 
     public String getSemestre() { return seccionPK.getSemestre(); }
+
+    public Set<Rubrica> getRubricasRubricFinish() {
+        return rubricasRubricFinish;
+    }
+
+    public void setRubricasRubricFinish(Set<Rubrica> rubricasRubricFinish) {
+        this.rubricasRubricFinish = rubricasRubricFinish;
+    }
 }

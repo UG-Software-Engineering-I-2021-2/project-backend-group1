@@ -31,7 +31,7 @@ public class StatisticsController {
     @Autowired
     private CompetenceService competenceService;
 
-    @GetMapping("/get_careers")
+    @GetMapping("/statistics_get_careers")
     public ResponseEntity<String> getCareersController(@RequestHeader(value = "Authorization") String authorization,
                                                         @RequestParam Map<String, String> requestParam)
             throws JSONException, GeneralSecurityException, IOException {
@@ -45,7 +45,7 @@ public class StatisticsController {
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 
-    @GetMapping("/get_competences_by_career")
+    @GetMapping("/statistics_get_competences_by_career")
     public ResponseEntity<String> getCompetencesByCareerController(@RequestHeader(value = "Authorization") String authorization,
                                                        @RequestParam Map<String, String> requestParam)
             throws JSONException, GeneralSecurityException, IOException {
@@ -66,7 +66,7 @@ public class StatisticsController {
 
     }
 
-    @GetMapping("/get_statistics1")
+    @GetMapping("/statistics1_get")
     public ResponseEntity<String> statistics1Controller(@RequestHeader(value = "Authorization") String authorization,
                                                          @RequestParam Map<String, String> requestParam)
             throws JSONException, GeneralSecurityException, IOException {

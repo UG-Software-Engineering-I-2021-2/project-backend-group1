@@ -1,9 +1,11 @@
 package controller;
 
 import business.CareerService;
+import business.CompetenceService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
 import config.endpointClasses.career.Career;
+import config.endpointClasses.competence.Competence;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,9 @@ public class StatisticsController {
     @Autowired
     private CareerService careerService;
 
+    @Autowired
+    private CompetenceService competenceService;
+
     @GetMapping("/get_careers")
     public ResponseEntity<String> getCareersController(@RequestHeader(value = "Authorization") String authorization,
                                                         @RequestParam Map<String, String> requestParam)
@@ -35,6 +40,26 @@ public class StatisticsController {
         if (payload == null)
             return msgReturn.callError(404, "token not verified");
         List<Career> response = careerService.getAll();
+        System.out.println(gson.toJson(response));
+        System.out.println("RETURN");
+        return ResponseEntity.status(200).body(gson.toJson(response));
+    }
+
+    @GetMapping("/get_competences_by_career")
+    public ResponseEntity<String> getCompetencesByCareerController(@RequestHeader(value = "Authorization") String authorization,
+                                                       @RequestParam Map<String, String> requestParam)
+            throws JSONException, GeneralSecurityException, IOException {
+        System.out.println("\nTEST GET COMPETENCE");
+        //GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        //if (payload == null)
+        //    return msgReturn.callError(404, "token not verified");
+        String careerId = requestParam.get("careerId");
+        if(careerId == null || careerId.isEmpty())
+            return msgReturn.callError(404, "careerId empty");
+
+        System.out.println("\ncareerId " + careerId);
+
+        List<Competence> response = competenceService.getAllByCareer(Integer.valueOf(careerId));
         System.out.println(gson.toJson(response));
         System.out.println("RETURN");
         return ResponseEntity.status(200).body(gson.toJson(response));

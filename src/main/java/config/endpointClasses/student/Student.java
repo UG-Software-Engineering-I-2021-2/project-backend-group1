@@ -8,4 +8,7 @@ public class Student {
         this.studentCode = studentInterface.getStudentCode();
         this.studentName = studentInterface.getStudentName();
     }
+    public String getName(){
+        return this.studentName;
+    }
 }

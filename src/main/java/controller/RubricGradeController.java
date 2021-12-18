@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -144,6 +144,7 @@ public class RubricGradeController {
         System.out.println("Section " + section);
 
         List<Student> response = rubricService.getStudents(rubricCode, semester, courseCode, section);
+        response.sort(Comparator.comparing(Student::getName));
         System.out.println(gson.toJson(response));
         System.out.println("RETURN");
         return ResponseEntity.status(200).body(gson.toJson(response));

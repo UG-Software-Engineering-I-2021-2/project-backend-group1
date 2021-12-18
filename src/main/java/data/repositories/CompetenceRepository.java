@@ -11,8 +11,8 @@ import java.util.List;
 public interface CompetenceRepository extends JpaRepository<Competencia, String> {
     @Query(
             value = "SELECT cod_competencia AS code, descripcion AS description " +
-                    "FROM competencia WHERE carrera_id = CAST(:#{#carreraId} AS INTEGER)",
+                    "FROM competencia WHERE carrera_id = :#{#carreraId} ",
             nativeQuery = true
     )
-    List<CompetenceInterface> getAllByCareer(@Param("carreraId") int carreraId);
+    List<CompetenceInterface> getAllByCareer(@Param("carreraId") Integer carreraId);
 }

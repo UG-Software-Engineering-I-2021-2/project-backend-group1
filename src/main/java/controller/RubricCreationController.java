@@ -157,11 +157,6 @@ public class RubricCreationController {
                     "            El profesor " + payload.getEmail() + " acaba de crear una nueva rúbrica y requiere de una aprobación.\n" +
                     "        </div>\n" +
                     "        <br />\n" +
-                    "        <div\n" +
-                    "            style=\"padding: 20px;color: black; background-color:aliceblue; border-radius:16px; display:flex; justify-content: center;\">\n" +
-                    "            <b>comentario</b>\n" +
-                    "        </div>\n" +
-                    "        <br />\n" +
                     "        <div>\n" +
                     "            <b>Curso:</b> " + courseCode + " " + courseName + "\n" +
                     "            <br />\n" +
@@ -170,12 +165,12 @@ public class RubricCreationController {
                     "            <b>Título de rúbrica: </b> " + title + "\n" +
                     "        </div>\n" +
                     "        <br />\n" +
-                    "        <div>Para aprobar o rechazar la solicitud, ingrese al sistema haciendo click en el siguiente botón</div>\n" +
+                    "        <div>Para aprobar o rechazar la solicitud, ingrese al sistema haciendo click en el siguiente botón.</div>\n" +
                     "        <br />\n" +
                     "        <div style=\"display: flex; justify-content: center; padding: 15px;\">\n" +
                     "            <a href=\"" + link + "\"\n" +
-                    "                style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\">\n" +
-                    "                Click aqui </a>\n" +
+                    "                style=\"padding:15px; border: 2px solid black; text-decoration:none; color:black; border-radius: 16px\">\n" +
+                    "                Ingresar al sistema </a>\n" +
                     "        </div>\n" +
                     "        <div style=\"display: flex; justify-content: flex-end;\">\n" +
                     "            <p>Atentamente.</p>\n" +

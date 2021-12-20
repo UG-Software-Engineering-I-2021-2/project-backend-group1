@@ -136,8 +136,8 @@ public class RubricRevisionController {
                 "        <br />\n" +
                 "        <div style=\"display: flex; justify-content: center; padding: 15px;\">\n" +
                 "            <a href=\"" + link + "\"\n" +
-                "                style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\">\n" +
-                "                Click aqui </a>\n" +
+                "                style=\"padding:15px; border: 2px solid black; text-decoration:none; color:black; border-radius: 16px\">\n" +
+                "                Ingresar al sistema </a>\n" +
                 "        </div>\n" +
                 "        <div style=\"display: flex; justify-content: flex-end;\">\n" +
                 "            <p>Atentamente.</p>\n" +

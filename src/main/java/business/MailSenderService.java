@@ -26,9 +26,8 @@ public class MailSenderService {
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-        String htmlMsg = "<h3>Hello World!</h3>";
         //mimeMessage.setContent(htmlMsg, "text/html"); /** Use this or below line **/
-        helper.setText(htmlMsg, true); // Use this or above line.
+        helper.setText(body, true); // Use this or above line.
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setFrom("proyectocompetencias@gmail.com");

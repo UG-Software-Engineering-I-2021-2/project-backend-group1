@@ -148,37 +148,43 @@ public class RubricCreationController {
             String[] to = new String[1];
             to[0] = "jorge.neira@utec.edu.pe";
             String subject = "Nueva rúbrica creada requiere revisión. Rúbrica: " + title + " del curso " + courseCode + " " + courseName;
-            String body = String.format("<div style=\"display: flex; justify-content: center; width: 100%; font-family: SYSTEM-UI;\">" +
-                    "<div style=\"width: 50%;\">" +
-                    " <div>" +
-                    "   <p>Buen día,</p>" +
-                    " </div>" +
-                    " <div> " +
-                    " El profesor %s acaba de crear una nueva rúbrica y requiere de una aprobación." +
-                    " </div> " +
-                    "    <br />" +
-                    "    <div>" +
-                    "        <b>Curso:</b> %s %s" +
-                    "        <br />" +
-                    "        <b>Código de rúbrica:</b> %s" +
-                    "        <br />" +
-                    "        <b>Título de rúbrica: </b> %s" +
-                    "    </div>" +
-                    "    <br />" +
-                    "    <div>Para aprobar o rechazar la solicitud, ingrese al sistema haciendo click en el siguiente botón.</div>" +
-                    "    <br/>" +
-                    "    <div style=\"display: flex; justify-content: center; padding: 15px;\">" +
-                    "        <a href=\"link\"" +
-                    "                style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\"> Ingrese al sistema </a>" +
-                    "    </div>" +
-                    "    <br/>" +
-                    "    <div style=\"display: flex; justify-content: flex-end;\">" +
-                    "        <p>Atentamente.</p>" +
-                    "    </div> " +
-                    "    <div style=\"display: flex; justify-content: flex-end;\">" +
-                    "        <p>Sistema de gestión de rúbricas</p>" +
-                    " </div> " +
-                    "</div>", payload.getEmail(), courseCode, courseName, rubricCode, title, link);
+            String body = "<div style=\"display: flex; justify-content: center; width: 100%; font-family: SYSTEM-UI;\">\n" +
+                    "    <div style=\"width: 50%;\">\n" +
+                    "        <div>\n" +
+                    "            <p>Buen día,</p>\n" +
+                    "        </div>\n" +
+                    "        <div>\n" +
+                    "            El profesor " + payload.getEmail() + " acaba de crear una nueva rúbrica y requiere de una aprobación.\n" +
+                    "        </div>\n" +
+                    "        <br />\n" +
+                    "        <div\n" +
+                    "            style=\"padding: 20px;color: black; background-color:aliceblue; border-radius:16px; display:flex; justify-content: center;\">\n" +
+                    "            <b>comentario</b>\n" +
+                    "        </div>\n" +
+                    "        <br />\n" +
+                    "        <div>\n" +
+                    "            <b>Curso:</b> " + courseCode + " " + courseName + "\n" +
+                    "            <br />\n" +
+                    "            <b>Código de rúbrica:</b> " + rubricCode + "\n" +
+                    "            <br />\n" +
+                    "            <b>Título de rúbrica: </b> " + title + "\n" +
+                    "        </div>\n" +
+                    "        <br />\n" +
+                    "        <div>Para aprobar o rechazar la solicitud, ingrese al sistema haciendo click en el siguiente botón</div>\n" +
+                    "        <br />\n" +
+                    "        <div style=\"display: flex; justify-content: center; padding: 15px;\">\n" +
+                    "            <a href=\"" + link + "\"\n" +
+                    "                style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\">\n" +
+                    "                Click aqui </a>\n" +
+                    "        </div>\n" +
+                    "        <div style=\"display: flex; justify-content: flex-end;\">\n" +
+                    "            <p>Atentamente.</p>\n" +
+                    "        </div>\n" +
+                    "        <div style=\"display: flex; justify-content: flex-end;\">\n" +
+                    "            <p>Sistema de gestión de rúbricas</p>\n" +
+                    "        </div>\n" +
+                    "    </div>\n" +
+                    "</div>";
             mailSenderService.sendEmail(to, subject, body);
             rubricService.updateRubric(rubricCode, semester,
                     new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.AprobacionPendiente));

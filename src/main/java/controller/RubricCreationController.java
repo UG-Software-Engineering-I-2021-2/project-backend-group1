@@ -10,7 +10,6 @@ import config.enums.State;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -20,8 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 class RubricCreationBody {
     private List<HashMap<String, HashMap<String, String>>> content;
@@ -151,14 +148,33 @@ public class RubricCreationController {
             String[] to = new String[1];
             to[0] = "jorge.neira@utec.edu.pe";
             String subject = "Nueva rúbrica creada requiere revisión. Rúbrica: " + title + " del curso " + courseCode + " " + courseName;
-            String body = "Buen día\n\n" +
-                    "El profesor " + payload.getEmail() + " acaba de crear una nueva rúbrica y requiere de una aprobación.\n\n" +
-                    "Curso: " + courseCode + " " + courseName + "\n" +
-                    "Código de rúbrica: " + rubricCode + "\n" +
-                    "Título de rúbrica: " + title + "\n\n" +
-                    "Para aprobar o rechazar la solicitud se requiere ingresar al sistema <a href=\"" + link + "\"> click aquí </a>\n\n" +
-                    "Atentamente.\n" +
-                    "Sistema de gestión de rúbricas";
+            String body = "<div style=\"display:-moz-inline-grid; justify-content: center; width: 100%; font-family: SYSTEM-UI;margin: 100px\">" +
+                    " <div>" +
+                    "   <p>Buen día,</p>" +
+                    " </div>" +
+                    " <div> " +
+                    " El profesor " + payload.getEmail() + " acaba de crear una nueva rúbrica y requiere de una aprobación." +
+                    " </div> " +
+                    "    <br />" +
+                    "    <div>" +
+                    "        <b>Curso:</b> " + courseCode + " " + courseName +
+                    "        <br />" +
+                    "        <b>Código de rúbrica:</b> " + rubricCode +
+                    "        <br />" +
+                    "        <b>Título de rúbrica: </b> " + title +
+                    "    </div>" +
+                    "    <br />" +
+                    "    <div>Para aprobar o rechazar la solicitud se requiere ingresar al sistema. Puede hacerlo con el siguiente enlace. </div>" +
+                    "    <br/>" +
+                    "    <div style=\"display: flex; justify-content: center; padding: 15px;\">" +
+                    "        <a href=\""+ link + "\" style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\"> Click aquí </a>" +
+                    "    </div>" +
+                    "    <br/>" +
+                    "    <div style=\"display: flex; justify-content: flex-end;\">" +
+                    "        <p>Atentamente.</p>" +
+                    "        <p>Sistema de gestión de rúbricas</p>" +
+                    "    </div>" +
+                    "</div>";
             mailSenderService.sendEmail(to, subject, body);
             rubricService.updateRubric(rubricCode, semester,
                     new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.AprobacionPendiente));

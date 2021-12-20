@@ -236,7 +236,6 @@ public class RubricGradeController {
         System.out.println("\nsemester: " + semester);
         System.out.println("\nrubricCode: " + rubricCode);
 
-
         rubricService.updateRubricState(rubricCode, semester, State.Cumplidos);
 
         System.out.println("\nRETURN");

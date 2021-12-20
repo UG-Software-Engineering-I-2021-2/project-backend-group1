@@ -20,6 +20,17 @@ import java.lang.reflect.Type;
 import java.security.GeneralSecurityException;
 import java.util.*;
 
+class StatisticResponse{
+    String criteria;
+    Map<Integer, Double> score;
+
+    public StatisticResponse(String criteria, Map<Integer, Double> score){
+        this.criteria = criteria;
+        this.score = score;
+    }
+    public String getCriteria() { return  criteria; }
+}
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class StatisticsController {
@@ -97,9 +108,9 @@ public class StatisticsController {
                                                          @RequestParam Map<String, String> requestParam)
             throws JSONException, GeneralSecurityException, IOException {
         System.out.println("\nTEST STATISTICS 1 GET");
-        //GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
-        //if (payload == null)
-            //return msgReturn.callError(404, "token not verified");
+        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        if (payload == null)
+            return msgReturn.callError(404, "token not verified");
 
         String role = requestParam.get("role");
         String semester = requestParam.get("semester");
@@ -142,23 +153,34 @@ public class StatisticsController {
         System.out.println("\ncriteriaCodeMap:");
         System.out.println(gson.toJson(criteriaCodeMap));
 
-        HashMap<String, HashMap<Integer, Double>> response = new HashMap<>();
+        HashMap<String, HashMap<Integer, Double>> statisticMap = new HashMap<>();
 
         for (String criteriaCodeLevel : criteriaCodeMap.keySet()) {
-            String criteriaCode = criteriaCodeLevel.substring(0, criteriaCodeLevel.length()-1);
             Integer criteriaLevel = Integer.valueOf(criteriaCodeLevel.substring(criteriaCodeLevel.length()-1));
-            if(!response.containsKey(criteriaCodeMap.get(criteriaCodeLevel))){
+            if(!statisticMap.containsKey(criteriaCodeMap.get(criteriaCodeLevel))){
                 HashMap<Integer, Double> map = new HashMap<>();
-                response.put(criteriaCodeMap.get(criteriaCodeLevel), map);
+                statisticMap.put(criteriaCodeMap.get(criteriaCodeLevel), map);
             }
-            HashMap<Integer, Double> mapCompetence = response.get(criteriaCodeMap.get(criteriaCodeLevel));
+            HashMap<Integer, Double> mapCompetence = statisticMap.get(criteriaCodeMap.get(criteriaCodeLevel));
             if(criteriaCodeTotal.get(criteriaCodeLevel) != 0)
                 mapCompetence.put(criteriaLevel, (double) (criteriaCodeGood.get(criteriaCodeLevel))*100.0/criteriaCodeTotal.get(criteriaCodeLevel));
             else
                 mapCompetence.put(criteriaLevel, 0.0);
-            response.put(criteriaCodeMap.get(criteriaCodeLevel), mapCompetence);
+            statisticMap.put(criteriaCodeMap.get(criteriaCodeLevel), mapCompetence);
         }
-
+        List<StatisticResponse> response = new ArrayList<>();
+        for(String responseKey : statisticMap.keySet()){
+            HashMap<Integer, Double> mapCompetence = statisticMap.get(responseKey);
+            if(!mapCompetence.containsKey(1))
+                mapCompetence.put(1,0.0);
+            if(!mapCompetence.containsKey(2))
+                mapCompetence.put(2,0.0);
+            if(!mapCompetence.containsKey(3))
+                mapCompetence.put(3,0.0);
+            StatisticResponse statisticResponse = new StatisticResponse(responseKey, mapCompetence);
+            response.add(statisticResponse);
+        }
+        response.sort(Comparator.comparing(StatisticResponse::getCriteria));
         System.out.println(gson.toJson(response));
         System.out.println("RETURN");
         return ResponseEntity.status(200).body(gson.toJson(response));

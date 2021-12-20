@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import config.endpointClasses.rubricSection.RubricSection;
 import config.endpointClasses.rubricStudents.RubricStudent;
 import config.endpointClasses.student.Student;
+import config.endpointClasses.student.StudentInterface;
 import config.enums.State;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,17 @@ class RubricGradeBody {
     public Boolean getOnlySave() { return onlySave; }
 
     public String getStudentCode() { return studentCode; }
+}
+
+class StudentBySectionResponse{
+    List<Student> studentList;
+    Integer studentTotal;
+    Integer studentFinished;
+    public StudentBySectionResponse(List<Student> studentList, Integer studentTotal, Integer studentFinished){
+        this.studentList = studentList;
+        this.studentTotal = studentTotal;
+        this.studentFinished = studentFinished;
+    }
 }
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -143,8 +155,21 @@ public class RubricGradeController {
         System.out.println("RubricCode " + rubricCode);
         System.out.println("Section " + section);
 
-        List<Student> response = rubricService.getStudents(rubricCode, semester, courseCode, section);
-        response.sort(Comparator.comparing(Student::getName));
+        List<StudentInterface> studentInterfaceList = rubricService.getStudents(rubricCode, semester, courseCode, section);
+
+        List<Student> studentList = new ArrayList<>();
+        Integer studentTotal = 0;
+        Integer studentFinished = 0;
+        for(StudentInterface studentInterface : studentInterfaceList){
+            studentList.add(new Student(studentInterface));
+            studentTotal += 1;
+            if(studentInterface.getTotalEvaluation())
+                studentFinished += 1;
+        }
+        studentList.sort(Comparator.comparing(Student::getName));
+        StudentBySectionResponse studentBySectionResponse = new StudentBySectionResponse(studentList, studentTotal, studentFinished);
+        List<StudentBySectionResponse> response = new ArrayList<>();
+        response.add(studentBySectionResponse);
         System.out.println(gson.toJson(response));
         System.out.println("RETURN");
         return ResponseEntity.status(200).body(gson.toJson(response));

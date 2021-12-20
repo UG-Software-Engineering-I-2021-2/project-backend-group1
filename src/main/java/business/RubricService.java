@@ -85,13 +85,8 @@ public class RubricService {
         return new RubricSection(rubricCreationInterface, role);
     }
 
-    public List<Student> getStudents(String rubricCode, String semester, String courseCode, String section){
-        List<StudentInterface> studentInterfaceList = rubricRepository.getStudents(rubricCode, semester, courseCode, section);
-        List<Student> response = new ArrayList<>();
-        for(StudentInterface studentInterface : studentInterfaceList){
-            response.add(new Student(studentInterface));
-        }
-        return response;
+    public List<StudentInterface> getStudents(String rubricCode, String semester, String courseCode, String section){
+        return rubricRepository.getStudents(rubricCode, semester, courseCode, section);
     }
 
     public RubricStudent getRubricStudent(String rubricCode, String semester, String courseCode, String studentCode){

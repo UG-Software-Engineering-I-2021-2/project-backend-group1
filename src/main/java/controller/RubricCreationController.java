@@ -10,6 +10,7 @@ import config.enums.State;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -18,6 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 class RubricCreationBody {
     private List<HashMap<String, HashMap<String, String>>> content;
@@ -115,7 +119,7 @@ public class RubricCreationController {
     public ResponseEntity<String> rubricCreationControllerPost(
             @RequestHeader(value = "Authorization") String authorization,
             @RequestBody RubricCreationBody rubricCreationBody)
-            throws JSONException, GeneralSecurityException, IOException {
+            throws JSONException, GeneralSecurityException, IOException, MessagingException {
         System.out.println("\nTEST RUBRIC CREATION POST");
 
         GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
@@ -152,7 +156,7 @@ public class RubricCreationController {
                     "Curso: " + courseCode + " " + courseName + "\n" +
                     "Código de rúbrica: " + rubricCode + "\n" +
                     "Título de rúbrica: " + title + "\n\n" +
-                    "Para aprobar o rechazar la solicitud se requiere ingresar al sistema <a href=\"" + link + "\"> click aqui </a>\n\n" +
+                    "Para aprobar o rechazar la solicitud se requiere ingresar al sistema <a href=\"" + link + "\"> click aquí </a>\n\n" +
                     "Atentamente.\n" +
                     "Sistema de gestión de rúbricas";
             mailSenderService.sendEmail(to, subject, body);

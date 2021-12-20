@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 class RubricRevisionBody {
     private String rubricCode;
     private String semester;
@@ -69,7 +71,7 @@ public class RubricRevisionController {
     public ResponseEntity<String> rubricRevisionController(
             @RequestHeader(value = "Authorization") String authorization,
             @RequestBody RubricRevisionBody rubricRevisionBody
-    ) {
+    ) throws MessagingException {
         System.out.println("\nTEST RUBRIC REVISION");
         GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
         if (payload == null)
@@ -108,7 +110,7 @@ public class RubricRevisionController {
         body += "Curso: " + courseCode + " " + courseName + "\n" +
             "Código de rúbrica: " + rubricCode + "\n" +
             "Título de rúbrica: " + title + "\n\n" +
-            "Puede visualizar esta información ingresando al sistema " + link + "\n\n" +
+            "Puede visualizar esta información ingresando al sistema <a href=\"" + link + "\"> click aquí </a>\n\n" +
             "Atentamente.\n" +
             "Sistema de gestión de rúbricas";
 

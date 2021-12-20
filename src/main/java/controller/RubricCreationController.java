@@ -152,7 +152,7 @@ public class RubricCreationController {
                     "Curso: " + courseCode + " " + courseName + "\n" +
                     "Código de rúbrica: " + rubricCode + "\n" +
                     "Título de rúbrica: " + title + "\n\n" +
-                    "Para aprobar o rechazar la solicitud se requiere ingresar al sistema " + link + "\n\n" +
+                    "Para aprobar o rechazar la solicitud se requiere ingresar al sistema <a href=\"" + link + "\"> click aqui </a>\n\n" +
                     "Atentamente.\n" +
                     "Sistema de gestión de rúbricas";
             mailSenderService.sendEmail(to, subject, body);

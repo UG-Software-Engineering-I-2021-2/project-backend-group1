@@ -148,34 +148,37 @@ public class RubricCreationController {
             String[] to = new String[1];
             to[0] = "jorge.neira@utec.edu.pe";
             String subject = "Nueva rúbrica creada requiere revisión. Rúbrica: " + title + " del curso " + courseCode + " " + courseName;
-            String body = "<div style=\"display:-moz-inline-grid; justify-content: center; width: 100%; font-family: SYSTEM-UI;margin: 100px\">" +
+            String body = String.format("<div style=\"display: flex; justify-content: center; width: 100%; font-family: SYSTEM-UI;\">" +
+                    "<div style=\"width: 50%;\">" +
                     " <div>" +
                     "   <p>Buen día,</p>" +
                     " </div>" +
                     " <div> " +
-                    " El profesor " + payload.getEmail() + " acaba de crear una nueva rúbrica y requiere de una aprobación." +
+                    " El profesor %s acaba de crear una nueva rúbrica y requiere de una aprobación." +
                     " </div> " +
                     "    <br />" +
                     "    <div>" +
-                    "        <b>Curso:</b> " + courseCode + " " + courseName +
+                    "        <b>Curso:</b> %s %s" +
                     "        <br />" +
-                    "        <b>Código de rúbrica:</b> " + rubricCode +
+                    "        <b>Código de rúbrica:</b> %s" +
                     "        <br />" +
-                    "        <b>Título de rúbrica: </b> " + title +
+                    "        <b>Título de rúbrica: </b> %s" +
                     "    </div>" +
                     "    <br />" +
                     "    <div>Para aprobar o rechazar la solicitud, ingrese al sistema haciendo click en el siguiente botón.</div>" +
                     "    <br/>" +
                     "    <div style=\"display: flex; justify-content: center; padding: 15px;\">" +
-                    "        <a href=\""+ link + "\" style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\"> Ingrese al sistema </a>" +
+                    "        <a href=\"link\"" +
+                    "                style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\"> Ingrese al sistema </a>" +
                     "    </div>" +
                     "    <br/>" +
                     "    <div style=\"display: flex; justify-content: flex-end;\">" +
                     "        <p>Atentamente.</p>" +
-                    "    <br/> " +
+                    "    </div> " +
+                    "    <div style=\"display: flex; justify-content: flex-end;\">" +
                     "        <p>Sistema de gestión de rúbricas</p>" +
-                    "    </div>" +
-                    "</div>";
+                    " </div> " +
+                    "</div>", payload.getEmail(), courseCode, courseName, rubricCode, title, link);
             mailSenderService.sendEmail(to, subject, body);
             rubricService.updateRubric(rubricCode, semester,
                     new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.AprobacionPendiente));

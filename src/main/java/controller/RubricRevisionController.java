@@ -90,6 +90,7 @@ public class RubricRevisionController {
 
         String subject = "Resultado de revisión. Rúbrica: " + title + " del curso " + courseCode + " " + courseName;
         String body = "<div style=\"display:-moz-inline-grid; justify-content: center; width: 100%; font-family: SYSTEM-UI;margin: 100px\">" +
+                "<div style=\"width: 50%;\"> " +
                 "    <div>" +
                 "        <p>Buen día,</p>" +
                 "    </div>";
@@ -136,6 +137,7 @@ public class RubricRevisionController {
                 "    <br/> " +
                 "        <p>Sistema de gestión de rúbricas</p>" +
                 "    </div>" +
+                "   </div> " +
                 "</div>";
         System.out.println("\nAntes de enviar email");
         mailSenderService.sendEmail(to, subject, body);

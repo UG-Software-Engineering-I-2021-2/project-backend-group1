@@ -28,6 +28,7 @@ class RubricCreationBody {
     private boolean onlySave;
     private String courseCode;
     private String courseName;
+    private String link;
 
     public List<HashMap<String, HashMap<String, String>>> getContent() {
         return content;
@@ -60,6 +61,8 @@ class RubricCreationBody {
     public String getCourseName() {
         return courseName;
     }
+
+    public String getLink() { return link; }
 }
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -126,6 +129,7 @@ public class RubricCreationController {
         List<HashMap<String, HashMap<String, String>>> content = rubricCreationBody.getContent();
         String courseCode = rubricCreationBody.getCourseCode();
         String courseName = rubricCreationBody.getCourseName();
+        String link = rubricCreationBody.getLink();
 
         System.out.println("\nsemester: " + semester);
         System.out.println("\nrubricCode: " + rubricCode);
@@ -148,7 +152,7 @@ public class RubricCreationController {
                     "Curso: " + courseCode + " " + courseName + "\n" +
                     "Código de rúbrica: " + rubricCode + "\n" +
                     "Título de rúbrica: " + title + "\n\n" +
-                    "Para aprobar o rechazar la solicitud se requiere ingresar al sistema https://group1-ingsort1.herokuapp.com/login\n\n" +
+                    "Para aprobar o rechazar la solicitud se requiere ingresar al sistema " + link + "\n\n" +
                     "Atentamente.\n" +
                     "Sistema de gestión de rúbricas";
             mailSenderService.sendEmail(to, subject, body);

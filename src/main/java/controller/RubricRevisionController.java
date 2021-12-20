@@ -17,6 +17,7 @@ class RubricRevisionBody {
     private String title;
     private String comment;
     private boolean accepted;
+    private String link;
 
     public String getRubricCode() {
         return rubricCode;
@@ -45,6 +46,8 @@ class RubricRevisionBody {
     public boolean isAccepted() {
         return accepted;
     }
+
+    public String getLink() { return link; }
 }
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -78,6 +81,7 @@ public class RubricRevisionController {
         String courseName = rubricRevisionBody.getCourseName();
         String title = rubricRevisionBody.getTitle();
         String comment = rubricRevisionBody.getComment();
+        String link = rubricRevisionBody.getLink();
 
         String[] to = userService.getCourseCoordinators(semester, courseCode).toArray(new String[0]);
 
@@ -104,7 +108,7 @@ public class RubricRevisionController {
         body += "Curso: " + courseCode + " " + courseName + "\n" +
             "Código de rúbrica: " + rubricCode + "\n" +
             "Título de rúbrica: " + title + "\n\n" +
-            "Puede visualizar esta información ingresando al sistema https://group1-ingsort1.herokuapp.com/login\n\n" +
+            "Puede visualizar esta información ingresando al sistema " + link + "\n\n" +
             "Atentamente.\n" +
             "Sistema de gestión de rúbricas";
 

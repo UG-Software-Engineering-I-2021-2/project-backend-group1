@@ -125,14 +125,15 @@ public class RubricRevisionController {
                 "        <b>Título de rúbrica: </b> " + title +
                 "    </div>" +
                 "    <br />" +
-                "    <div>Puede visualizar esta información en el siguiente enlace.</div>" +
+                "    <div>Puede visualizar esta información haciendo click en el siguiente botón.</div>" +
                 "    <br/>" +
                 "    <div style=\"display: flex; justify-content: center; padding: 15px;\">" +
-                "        <a href=\""+ link + "\" style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\"> Click aquí </a>" +
+                "        <a href=\""+ link + "\" style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\"> Ingrese al sistema </a>" +
                 "    </div>" +
                 "    <br/>" +
                 "    <div style=\"display: flex; justify-content: flex-end;\">" +
                 "        <p>Atentamente.</p>" +
+                "    <br/> " +
                 "        <p>Sistema de gestión de rúbricas</p>" +
                 "    </div>" +
                 "</div>";

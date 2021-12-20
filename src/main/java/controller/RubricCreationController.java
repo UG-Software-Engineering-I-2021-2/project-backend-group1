@@ -164,14 +164,15 @@ public class RubricCreationController {
                     "        <b>Título de rúbrica: </b> " + title +
                     "    </div>" +
                     "    <br />" +
-                    "    <div>Para aprobar o rechazar la solicitud se requiere ingresar al sistema. Puede hacerlo con el siguiente enlace. </div>" +
+                    "    <div>Para aprobar o rechazar la solicitud, ingrese al sistema haciendo click en el siguiente botón.</div>" +
                     "    <br/>" +
                     "    <div style=\"display: flex; justify-content: center; padding: 15px;\">" +
-                    "        <a href=\""+ link + "\" style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\"> Click aquí </a>" +
+                    "        <a href=\""+ link + "\" style=\"padding:15px; border: 1px solid black; text-decoration:none; color:black; border-radius: 16px\"> Ingrese al sistema </a>" +
                     "    </div>" +
                     "    <br/>" +
                     "    <div style=\"display: flex; justify-content: flex-end;\">" +
                     "        <p>Atentamente.</p>" +
+                    "    <br/> " +
                     "        <p>Sistema de gestión de rúbricas</p>" +
                     "    </div>" +
                     "</div>";

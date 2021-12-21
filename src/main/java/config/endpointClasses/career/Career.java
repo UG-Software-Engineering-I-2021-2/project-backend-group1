@@ -8,4 +8,7 @@ public class Career {
         this.id = careerInterface.getId();
         this.name = careerInterface.getName();
     }
+    public String getName(){
+        return this.name;
+    }
 }

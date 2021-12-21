@@ -58,6 +58,7 @@ public class StatisticsController {
         if (payload == null)
             return msgReturn.callError(404, "token not verified");
         List<Career> response = careerService.getAll();
+        response.sort(Comparator.comparing(Career::getName));
         System.out.println(gson.toJson(response));
         System.out.println("RETURN");
         return ResponseEntity.status(200).body(gson.toJson(response));

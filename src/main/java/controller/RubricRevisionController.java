@@ -117,7 +117,7 @@ public class RubricRevisionController {
                     "            comentario:\n" +
                     divCloseStr +
                     brStr +
-                    divStr +
+                    "        <div\n" +
                     "            style=\"padding: 20px;color: black; background-color:aliceblue; border-radius:16px; display:flex; justify-content: center;\">\n" +
                     "            <b>" + comment + "</b>\n" +
                     divCloseStr;

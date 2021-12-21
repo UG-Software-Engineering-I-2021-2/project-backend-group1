@@ -29,8 +29,8 @@ public class Rubric {
         this.week = "Semana " + rubricInterface.getWeek();
         this.evidence = rubricInterface.getEvidence();
         this.activity = rubricInterface.getActivity();
-        if(this.state.equals(State.SinAsignar.toString())){
-            if(role.equals(Role.Docente.toString()))
+        if(this.state.equals(State.SIN_ASIGNAR.toString())){
+            if(role.equals(Role.DOCENTE.toString()))
                 this.canEdit = rubricInterface.getCoordinates() == 1;
             else
                 this.canEdit = false;
@@ -43,11 +43,11 @@ public class Rubric {
         this.competenceCode = rubricInterface.getCompetenceCode();
         String[] criteriaCodeParts = rubricInterface.getCriteriaCode().split("\\.");
         this.criteriaCode = criteriaCodeParts[0] + "." + criteriaCodeParts[1] + ".";
-        if(role.equals(Role.Calidad.toString()))
+        if(role.equals(Role.CALIDAD.toString()))
             this.canGrade = Boolean.FALSE;
         else
             this.canGrade = rubricInterface.getGrade() == 1;
-        if(this.state.equals(State.SinAsignar.toString()) || this.state.equals(State.AprobacionPendiente.toString()))
+        if(this.state.equals(State.SIN_ASIGNAR.toString()) || this.state.equals(State.APROBACION_PENDIENTE.toString()))
             this.canGrade = false;
     }
 

@@ -105,7 +105,7 @@ public class RubricRevisionController {
                     "            Una rúbrica asignada para su revisión ha sido aceptada.\n" +
                     divCloseStr;
             msg = "La rúbrica fue aceptada";
-            rubricService.updateRubricState(rubricCode, semester, State.DisponibleParaCalificar);
+            rubricService.updateRubricState(rubricCode, semester, State.DISPONIBLE_PARA_CALIFICAR);
         } else {
             body = "<div style=\"display: flex; justify-content: center; width: 100%; font-family: SYSTEM-UI;\">\n" +
                     "    <div style=\"width: 50%;\">\n" +
@@ -122,7 +122,7 @@ public class RubricRevisionController {
                     "            <b>" + comment + "</b>\n" +
                     divCloseStr;
             msg = "La rúbrica fue rechazada";
-            rubricService.updateRubricState(rubricCode, semester, State.SinAsignar);
+            rubricService.updateRubricState(rubricCode, semester, State.SIN_ASIGNAR);
         }
         body += brStr +
                 divStr +

@@ -126,8 +126,7 @@ public class RubricGradeController {
 
     @GetMapping("/students_by_sections")
     public ResponseEntity<String> studentsBySectionsController(@RequestHeader(value = "Authorization") String authorization,
-                                                           @RequestParam Map<String, String> requestParam)
-            throws JSONException, GeneralSecurityException, IOException {
+                                                           @RequestParam Map<String, String> requestParam) {
         GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
             return msgReturn.callError(404, TOKEN_NOT_VERIFIED);
@@ -154,7 +153,7 @@ public class RubricGradeController {
         for(StudentInterface studentInterface : studentInterfaceList){
             studentList.add(new Student(studentInterface));
             studentTotal += 1;
-            if(studentInterface.getTotalEvaluation())
+            if(Boolean.TRUE.equals(studentInterface.getTotalEvaluation()))
                 studentFinished += 1;
         }
         studentList.sort(Comparator.comparing(Student::getName));
@@ -208,7 +207,7 @@ public class RubricGradeController {
         String studentCode = rubricGradeBody.getStudentCode();
 
         if(Boolean.FALSE.equals(rubricGradeBody.getOnlySave())){
-            rubricService.updateRubricState(rubricCode, semester, State.Cumplidos);
+            rubricService.updateRubricState(rubricCode, semester, State.CUMPLIDOS);
         }
         evaluationService.updateEvaluation(rubricCode, semester, courseCode, studentCode, studentGrade, competenceGrade, finished);
 
@@ -227,7 +226,7 @@ public class RubricGradeController {
         String semester = rubricGradeBody.getSemester();
         String rubricCode = rubricGradeBody.getRubricCode();
 
-        rubricService.updateRubricState(rubricCode, semester, State.Cumplidos);
+        rubricService.updateRubricState(rubricCode, semester, State.CUMPLIDOS);
 
         return msgReturn.callMsg(200, "msg", "Rúbrica finalizada correctamente");
     }

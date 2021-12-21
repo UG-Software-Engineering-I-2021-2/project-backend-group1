@@ -18,7 +18,7 @@ public class CourseService {
 
     public List<Course> getCourse(String semester, String username, String role){
         List<CourseInterface> courseInterfaces = null;
-        if(role.equals(Role.Docente.toString()))
+        if(role.equals(Role.DOCENTE.toString()))
             courseInterfaces = courseRepository.getCourseDocente(semester, username);
         else
             courseInterfaces = courseRepository.getCourseCalidad(semester);

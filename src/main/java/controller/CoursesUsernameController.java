@@ -18,7 +18,7 @@ class CoursesUsernameBody {
     public String getRole() { return role; }
 }
 
-@CrossOrigin(origins = "https://group1-ingsort1.herokuapp.com/*", allowedHeaders = "Authorization")
+@CrossOrigin(origins = "https://group1-ingsort1.herokuapp.com/", allowedHeaders = "Authorization")
 @RestController
 public class CoursesUsernameController {
     private final TokenValidator tokenValidator = new TokenValidator();

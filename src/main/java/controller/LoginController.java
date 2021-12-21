@@ -11,7 +11,7 @@ import java.util.HashMap;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 
 
-@CrossOrigin(origins = "https://group1-ingsort1.herokuapp.com/*", allowedHeaders = "Authorization")
+@CrossOrigin(origins = "https://group1-ingsort1.herokuapp.com/", allowedHeaders = "Authorization")
 @RestController
 public class LoginController {
     private final TokenValidator tokenValidator = new TokenValidator();

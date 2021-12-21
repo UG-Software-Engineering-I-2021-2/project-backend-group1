@@ -63,7 +63,7 @@ class RubricCreationBody {
     public String getLink() { return link; }
 }
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "https://group1-ingsort1.herokuapp.com/*", allowedHeaders = "*")
 @RestController
 public class RubricCreationController {
     private final TokenValidator tokenValidator = new TokenValidator();

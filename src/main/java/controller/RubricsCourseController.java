@@ -54,12 +54,12 @@ public class RubricsCourseController {
                 //Do nothing
             }
             assert date1 != null;
-            if(evaluationOr(c1, c2, State.SIN_ASIGNAR)){
-                return evaluationAnd(c1, c2, State.SIN_ASIGNAR) ? date1.compareTo(date2) : equalsState(c1, State.SIN_ASIGNAR);
-            }else if(evaluationOr(c1, c2, State.FUERA_DE_FECHA)){
-                return evaluationAnd(c1, c2, State.FUERA_DE_FECHA) ? date1.compareTo(date2) : equalsState(c1, State.FUERA_DE_FECHA);
-            }else if(evaluationOr(c1, c2, State.CUMPLIDOS)){
-                return evaluationAnd(c1, c2, State.CUMPLIDOS) ? date1.compareTo(date2) : equalsState(c1, State.CUMPLIDOS);
+            if(Boolean.TRUE.equals(evaluationOr(c1, c2, State.SIN_ASIGNAR))){
+                return Boolean.TRUE.equals(evaluationAnd(c1, c2, State.SIN_ASIGNAR)) ? date1.compareTo(date2) : equalsState(c1, State.SIN_ASIGNAR);
+            }else if(Boolean.TRUE.equals(evaluationOr(c1, c2, State.FUERA_DE_FECHA))){
+                return Boolean.TRUE.equals(evaluationAnd(c1, c2, State.FUERA_DE_FECHA)) ? date1.compareTo(date2) : equalsState(c1, State.FUERA_DE_FECHA);
+            }else if(Boolean.TRUE.equals(evaluationOr(c1, c2, State.CUMPLIDOS))){
+                return Boolean.TRUE.equals(evaluationAnd(c1, c2, State.CUMPLIDOS)) ? date1.compareTo(date2) : equalsState(c1, State.CUMPLIDOS);
             }
             return date1.compareTo(date2);
         });

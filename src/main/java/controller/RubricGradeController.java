@@ -9,13 +9,10 @@ import config.endpoint_classes.rubric_students.RubricStudent;
 import config.endpoint_classes.student.Student;
 import config.endpoint_classes.student.StudentInterface;
 import config.enums.State;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;

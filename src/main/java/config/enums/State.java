@@ -1,11 +1,11 @@
 package config.enums;
 
 public enum State {
-    SIN_ASIGNAR("SinAsignar"),
-    APROBACION_PENDIENTE("AprobacionPendiente"),
-    DISPONIBLE_PARA_CALIFICAR("DisponibleParaCalificar"),
-    FUERA_DE_FECHA("FueraDeFecha"),
-    CUMPLIDOS("Cumplidos");
+    SinAsignar("SinAsignar"),
+    AprobacionPendiente("AprobacionPendiente"),
+    DisponibleParaCalificar("DisponibleParaCalificar"),
+    FueraDeFecha("FueraDeFecha"),
+    Cumplidos("Cumplidos");
 
     private final String name;
 

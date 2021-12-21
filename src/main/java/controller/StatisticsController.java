@@ -123,7 +123,7 @@ public class StatisticsController {
 
             criteriaCodeTotal.put(criteriaCode, criteriaCodeTotal.get(criteriaCode)+1);
 
-            if(evaluation.getState().compareTo(State.CUMPLIDOS) == 0 && Boolean.TRUE.equals(evaluation.getTotalEvaluation()))
+            if(evaluation.getState().compareTo(State.Cumplidos) == 0 && Boolean.TRUE.equals(evaluation.getTotalEvaluation()))
                 criteriaCodeTotal.put(criteriaCode, criteriaCodeTotal.get(criteriaCode)-1);
             if(competenceGrade == null)
                 continue;

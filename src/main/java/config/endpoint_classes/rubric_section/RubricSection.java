@@ -43,7 +43,7 @@ public class RubricSection {
         this.state = rubricCreationInterface.getState().toString();
 
         this.sections = new ArrayList<>();
-        if(role.equals(Role.CALIDAD.toString()) || rubricCreationInterface.getGrade() == 0){
+        if(role.equals(Role.Calidad.toString()) || rubricCreationInterface.getGrade() == 0){
             this.sections.addAll(Arrays.asList(rubricCreationInterface.getAllSections().split("\\|")));
         }else{
             this.sections.addAll(Arrays.asList(rubricCreationInterface.getSections().split("\\|")));

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +46,7 @@ public class RubricImportController {
             return msgReturn.callError(404, "rubric code empty");
 
         List<RubricImport> response = rubricService.getRubricImport(username, semester, courseCode, rubricCode);
-        response.sort((c1, c2) -> -c1.getSemester().compareTo(c2.getSemester()));
+        response.sort(Comparator.comparing(RubricImport::getSemester));
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 }

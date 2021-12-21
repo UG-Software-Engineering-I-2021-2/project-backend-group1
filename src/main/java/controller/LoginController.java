@@ -14,7 +14,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class LoginController {
-    private TokenValidator tokenValidator = new TokenValidator();
+    private final TokenValidator tokenValidator = new TokenValidator();
 
     @Autowired
     private UserService userService;
@@ -28,7 +28,6 @@ public class LoginController {
             errorMap.put("error", "token not verified");
             return  ResponseEntity.status(404).body(errorMap);
         }
-
         HashMap<String, String> map = new HashMap<>();
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));

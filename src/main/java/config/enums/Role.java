@@ -1,6 +1,6 @@
 package config.enums;
 
 public enum Role {
-    DOCENTE,
-    CALIDAD
+    Docente,
+    Calidad
 }

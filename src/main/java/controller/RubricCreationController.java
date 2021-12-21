@@ -126,7 +126,7 @@ public class RubricCreationController {
 
         if (rubricCreationBody.isOnlySave()) {
             rubricService.updateRubric(rubricCode, semester,
-                    new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.SIN_ASIGNAR));
+                    new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.SinAsignar));
             return msgReturn.callMsg(200, "msg", "Rúbrica guardada correctamente");
         } else {
             String[] to = new String[1];
@@ -166,7 +166,7 @@ public class RubricCreationController {
                     divCloseStr;
             mailSenderService.sendEmail(to, subject, body);
             rubricService.updateRubric(rubricCode, semester,
-                    new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.APROBACION_PENDIENTE));
+                    new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.AprobacionPendiente));
             return msgReturn.callMsg(200, "msg", "Solicitud enviada correctamente");
         }
     }

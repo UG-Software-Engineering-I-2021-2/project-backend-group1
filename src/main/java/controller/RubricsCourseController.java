@@ -51,15 +51,15 @@ public class RubricsCourseController {
                 date1 = new SimpleDateFormat("dd/MM/yyyy").parse(c1.getDate());
                 date2 = new SimpleDateFormat("dd/MM/yyyy").parse(c2.getDate());
             } catch (ParseException e) {
-                e.printStackTrace();
+                //Do nothing
             }
             assert date1 != null;
-            if(evaluationOr(c1, c2, State.SIN_ASIGNAR)){
-                return evaluationAnd(c1, c2, State.SIN_ASIGNAR) ? date1.compareTo(date2) : equalsState(c1, State.SIN_ASIGNAR);
-            }else if(evaluationOr(c1, c2, State.FUERA_DE_FECHA)){
-                return evaluationAnd(c1, c2, State.FUERA_DE_FECHA) ? date1.compareTo(date2) : equalsState(c1, State.FUERA_DE_FECHA);
-            }else if(evaluationOr(c1, c2, State.CUMPLIDOS)){
-                return evaluationAnd(c1, c2, State.CUMPLIDOS) ? date1.compareTo(date2) : equalsState(c1, State.CUMPLIDOS);
+            if(evaluationOr(c1, c2, State.SinAsignar)){
+                return evaluationAnd(c1, c2, State.SinAsignar) ? date1.compareTo(date2) : equalsState(c1, State.SinAsignar);
+            }else if(evaluationOr(c1, c2, State.FueraDeFecha)){
+                return evaluationAnd(c1, c2, State.FueraDeFecha) ? date1.compareTo(date2) : equalsState(c1, State.FueraDeFecha);
+            }else if(evaluationOr(c1, c2, State.Cumplidos)){
+                return evaluationAnd(c1, c2, State.Cumplidos) ? date1.compareTo(date2) : equalsState(c1, State.Cumplidos);
             }
             return date1.compareTo(date2);
         });

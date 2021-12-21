@@ -208,7 +208,7 @@ public class RubricGradeController {
         String studentCode = rubricGradeBody.getStudentCode();
 
         if(Boolean.FALSE.equals(rubricGradeBody.getOnlySave())){
-            rubricService.updateRubricState(rubricCode, semester, State.CUMPLIDOS);
+            rubricService.updateRubricState(rubricCode, semester, State.Cumplidos);
         }
         evaluationService.updateEvaluation(rubricCode, semester, courseCode, studentCode, studentGrade, competenceGrade, finished);
 
@@ -227,7 +227,7 @@ public class RubricGradeController {
         String semester = rubricGradeBody.getSemester();
         String rubricCode = rubricGradeBody.getRubricCode();
 
-        rubricService.updateRubricState(rubricCode, semester, State.CUMPLIDOS);
+        rubricService.updateRubricState(rubricCode, semester, State.Cumplidos);
 
         return msgReturn.callMsg(200, "msg", "Rúbrica finalizada correctamente");
     }

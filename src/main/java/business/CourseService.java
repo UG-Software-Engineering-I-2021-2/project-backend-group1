@@ -1,7 +1,7 @@
 package business;
 
-import config.endpointClasses.course.Course;
-import config.endpointClasses.course.CourseInterface;
+import config.endpoint_classes.course.Course;
+import config.endpoint_classes.course.CourseInterface;
 import config.enums.Role;
 import data.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class CourseService {
 
     public List<Course> getCourse(String semester, String username, String role){
         List<CourseInterface> courseInterfaces = null;
-        if(role.equals(Role.Docente.toString()))
+        if(role.equals(Role.DOCENTE.toString()))
             courseInterfaces = courseRepository.getCourseDocente(semester, username);
         else
             courseInterfaces = courseRepository.getCourseCalidad(semester);

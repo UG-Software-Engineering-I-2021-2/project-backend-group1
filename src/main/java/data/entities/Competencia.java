@@ -24,6 +24,7 @@ public class Competencia {
     private Set<RubricaBase> rubricas;
 
     public Competencia() {
+        //Empty constructor
     }
 
     // Getters and setters

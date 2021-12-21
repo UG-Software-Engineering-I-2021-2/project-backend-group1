@@ -82,6 +82,7 @@ public class User {
     private Set<Seccion> seccionesCoordina;
 
     public User() {
+        //Empty constructor
     }
 
     // Getters and setters

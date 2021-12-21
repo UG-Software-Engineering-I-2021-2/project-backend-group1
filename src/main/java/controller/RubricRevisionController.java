@@ -72,8 +72,7 @@ public class RubricRevisionController {
             @RequestHeader(value = "Authorization") String authorization,
             @RequestBody RubricRevisionBody rubricRevisionBody
     ) throws MessagingException {
-        System.out.println("\nTEST RUBRIC REVISION");
-        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
             return msgReturn.callError(404, "token not verified");
 
@@ -92,64 +91,64 @@ public class RubricRevisionController {
         String body;
         String msg;
 
+        String divStr = "<div>";
+        String divCloseStr = "</div>";
+        String brStr = "<br />";
+
         if (rubricRevisionBody.isAccepted()) {
-            System.out.println("\nAceptar");
             body = "<div style=\"display: flex; justify-content: center; width: 100%; font-family: SYSTEM-UI;\">\n" +
                     "    <div style=\"width: 50%;\">\n" +
-                    "        <div>\n" +
+                    divStr +
                     "            <p>Buen día,</p>\n" +
-                    "        </div>\n" +
-                    "        <div>\n" +
+                    divCloseStr +
+                    divStr +
                     "            Una rúbrica asignada para su revisión ha sido aceptada.\n" +
-                    "        </div>\n";
+                    divCloseStr;
             msg = "La rúbrica fue aceptada";
-            rubricService.updateRubricState(rubricCode, semester, State.DisponibleParaCalificar);
+            rubricService.updateRubricState(rubricCode, semester, State.DISPONIBLE_PARA_CALIFICAR);
         } else {
-            System.out.println("\nRechazar");
             body = "<div style=\"display: flex; justify-content: center; width: 100%; font-family: SYSTEM-UI;\">\n" +
                     "    <div style=\"width: 50%;\">\n" +
-                    "        <div>\n" +
+                    divStr +
                     "            <p>Buen día,</p>\n" +
-                    "        </div>\n" +
-                    "        <div>\n" +
+                    divCloseStr +
+                    divStr +
                     "            Una rúbrica asignada para su revisión ha sido rechazada con el siguiente\n" +
                     "            comentario:\n" +
-                    "        </div>\n" +
-                    "        <br />\n" +
-                    "        <div\n" +
+                    divCloseStr +
+                    brStr +
+                    divStr +
                     "            style=\"padding: 20px;color: black; background-color:aliceblue; border-radius:16px; display:flex; justify-content: center;\">\n" +
                     "            <b>" + comment + "</b>\n" +
-                    "        </div>";
+                    divCloseStr;
             msg = "La rúbrica fue rechazada";
-            rubricService.updateRubricState(rubricCode, semester, State.SinAsignar);
+            rubricService.updateRubricState(rubricCode, semester, State.SIN_ASIGNAR);
         }
-        body += "<br />\n" +
-                "        <div>\n" +
+        body += brStr +
+                divStr +
                 "            <b>Curso:</b> " + courseCode + " " + courseName + "\n" +
-                "            <br />\n" +
+                brStr +
                 "            <b>Código de rúbrica:</b> " + rubricCode + "\n" +
-                "            <br />\n" +
+                brStr +
                 "            <b>Título de rúbrica: </b> " + title + "\n" +
-                "        </div>\n" +
-                "        <br />\n" +
-                "        <div>Puede visualizar esta información dandole click al siguiente boton</div>\n" +
-                "        <br />\n" +
+                divCloseStr +
+                brStr +
+                divStr + "Puede visualizar esta información dandole click al siguiente boton</div>\n" +
+                brStr +
                 "        <div style=\"display: flex; justify-content: center; padding: 15px;\">\n" +
                 "            <a href=\"" + link + "\"\n" +
                 "                style=\"padding:15px; border: 2px solid black; text-decoration:none; color:black; border-radius: 16px\">\n" +
                 "                Ingresar al sistema </a>\n" +
-                "        </div>\n" +
+                divCloseStr +
                 "        <div style=\"display: flex; justify-content: flex-end;\">\n" +
                 "            <p>Atentamente.</p>\n" +
-                "        </div>\n" +
+                divCloseStr +
                 "        <div style=\"display: flex; justify-content: flex-end;\">\n" +
                 "            <p>Sistema de gestión de rúbricas</p>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "</div>";
-        System.out.println("\nAntes de enviar email");
+                divCloseStr +
+                divCloseStr +
+                divCloseStr;
         mailSenderService.sendEmail(to, subject, body);
-        System.out.println("\nRETURN");
         return msgReturn.callMsg(200, "msg", msg);
     }
 }

@@ -2,13 +2,10 @@ package controller;
 
 import business.UserService;
 import data.entities.User;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -23,12 +20,9 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<HashMap<String, String>> login_verifier(@RequestHeader(value="Authorization") String authorization) throws JSONException, GeneralSecurityException, IOException {
+    public ResponseEntity<HashMap<String, String>> loginVerifier(@RequestHeader(value="Authorization") String authorization) {
 
-        System.out.println("TEST LOGIN");
-
-
-        Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if(payload == null){
             HashMap<String, String> errorMap = new HashMap<>();
             errorMap.put("error", "token not verified");

@@ -4,10 +4,10 @@ import business.EvaluationService;
 import business.RubricService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
-import config.endpointClasses.rubricSection.RubricSection;
-import config.endpointClasses.rubricStudents.RubricStudent;
-import config.endpointClasses.student.Student;
-import config.endpointClasses.student.StudentInterface;
+import config.endpoint_classes.rubric_section.RubricSection;
+import config.endpoint_classes.rubric_students.RubricStudent;
+import config.endpoint_classes.student.Student;
+import config.endpoint_classes.student.StudentInterface;
 import config.enums.State;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +80,14 @@ public class RubricGradeController {
 
     private final MsgReturn msgReturn = new MsgReturn();
 
+    private static final String TOKEN_NOT_VERIFIED = "token not verified";
+    private static final String SEMESTER_STR = "semester";
+    private static final String COURSE_CODE_STR = "courseCode";
+    private static final String RUBRIC_CODE_STR = "rubricCode";
+    private static final String SEMESTER_EMPTY_STR = "semester empty";
+    private static final String COURSE_CODE_EMPTY_STR = "course code empty";
+    private static final String RUBRIC_CODE_EMPTY_STR = "rubric code empty";
+
     @Autowired
     private RubricService rubricService;
 
@@ -88,41 +96,31 @@ public class RubricGradeController {
 
     @GetMapping("/rubric_sections")
     public ResponseEntity<String> rubricSectionsController(@RequestHeader(value = "Authorization") String authorization,
-                                                           @RequestParam Map<String, String> requestParam)
-            throws JSONException, GeneralSecurityException, IOException {
-        System.out.println("\nTEST RUBRIC SECTIONS GET");
-
-        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+                                                           @RequestParam Map<String, String> requestParam) {
+        GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
-            return msgReturn.callError(404, "token not verified");
+            return msgReturn.callError(404, TOKEN_NOT_VERIFIED);
 
         String email = payload.getEmail();
         String username = email.substring(0,email.indexOf('@'));
 
         String role = requestParam.get("role");
-        String semester = requestParam.get("semester");
-        String courseCode = requestParam.get("courseCode");
-        String rubricCode = requestParam.get("rubricCode");
+        String semester = requestParam.get(SEMESTER_STR);
+        String courseCode = requestParam.get(COURSE_CODE_STR);
+        String rubricCode = requestParam.get(RUBRIC_CODE_STR);
 
         if (role == null || role.isEmpty())
             return msgReturn.callError(404, "role empty");
         if (semester == null || semester.isEmpty())
-            return msgReturn.callError(404, "semester empty");
+            return msgReturn.callError(404, SEMESTER_EMPTY_STR);
         if (courseCode == null || courseCode.isEmpty())
-            return msgReturn.callError(404, "course code empty");
+            return msgReturn.callError(404, COURSE_CODE_EMPTY_STR);
         if (rubricCode == null || rubricCode.isEmpty())
-            return msgReturn.callError(404, "rubric code empty");
-
-        System.out.println("Role " + role);
-        System.out.println("Semester " + semester);
-        System.out.println("CourseCode " + courseCode);
-        System.out.println("RubricCode " + rubricCode);
-        System.out.println("Username " + username);
+            return msgReturn.callError(404, RUBRIC_CODE_EMPTY_STR);
 
         List<RubricSection> response = new ArrayList<>();
         response.add(rubricService.getRubricSection(rubricCode, semester, courseCode, username, role));
-        System.out.println(gson.toJson(response));
-        System.out.println("RETURN");
+
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 
@@ -130,30 +128,23 @@ public class RubricGradeController {
     public ResponseEntity<String> studentsBySectionsController(@RequestHeader(value = "Authorization") String authorization,
                                                            @RequestParam Map<String, String> requestParam)
             throws JSONException, GeneralSecurityException, IOException {
-        System.out.println("\nTEST STUDENTS BY SECTION GET");
-
-        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
-            return msgReturn.callError(404, "token not verified");
+            return msgReturn.callError(404, TOKEN_NOT_VERIFIED);
 
-        String semester = requestParam.get("semester");
-        String courseCode = requestParam.get("courseCode");
-        String rubricCode = requestParam.get("rubricCode");
+        String semester = requestParam.get(SEMESTER_STR);
+        String courseCode = requestParam.get(COURSE_CODE_STR);
+        String rubricCode = requestParam.get(RUBRIC_CODE_STR);
         String section = requestParam.get("section");
 
         if (semester == null || semester.isEmpty())
-            return msgReturn.callError(404, "semester empty");
+            return msgReturn.callError(404, SEMESTER_EMPTY_STR);
         if (courseCode == null || courseCode.isEmpty())
-            return msgReturn.callError(404, "course code empty");
+            return msgReturn.callError(404, COURSE_CODE_EMPTY_STR);
         if (rubricCode == null || rubricCode.isEmpty())
-            return msgReturn.callError(404, "rubric code empty");
+            return msgReturn.callError(404, RUBRIC_CODE_EMPTY_STR);
         if (section == null || section.isEmpty())
             return msgReturn.callError(404, "section empty");
-
-        System.out.println("Semester " + semester);
-        System.out.println("CourseCode " + courseCode);
-        System.out.println("RubricCode " + rubricCode);
-        System.out.println("Section " + section);
 
         List<StudentInterface> studentInterfaceList = rubricService.getStudents(rubricCode, semester, courseCode, section);
 
@@ -170,56 +161,43 @@ public class RubricGradeController {
         StudentBySectionResponse studentBySectionResponse = new StudentBySectionResponse(studentList, studentTotal, studentFinished);
         List<StudentBySectionResponse> response = new ArrayList<>();
         response.add(studentBySectionResponse);
-        System.out.println(gson.toJson(response));
-        System.out.println("RETURN");
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 
     @GetMapping("/rubric_grade")
     public ResponseEntity<String> rubricGradeControllerGet(@RequestHeader(value = "Authorization") String authorization,
-                                                               @RequestParam Map<String, String> requestParam)
-            throws JSONException, GeneralSecurityException, IOException {
-        System.out.println("\nTEST RUBRIC GRADE GET");
-
-        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+                                                               @RequestParam Map<String, String> requestParam) {
+        GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
-            return msgReturn.callError(404, "token not verified");
+            return msgReturn.callError(404, TOKEN_NOT_VERIFIED);
 
-        String semester = requestParam.get("semester");
-        String courseCode = requestParam.get("courseCode");
-        String rubricCode = requestParam.get("rubricCode");
+        String semester = requestParam.get(SEMESTER_STR);
+        String courseCode = requestParam.get(COURSE_CODE_STR);
+        String rubricCode = requestParam.get(RUBRIC_CODE_STR);
         String studentCode = requestParam.get("studentCode");
 
         if (semester == null || semester.isEmpty())
-            return msgReturn.callError(404, "semester empty");
+            return msgReturn.callError(404, SEMESTER_EMPTY_STR);
         if (courseCode == null || courseCode.isEmpty())
-            return msgReturn.callError(404, "course code empty");
+            return msgReturn.callError(404, COURSE_CODE_EMPTY_STR);
         if (rubricCode == null || rubricCode.isEmpty())
-            return msgReturn.callError(404, "rubric code empty");
+            return msgReturn.callError(404, RUBRIC_CODE_EMPTY_STR);
         if (studentCode == null || studentCode.isEmpty())
             return msgReturn.callError(404, "student code empty");
 
-        System.out.println("Semester " + semester);
-        System.out.println("CourseCode " + courseCode);
-        System.out.println("RubricCode " + rubricCode);
-        System.out.println("StudentCode " + studentCode);
-
         RubricStudent response = rubricService.getRubricStudent(rubricCode, semester, courseCode, studentCode);
-        System.out.println(gson.toJson(response));
-        System.out.println("RETURN");
+
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 
     @PostMapping("/rubric_grade")
     public ResponseEntity<String> rubricGradeControllerPost(
             @RequestHeader(value = "Authorization") String authorization,
-            @RequestBody RubricGradeBody rubricGradeBody)
-            throws JSONException, GeneralSecurityException, IOException {
-        System.out.println("\nTEST RUBRIC GRADE POST");
+            @RequestBody RubricGradeBody rubricGradeBody) {
 
-        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
-            return msgReturn.callError(404, "token not verified");
+            return msgReturn.callError(404, TOKEN_NOT_VERIFIED);
 
         String semester = rubricGradeBody.getSemester();
         String rubricCode = rubricGradeBody.getRubricCode();
@@ -229,41 +207,28 @@ public class RubricGradeController {
         String courseCode = rubricGradeBody.getCourseCode();
         String studentCode = rubricGradeBody.getStudentCode();
 
-        System.out.println("\nsemester: " + semester);
-        System.out.println("\nrubricCode: " + rubricCode);
-        System.out.println("\ncourseCode: " + courseCode);
-        System.out.println("\nstudentCode: " + studentCode);
-        System.out.println("\nonlySave: " + rubricGradeBody.getOnlySave());
-
         if(Boolean.FALSE.equals(rubricGradeBody.getOnlySave())){
-            rubricService.updateRubricState(rubricCode, semester, State.Cumplidos);
+            rubricService.updateRubricState(rubricCode, semester, State.CUMPLIDOS);
         }
         evaluationService.updateEvaluation(rubricCode, semester, courseCode, studentCode, studentGrade, competenceGrade, finished);
 
-        System.out.println("\nRETURN");
         return msgReturn.callMsg(200, "msg", "Evaluación guardada correctamente");
     }
 
     @PostMapping("/rubric_finish")
     public ResponseEntity<String> rubricFinishControllerPost(
             @RequestHeader(value = "Authorization") String authorization,
-            @RequestBody RubricGradeBody rubricGradeBody)
-            throws JSONException, GeneralSecurityException, IOException {
-        System.out.println("\nTEST RUBRIC FINISH POST");
+            @RequestBody RubricGradeBody rubricGradeBody) {
 
-        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
-            return msgReturn.callError(404, "token not verified");
+            return msgReturn.callError(404, TOKEN_NOT_VERIFIED);
 
         String semester = rubricGradeBody.getSemester();
         String rubricCode = rubricGradeBody.getRubricCode();
 
-        System.out.println("\nsemester: " + semester);
-        System.out.println("\nrubricCode: " + rubricCode);
+        rubricService.updateRubricState(rubricCode, semester, State.CUMPLIDOS);
 
-        rubricService.updateRubricState(rubricCode, semester, State.Cumplidos);
-
-        System.out.println("\nRETURN");
         return msgReturn.callMsg(200, "msg", "Rúbrica finalizada correctamente");
     }
 }

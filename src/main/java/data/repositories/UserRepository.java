@@ -1,6 +1,6 @@
 package data.repositories;
 
-import config.endpointClasses.user.CoordinatorInterface;
+import config.endpoint_classes.user.CoordinatorInterface;
 import data.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

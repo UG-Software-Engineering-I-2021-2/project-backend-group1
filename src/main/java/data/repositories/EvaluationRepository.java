@@ -1,6 +1,6 @@
 package data.repositories;
 
-import config.endpointClasses.evaluation.EvaluationInterface;
+import config.endpoint_classes.evaluation.EvaluationInterface;
 import data.entities.Evalua;
 import data.entities.composite_keys.EvaluaPK;
 import org.springframework.data.jpa.repository.JpaRepository;

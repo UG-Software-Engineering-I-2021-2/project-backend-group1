@@ -4,16 +4,13 @@ import business.MailSenderService;
 import business.RubricService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
-import config.endpointClasses.rubric.RubricUpdate;
-import config.endpointClasses.rubricCreation.RubricCreation;
+import config.endpoint_classes.rubric.RubricUpdate;
+import config.endpoint_classes.rubric_creation.RubricCreation;
 import config.enums.State;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,11 +80,8 @@ public class RubricCreationController {
 
     @GetMapping("/rubric_creation")
     public ResponseEntity<String> rubricCreationController(@RequestHeader(value = "Authorization") String authorization,
-            @RequestParam Map<String, String> requestParam)
-            throws JSONException, GeneralSecurityException, IOException {
-        System.out.println("\nTEST RUBRIC CREATION GET");
-
-        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+            @RequestParam Map<String, String> requestParam) {
+        GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
             return msgReturn.callError(404, "token not verified");
 
@@ -102,13 +96,8 @@ public class RubricCreationController {
         if (rubricCode == null || rubricCode.isEmpty())
             return msgReturn.callError(404, "rubric code empty");
 
-        System.out.println("Semester " + semester);
-        System.out.println("CourseCode " + courseCode);
-        System.out.println("RubricCode " + rubricCode);
-
         List<RubricCreation> response = new ArrayList<>();
         response.add(rubricService.getRubricCreation(rubricCode, semester, courseCode));
-        System.out.println(gson.toJson(response));
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 
@@ -116,10 +105,13 @@ public class RubricCreationController {
     public ResponseEntity<String> rubricCreationControllerPost(
             @RequestHeader(value = "Authorization") String authorization,
             @RequestBody RubricCreationBody rubricCreationBody)
-            throws JSONException, GeneralSecurityException, IOException, MessagingException {
-        System.out.println("\nTEST RUBRIC CREATION POST");
+            throws MessagingException {
 
-        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        String divStr = "<div>";
+        String divCloseStr = "</div>";
+        String brStr = "<br />";
+
+        GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
             return msgReturn.callError(404, "token not verified");
 
@@ -132,17 +124,9 @@ public class RubricCreationController {
         String courseName = rubricCreationBody.getCourseName();
         String link = rubricCreationBody.getLink();
 
-        System.out.println("\nsemester: " + semester);
-        System.out.println("\nrubricCode: " + rubricCode);
-        System.out.println("\nactivity: " + activity);
-        System.out.println("\ncontent: " + gson.toJson(content));
-        System.out.println("\ncourseCode: " + courseCode);
-        System.out.println("\ncourseName: " + courseName);
-
         if (rubricCreationBody.isOnlySave()) {
             rubricService.updateRubric(rubricCode, semester,
-                    new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.SinAsignar));
-            System.out.println("\nRETURN");
+                    new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.SIN_ASIGNAR));
             return msgReturn.callMsg(200, "msg", "Rúbrica guardada correctamente");
         } else {
             String[] to = new String[1];
@@ -150,40 +134,39 @@ public class RubricCreationController {
             String subject = "Nueva rúbrica creada requiere revisión. Rúbrica: " + title + " del curso " + courseCode + " " + courseName;
             String body = "<div style=\"display: flex; justify-content: center; width: 100%; font-family: SYSTEM-UI;\">\n" +
                     "    <div style=\"width: 50%;\">\n" +
-                    "        <div>\n" +
+                    divStr +
                     "            <p>Buen día,</p>\n" +
-                    "        </div>\n" +
-                    "        <div>\n" +
+                    divCloseStr +
+                    divStr +
                     "            El profesor " + payload.getEmail() + " acaba de crear una nueva rúbrica y requiere de una aprobación.\n" +
-                    "        </div>\n" +
-                    "        <br />\n" +
-                    "        <div>\n" +
+                    divCloseStr +
+                    brStr +
+                    divStr +
                     "            <b>Curso:</b> " + courseCode + " " + courseName + "\n" +
                     "            <br />\n" +
                     "            <b>Código de rúbrica:</b> " + rubricCode + "\n" +
                     "            <br />\n" +
                     "            <b>Título de rúbrica: </b> " + title + "\n" +
-                    "        </div>\n" +
-                    "        <br />\n" +
+                    divCloseStr +
+                    brStr +
                     "        <div>Para aprobar o rechazar la solicitud, ingrese al sistema haciendo click en el siguiente botón.</div>\n" +
-                    "        <br />\n" +
+                    brStr +
                     "        <div style=\"display: flex; justify-content: center; padding: 15px;\">\n" +
                     "            <a href=\"" + link + "\"\n" +
                     "                style=\"padding:15px; border: 2px solid black; text-decoration:none; color:black; border-radius: 16px\">\n" +
                     "                Ingresar al sistema </a>\n" +
-                    "        </div>\n" +
+                    divCloseStr +
                     "        <div style=\"display: flex; justify-content: flex-end;\">\n" +
                     "            <p>Atentamente.</p>\n" +
-                    "        </div>\n" +
+                    divCloseStr +
                     "        <div style=\"display: flex; justify-content: flex-end;\">\n" +
                     "            <p>Sistema de gestión de rúbricas</p>\n" +
-                    "        </div>\n" +
-                    "    </div>\n" +
-                    "</div>";
+                    divCloseStr +
+                    divCloseStr +
+                    divCloseStr;
             mailSenderService.sendEmail(to, subject, body);
             rubricService.updateRubric(rubricCode, semester,
-                    new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.AprobacionPendiente));
-            System.out.println("\nRETURN");
+                    new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.APROBACION_PENDIENTE));
             return msgReturn.callMsg(200, "msg", "Solicitud enviada correctamente");
         }
     }

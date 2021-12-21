@@ -1,11 +1,11 @@
 package data.dtos;
 
-import data.entities.Curso;
-
 public class CourseDTO {
     String nombre;
 
-    public CourseDTO() {}
+    public CourseDTO() {
+        //Default constructor
+    }
 
     public String getNombre() {
         return nombre;

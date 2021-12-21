@@ -3,14 +3,11 @@ package controller;
 import business.RubricService;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.gson.Gson;
-import config.endpointClasses.rubricImport.RubricImport;
-import org.json.JSONException;
+import config.endpoint_classes.rubric_import.RubricImport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +25,9 @@ public class RubricImportController {
 
     @GetMapping("/rubric_import")
     public ResponseEntity<String> rubricImportController(@RequestHeader(value = "Authorization") String authorization,
-                                                           @RequestParam Map<String, String> requestParam)
-            throws JSONException, GeneralSecurityException, IOException {
-        System.out.println("\nTEST RUBRIC IMPORT GET");
+                                                           @RequestParam Map<String, String> requestParam) {
 
-        GoogleIdToken.Payload payload = tokenValidator.ValidateTokenAndGetPayload(authorization);
+        GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
             return msgReturn.callError(404, "token not verified");
 
@@ -49,14 +44,8 @@ public class RubricImportController {
         if (rubricCode == null || rubricCode.isEmpty())
             return msgReturn.callError(404, "rubric code empty");
 
-        System.out.println("username " + username);
-        System.out.println("Semester " + semester);
-        System.out.println("CourseCode " + courseCode);
-        System.out.println("RubricCode " + rubricCode);
-
         List<RubricImport> response = rubricService.getRubricImport(username, semester, courseCode, rubricCode);
         response.sort((c1, c2) -> -c1.getSemester().compareTo(c2.getSemester()));
-        System.out.println(gson.toJson(response));
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 }

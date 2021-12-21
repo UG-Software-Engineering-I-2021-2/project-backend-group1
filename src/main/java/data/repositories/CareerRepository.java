@@ -1,6 +1,6 @@
 package data.repositories;
 
-import config.endpointClasses.career.CareerInterface;
+import config.endpoint_classes.career.CareerInterface;
 import data.entities.Carrera;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

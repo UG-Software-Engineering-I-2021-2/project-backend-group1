@@ -3,7 +3,6 @@ package data.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import config.enums.State;
 import data.entities.composite_keys.RubricaPK;
-import org.checkerframework.checker.units.qual.C;
 
 import javax.persistence.*;
 import java.time.LocalDate;

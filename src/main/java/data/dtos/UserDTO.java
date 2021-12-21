@@ -7,7 +7,9 @@ public class UserDTO {
     String username;
     Role rol;
 
-    public UserDTO() {}
+    public UserDTO() {
+        //Empty constructor
+    }
 
     public Long getCodEmpleado() {
         return codEmpleado;

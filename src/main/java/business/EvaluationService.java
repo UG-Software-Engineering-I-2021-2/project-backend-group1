@@ -1,7 +1,7 @@
 package business;
 
-import config.endpointClasses.evaluation.Evaluation;
-import config.endpointClasses.evaluation.EvaluationInterface;
+import config.endpoint_classes.evaluation.Evaluation;
+import config.endpoint_classes.evaluation.EvaluationInterface;
 import data.entities.Evalua;
 import data.repositories.EvaluationRepository;
 import org.springframework.beans.factory.annotation.Autowired;

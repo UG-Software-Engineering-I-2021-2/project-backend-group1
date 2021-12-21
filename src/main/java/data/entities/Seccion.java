@@ -34,6 +34,7 @@ public class Seccion {
     private Set<Rubrica> rubricasRubricFinish;
 
     public Seccion() {
+        //Empty constructor
     }
 
     // Getters and setters

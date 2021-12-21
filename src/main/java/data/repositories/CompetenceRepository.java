@@ -1,6 +1,6 @@
 package data.repositories;
 
-import config.endpointClasses.competence.CompetenceInterface;
+import config.endpoint_classes.competence.CompetenceInterface;
 import data.entities.Competencia;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

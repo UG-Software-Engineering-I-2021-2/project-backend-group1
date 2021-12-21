@@ -54,6 +54,7 @@ public class Evalua {
     private Rubrica rubricaEvalua;
 
     public Evalua() {
+        //Empty constructor
     }
 
     // Getters and setters

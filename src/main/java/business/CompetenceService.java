@@ -1,7 +1,7 @@
 package business;
 
-import config.endpointClasses.competence.Competence;
-import config.endpointClasses.competence.CompetenceInterface;
+import config.endpoint_classes.competence.Competence;
+import config.endpoint_classes.competence.CompetenceInterface;
 import data.repositories.CompetenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

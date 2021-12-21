@@ -30,6 +30,7 @@ public class Alumno {
     private Set<Evalua> evalua;
 
     public Alumno() {
+        // Default constructor
     }
 
     // Getters and setters

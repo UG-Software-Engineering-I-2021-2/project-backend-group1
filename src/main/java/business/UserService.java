@@ -1,7 +1,7 @@
 package business;
 
 import business.custom_exceptions.CustomNotFoundException;
-import config.endpointClasses.user.CoordinatorInterface;
+import config.endpoint_classes.user.CoordinatorInterface;
 import data.entities.User;
 import data.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +32,6 @@ public class UserService {
         List<CoordinatorInterface> coordinatorList = userRepository.findCourseCoordinatorsUsername(semester, courseCode);
         if (coordinatorList.isEmpty())
             throw new CustomNotFoundException("No existen coordinadores para el curso con el código: " + courseCode + ".\n");
-        System.out.println("\nTEST en user sevice");
-        System.out.println("\nN: " + coordinatorList.size());
-        for(CoordinatorInterface coordinatorInterface : coordinatorList)
-            System.out.println("\n\tusername: " + coordinatorInterface.getUsername());
         List<String> response = new ArrayList<>();
         for (CoordinatorInterface ci : coordinatorList) {
             String username = ci.getUsername() + "@utec.edu.pe";

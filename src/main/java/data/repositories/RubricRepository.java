@@ -1,10 +1,10 @@
 package data.repositories;
 
-import config.endpointClasses.rubric.RubricInterface;
-import config.endpointClasses.rubricCreation.RubricCreationInterface;
-import config.endpointClasses.rubricImport.RubricImportInterface;
-import config.endpointClasses.rubricStudents.RubricStudentInterface;
-import config.endpointClasses.student.StudentInterface;
+import config.endpoint_classes.rubric.RubricInterface;
+import config.endpoint_classes.rubric_creation.RubricCreationInterface;
+import config.endpoint_classes.rubric_import.RubricImportInterface;
+import config.endpoint_classes.rubric_students.RubricStudentInterface;
+import config.endpoint_classes.student.StudentInterface;
 import data.entities.Rubrica;
 import data.entities.composite_keys.RubricaPK;
 import org.springframework.data.jpa.repository.JpaRepository;

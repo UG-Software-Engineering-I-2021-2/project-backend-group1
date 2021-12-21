@@ -1,13 +1,13 @@
 package config.enums;
 
 public enum State {
-    SinAsignar("SinAsignar"),
-    AprobacionPendiente("AprobacionPendiente"),
-    DisponibleParaCalificar("DisponibleParaCalificar"),
-    FueraDeFecha("FueraDeFecha"),
-    Cumplidos("Cumplidos");
+    SIN_ASIGNAR("SinAsignar"),
+    APROBACION_PENDIENTE("AprobacionPendiente"),
+    DISPONIBLE_PARA_CALIFICAR("DisponibleParaCalificar"),
+    FUERA_DE_FECHA("FueraDeFecha"),
+    CUMPLIDOS("Cumplidos");
 
-    private String name;
+    private final String name;
 
     State(String name) {
         this.name = name;
@@ -30,13 +30,14 @@ public enum State {
                 return "Fuera de fecha";
             case "Cumplidos":
                 return "Cumplidos";
+            default:
+                return name;
         }
-
-        return name;
     }
 
     public static State getByName(String name){
         return State.valueOf(name.replaceAll(" ", "_"));
     }
+
 
 }

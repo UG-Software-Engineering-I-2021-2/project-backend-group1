@@ -41,6 +41,7 @@ public class Carrera {
     private Set<Curso> cursosPertenece;
 
     public Carrera() {
+        //Empty constructor
     }
 
     // Getters and setters

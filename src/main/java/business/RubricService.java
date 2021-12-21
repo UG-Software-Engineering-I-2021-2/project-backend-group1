@@ -1,17 +1,16 @@
 package business;
 
-import config.endpointClasses.rubric.Rubric;
-import config.endpointClasses.rubric.RubricInterface;
-import config.endpointClasses.rubric.RubricUpdate;
-import config.endpointClasses.rubricCreation.RubricCreation;
-import config.endpointClasses.rubricCreation.RubricCreationInterface;
-import config.endpointClasses.rubricImport.RubricImport;
-import config.endpointClasses.rubricImport.RubricImportInterface;
-import config.endpointClasses.rubricSection.RubricSection;
-import config.endpointClasses.rubricStudents.RubricStudent;
-import config.endpointClasses.rubricStudents.RubricStudentInterface;
-import config.endpointClasses.student.Student;
-import config.endpointClasses.student.StudentInterface;
+import config.endpoint_classes.rubric.Rubric;
+import config.endpoint_classes.rubric.RubricInterface;
+import config.endpoint_classes.rubric.RubricUpdate;
+import config.endpoint_classes.rubric_creation.RubricCreation;
+import config.endpoint_classes.rubric_creation.RubricCreationInterface;
+import config.endpoint_classes.rubric_import.RubricImport;
+import config.endpoint_classes.rubric_import.RubricImportInterface;
+import config.endpoint_classes.rubric_section.RubricSection;
+import config.endpoint_classes.rubric_students.RubricStudent;
+import config.endpoint_classes.rubric_students.RubricStudentInterface;
+import config.endpoint_classes.student.StudentInterface;
 import config.enums.State;
 import data.entities.Rubrica;
 import data.repositories.RubricRepository;
@@ -62,8 +61,6 @@ public class RubricService {
             String[] parts = semester.split("-");
             semesterPrev = String.valueOf(Integer.parseInt(parts[0].trim()) - 1) + " - 2";
         }
-        System.out.println("Semester: " + semester);
-        System.out.println("SemesterPrev: " + semesterPrev);
         List<RubricImportInterface> rubricImportInterfaceList = rubricRepository.getRubricImport(username, semester, semesterPrev, courseCode, rubricCode);
         List<RubricImport> response = new ArrayList<>();
         for(RubricImportInterface rubricImportInterface : rubricImportInterfaceList){

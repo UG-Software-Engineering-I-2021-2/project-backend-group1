@@ -8,7 +8,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import java.util.Collections;
 
 public class TokenValidator {
-    public GoogleIdToken.Payload ValidateTokenAndGetPayload(String idTokenString)  {
+    public GoogleIdToken.Payload validateTokenAndGetPayload(String idTokenString)  {
 
         try {
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
@@ -16,20 +16,13 @@ public class TokenValidator {
                     .build();
 
             GoogleIdToken idToken = verifier.verify(idTokenString);
-            System.out.println(idToken);
 
             if (idToken != null) {
-                GoogleIdToken.Payload payload = idToken.getPayload();
-
-                return payload;
+                return idToken.getPayload();
             }
         }catch(Exception er){
-            System.out.println(er);
             return null;
-
         }
-        System.out.println("Cant get token info");
-
         return null;
     }
 }

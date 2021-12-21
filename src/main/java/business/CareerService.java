@@ -1,7 +1,7 @@
 package business;
 
-import config.endpointClasses.career.Career;
-import config.endpointClasses.career.CareerInterface;
+import config.endpoint_classes.career.Career;
+import config.endpoint_classes.career.CareerInterface;
 import data.repositories.CareerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

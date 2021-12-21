@@ -49,6 +49,7 @@ public class RubricaBase {
     private Set<Rubrica> rubricas;
 
     public RubricaBase() {
+        //Empty constructor
     }
 
     // Getters and setters

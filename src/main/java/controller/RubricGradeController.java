@@ -9,13 +9,10 @@ import config.endpoint_classes.rubric_students.RubricStudent;
 import config.endpoint_classes.student.Student;
 import config.endpoint_classes.student.StudentInterface;
 import config.enums.State;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -126,8 +123,7 @@ public class RubricGradeController {
 
     @GetMapping("/students_by_sections")
     public ResponseEntity<String> studentsBySectionsController(@RequestHeader(value = "Authorization") String authorization,
-                                                           @RequestParam Map<String, String> requestParam)
-            throws JSONException, GeneralSecurityException, IOException {
+                                                           @RequestParam Map<String, String> requestParam) {
         GoogleIdToken.Payload payload = tokenValidator.validateTokenAndGetPayload(authorization);
         if (payload == null)
             return msgReturn.callError(404, TOKEN_NOT_VERIFIED);
@@ -154,7 +150,7 @@ public class RubricGradeController {
         for(StudentInterface studentInterface : studentInterfaceList){
             studentList.add(new Student(studentInterface));
             studentTotal += 1;
-            if(studentInterface.getTotalEvaluation())
+            if(Boolean.TRUE.equals(studentInterface.getTotalEvaluation()))
                 studentFinished += 1;
         }
         studentList.sort(Comparator.comparing(Student::getName));

@@ -34,10 +34,4 @@ public enum State {
                 return name;
         }
     }
-
-    public static State getByName(String name){
-        return State.valueOf(name.replaceAll(" ", "_"));
-    }
-
-
 }

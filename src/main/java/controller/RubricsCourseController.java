@@ -22,7 +22,7 @@ class RubricsCourseBody {
     public String getRole() {return role;}
 }
 
-@CrossOrigin(origins = "https://group1-ingsort1.herokuapp.com/*", allowedHeaders = "Authorization")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class RubricsCourseController {
     private final TokenValidator tokenValidator = new TokenValidator();

@@ -8,4 +8,7 @@ public class Competence {
         this.code = competenceInterface.getCode();
         this.description = competenceInterface.getDescription();
     }
+    public String getCode(){
+        return this.code;
+    }
 }

@@ -78,6 +78,7 @@ public class StatisticsController {
         System.out.println("\ncareerId " + careerId);
 
         List<Competence> response = competenceService.getAllByCareer(Integer.valueOf(careerId));
+        response.sort(Comparator.comparing(Competence::getCode));
         System.out.println(gson.toJson(response));
         System.out.println("RETURN");
         return ResponseEntity.status(200).body(gson.toJson(response));

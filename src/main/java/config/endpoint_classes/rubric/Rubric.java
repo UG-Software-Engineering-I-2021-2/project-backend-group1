@@ -30,7 +30,7 @@ public class Rubric {
         this.evidence = rubricInterface.getEvidence();
         this.activity = rubricInterface.getActivity();
         if(this.state.equals(State.SinAsignar.toString())){
-            if(role.equals(Role.DOCENTE.toString()))
+            if(role.equals(Role.Docente.toString()))
                 this.canEdit = rubricInterface.getCoordinates() == 1;
             else
                 this.canEdit = false;
@@ -43,7 +43,7 @@ public class Rubric {
         this.competenceCode = rubricInterface.getCompetenceCode();
         String[] criteriaCodeParts = rubricInterface.getCriteriaCode().split("\\.");
         this.criteriaCode = criteriaCodeParts[0] + "." + criteriaCodeParts[1] + ".";
-        if(role.equals(Role.CALIDAD.toString()))
+        if(role.equals(Role.Calidad.toString()))
             this.canGrade = Boolean.FALSE;
         else
             this.canGrade = rubricInterface.getGrade() == 1;

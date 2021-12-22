@@ -19,11 +19,15 @@ import java.util.*;
 
 class StatisticResponse{
     String criteria;
+    String criteriaCode;
     Map<Integer, Double> score;
+    Map<Integer, String> state;
 
-    public StatisticResponse(String criteria, Map<Integer, Double> score){
+    public StatisticResponse(String criteria, Map<Integer, Double> score, String criteriaCode, Map<Integer, String> state){
         this.criteria = criteria;
         this.score = score;
+        this.criteriaCode = criteriaCode;
+        this.state = state;
     }
     public String getCriteria() { return  criteria; }
 }
@@ -74,7 +78,7 @@ public class StatisticsController {
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 
-    String getCriteriaCode(String raw, Integer level){
+    String getCriteriaCode(String raw){
         StringBuilder criteriaCode = new StringBuilder();
         int i = 0;
         while(raw.charAt(i) != '.'){
@@ -88,8 +92,13 @@ public class StatisticsController {
             i++;
         }
         criteriaCode.append('.');
-        criteriaCode.append(level);
         return criteriaCode.toString();
+    }
+
+    String getCriteriaCodeWithLevel(String raw, Integer level){
+        String criteriaCode = getCriteriaCode(raw);
+        criteriaCode += level;
+        return criteriaCode;
     }
 
     @GetMapping("/statistics1_get")
@@ -107,13 +116,16 @@ public class StatisticsController {
         HashMap<String, Integer> criteriaCodeGood = new HashMap<>();
         HashMap<String, Integer> criteriaCodeTotal = new HashMap<>();
         HashMap<String, String> criteriaCodeMap = new HashMap<>();
+        HashMap<String, String> criteriaCodeState = new HashMap<>();
+
         for(Evaluation evaluation : evaluationList){
-            String criteriaCode = this.getCriteriaCode(evaluation.getCriteria(), evaluation.getLevel());
+            String criteriaCode = this.getCriteriaCodeWithLevel(evaluation.getCriteria(), evaluation.getLevel());
 
             if(!criteriaCodeMap.containsKey(criteriaCode)){
                 criteriaCodeMap.put(criteriaCode, evaluation.getCriteria());
                 criteriaCodeGood.put(criteriaCode, 0);
                 criteriaCodeTotal.put(criteriaCode, 0);
+                criteriaCodeState.put(criteriaCode, "Procesado");
             }
 
             Type empMapType = new TypeToken<Map<String, Integer>>() {}.getType();
@@ -123,6 +135,8 @@ public class StatisticsController {
 
             criteriaCodeTotal.put(criteriaCode, criteriaCodeTotal.get(criteriaCode)+1);
 
+            if(evaluation.getState().compareTo(State.Cumplidos) != 0)
+                criteriaCodeState.put(criteriaCode, "En Proceso");
             if(evaluation.getState().compareTo(State.Cumplidos) == 0 && Boolean.TRUE.equals(evaluation.getTotalEvaluation()))
                 criteriaCodeTotal.put(criteriaCode, criteriaCodeTotal.get(criteriaCode)-1);
             if(competenceGrade == null)
@@ -131,30 +145,37 @@ public class StatisticsController {
                 criteriaCodeGood.put(criteriaCode, criteriaCodeGood.get(criteriaCode)+1);
         }
         HashMap<String, HashMap<Integer, Double>> statisticMap = new HashMap<>();
+        HashMap<String, HashMap<Integer, String>> statisticMapState = new HashMap<>();
 
         for (String criteriaCodeLevel : criteriaCodeMap.keySet()) {
             Integer criteriaLevel = Integer.valueOf(criteriaCodeLevel.substring(criteriaCodeLevel.length()-1));
             if(!statisticMap.containsKey(criteriaCodeMap.get(criteriaCodeLevel))){
                 HashMap<Integer, Double> map = new HashMap<>();
                 statisticMap.put(criteriaCodeMap.get(criteriaCodeLevel), map);
+                HashMap<Integer, String> mapState = new HashMap<>();
+                statisticMapState.put(criteriaCodeMap.get(criteriaCodeLevel), mapState);
             }
             HashMap<Integer, Double> mapCompetence = statisticMap.get(criteriaCodeMap.get(criteriaCodeLevel));
+            HashMap<Integer, String> mapCompetenceState = statisticMapState.get(criteriaCodeMap.get(criteriaCodeLevel));
             if(criteriaCodeTotal.get(criteriaCodeLevel) != 0)
                 mapCompetence.put(criteriaLevel, (double) (criteriaCodeGood.get(criteriaCodeLevel))*100.0/criteriaCodeTotal.get(criteriaCodeLevel));
             else
                 mapCompetence.put(criteriaLevel, 0.0);
+            mapCompetenceState.put(criteriaLevel, criteriaCodeState.get(criteriaCodeLevel));
             statisticMap.put(criteriaCodeMap.get(criteriaCodeLevel), mapCompetence);
+            statisticMapState.put(criteriaCodeMap.get(criteriaCodeLevel), mapCompetenceState);
         }
         List<StatisticResponse> response = new ArrayList<>();
         for(String responseKey : statisticMap.keySet()){
             HashMap<Integer, Double> mapCompetence = statisticMap.get(responseKey);
-            if(!mapCompetence.containsKey(1))
-                mapCompetence.put(1,0.0);
-            if(!mapCompetence.containsKey(2))
-                mapCompetence.put(2,0.0);
-            if(!mapCompetence.containsKey(3))
-                mapCompetence.put(3,0.0);
-            StatisticResponse statisticResponse = new StatisticResponse(responseKey, mapCompetence);
+            HashMap<Integer, String> mapCompetenceState = statisticMapState.get(responseKey);
+            for(int i=1; i<=3; i++){
+                if(!mapCompetence.containsKey(i))
+                    mapCompetence.put(i,0.0);
+                if(!mapCompetenceState.containsKey(i))
+                    mapCompetenceState.put(i,"En Proceso");
+            }
+            StatisticResponse statisticResponse = new StatisticResponse(responseKey, mapCompetence, getCriteriaCode(responseKey), mapCompetenceState);
             response.add(statisticResponse);
         }
         response.sort(Comparator.comparing(StatisticResponse::getCriteria));

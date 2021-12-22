@@ -12,10 +12,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SpringBootTest
-class ProjectApplicationTests {
+public class ProjectApplicationTests {
 
 	@Test
-	void MainTest() {
+	public void MainTest() {
 		ProjectApplication.main(new String[0]);
 		Assert.assertTrue(true);
 	}
@@ -23,7 +23,7 @@ class ProjectApplicationTests {
 	// entities tests
 
 	@Test
-	void UserTest() {
+	public void UserTest() {
 		User u = new User();
 
 		Long id = 0L;
@@ -64,5 +64,8 @@ class ProjectApplicationTests {
 		Assert.assertEquals(u.getSeccionesCoordina("2021 - 2").size(), 1);
 	}
 
+	@Test
+	public void SeccionTest() {
 
+	}
 }

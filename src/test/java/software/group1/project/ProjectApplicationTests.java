@@ -1,10 +1,33 @@
 package software.group1.project;
 
+import business.custom_exceptions.CustomNotFoundException;
+import config.endpoint_classes.career.Career;
+import config.endpoint_classes.career.CareerInterface;
+import config.endpoint_classes.competence.Competence;
+import config.endpoint_classes.competence.CompetenceInterface;
+import config.endpoint_classes.course.Course;
+import config.endpoint_classes.course.CourseInterface;
+import config.endpoint_classes.evaluation.Evaluation;
+import config.endpoint_classes.evaluation.EvaluationInterface;
 import config.endpoint_classes.rubric.Rubric;
+import config.endpoint_classes.rubric.RubricInterface;
+import config.endpoint_classes.rubric.RubricUpdate;
+import config.endpoint_classes.rubric_creation.RubricCreation;
+import config.endpoint_classes.rubric_creation.RubricCreationInterface;
+import config.endpoint_classes.rubric_import.RubricImport;
+import config.endpoint_classes.rubric_import.RubricImportInterface;
+import config.endpoint_classes.rubric_section.RubricSection;
+import config.endpoint_classes.rubric_students.RubricStudent;
+import config.endpoint_classes.rubric_students.RubricStudentInterface;
+import config.endpoint_classes.student.Student;
+import config.endpoint_classes.student.StudentInterface;
 import config.enums.Role;
 import config.enums.State;
+import data.dtos.CourseDTO;
+import data.dtos.UserDTO;
 import data.entities.*;
 import data.entities.composite_keys.*;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -20,6 +43,12 @@ public class ProjectApplicationTests {
 	public void MainTest() {
 		ProjectApplication.main(new String[0]);
 		Assert.assertTrue(true);
+	}
+
+	@Test
+	public void ServletTest() {
+		ServletInitializer s = new ServletInitializer();
+		s.configure(new SpringApplicationBuilder());
 	}
 
 	// entities tests
@@ -392,5 +421,315 @@ public class ProjectApplicationTests {
 		Assert.assertEquals(disponibleParaCalificar.toString(), "Disponible para calificar");
 		Assert.assertEquals(fueraDeFecha.toString(), "Fuera de fecha");
 		Assert.assertEquals(cumplidos.toString(), "Cumplidos");
+
+		Assert.assertEquals(sinAsignar.getName(), "SinAsignar");
+	}
+
+	// endpoint classes tests
+
+	@Test
+	public void CareerTest() {
+		CareerInterface ci = new CareerInterface() {
+			@Override public Integer getId() {return null;}
+			@Override public String getName() {return "test";}
+		};
+		Career c = new Career(ci);
+
+		Assert.assertEquals(c.getName(), "test");
+	}
+
+	@Test
+	public void CourseTest() {
+		CourseInterface ci1 = new CourseInterface() {
+			@Override public String getName() {return "name";}
+			@Override public String getCode() {return null;}
+			@Override public String getCount1() {return "1";}
+			@Override public String getCount2() {return "0";}
+			@Override public String getCount3() {return "0";}
+			@Override public String getCount4() {return "0";}
+			@Override public String getCount5() {return "0";}
+			@Override public String getCareers() {return "carrera";}
+		};
+
+		CourseInterface ci2 = new CourseInterface() {
+			@Override public String getName() {return null;}
+			@Override public String getCode() {return null;}
+			@Override public String getCount1() {return "0";}
+			@Override public String getCount2() {return "1";}
+			@Override public String getCount3() {return "0";}
+			@Override public String getCount4() {return "0";}
+			@Override public String getCount5() {return "0";}
+			@Override public String getCareers() {return "carrera";}
+		};
+
+		CourseInterface ci3 = new CourseInterface() {
+			@Override public String getName() {return null;}
+			@Override public String getCode() {return null;}
+			@Override public String getCount1() {return "0";}
+			@Override public String getCount2() {return "0";}
+			@Override public String getCount3() {return "1";}
+			@Override public String getCount4() {return "0";}
+			@Override public String getCount5() {return "0";}
+			@Override public String getCareers() {return "carrera";}
+		};
+
+		CourseInterface ci4 = new CourseInterface() {
+			@Override public String getName() {return null;}
+			@Override public String getCode() {return null;}
+			@Override public String getCount1() {return "0";}
+			@Override public String getCount2() {return "0";}
+			@Override public String getCount3() {return "0";}
+			@Override public String getCount4() {return "1";}
+			@Override public String getCount5() {return "0";}
+			@Override public String getCareers() {return "carrera";}
+		};
+
+		CourseInterface ci5 = new CourseInterface() {
+			@Override public String getName() {return null;}
+			@Override public String getCode() {return null;}
+			@Override public String getCount1() {return "0";}
+			@Override public String getCount2() {return "0";}
+			@Override public String getCount3() {return "0";}
+			@Override public String getCount4() {return "0";}
+			@Override public String getCount5() {return "1";}
+			@Override public String getCareers() {return "carrera";}
+		};
+
+		Course c1 = new Course(ci1);
+		Course c2 = new Course(ci2);
+		Course c3 = new Course(ci3);
+		Course c4 = new Course(ci4);
+		Course c5 = new Course(ci5);
+
+		Assert.assertEquals(c1.getName(), "name");
+	}
+
+	@Test
+	public void CompetenceTest() {
+		CompetenceInterface ci = new CompetenceInterface() {
+			@Override public String getCode() {return "code";}
+			@Override public String getDescription() {return null;}
+		};
+		Competence c = new Competence(ci);
+
+		Assert.assertEquals(c.getCode(), "code");
+	}
+
+	@Test
+	public void EvaluationTest() {
+		EvaluationInterface ei = new EvaluationInterface() {
+			@Override public String getRubricCode() {return "R01";}
+			@Override public String getStudentGrade() {return "20";}
+			@Override public String getCompetenceGrade() {return "4";}
+			@Override public Boolean getTotalEvaluation() {return true;}
+			@Override public State getState() {return State.Cumplidos;}
+			@Override public Integer getLevel() {return 1;}
+			@Override public String getCriteria() {return "criteria";}
+		};
+
+		Evaluation e = new Evaluation(ei);
+
+		Assert.assertEquals(e.getRubricCode(), "R01");
+		Assert.assertEquals(e.getStudentGrade(), "20");
+		Assert.assertEquals(e.getCompetenceGrade(), "4");
+		Assert.assertTrue(e.getTotalEvaluation());
+		Assert.assertEquals(e.getState(), State.Cumplidos);
+		Assert.assertEquals(e.getLevel(), new Integer(1));
+		Assert.assertEquals(e.getCriteria(), "criteria");
+	}
+
+	@Test
+	public void RubricTest() {
+		RubricInterface ri1 = new RubricInterface() {
+			@Override public String getCode() {return "R01";}
+			@Override public String getState() {return "SinAsignar";}
+			@Override public String getEvaluation() {return "evaluation";}
+			@Override public LocalDate getDdate() {return LocalDate.of(2021, 12, 12);}
+			@Override public Integer getWeek() {return 6;}
+			@Override public String getEvidence() {return "evidence";}
+			@Override public String getActivity() {return "activity";}
+			@Override public Integer getCoordinates() {return 3;}
+			@Override public Integer getStudents() {return 11;}
+			@Override public Integer getDlevel() {return 1;}
+			@Override public String getTitle() {return "title";}
+			@Override public String getCompetenceCode() {return "C01";}
+			@Override public String getCriteriaCode() {return "1.2";}
+			@Override public Integer getGrade() {return 20;}
+		};
+
+		RubricInterface ri2 = new RubricInterface() {
+			@Override public String getCode() {return "R01";}
+			@Override public String getState() {return "Cumplidos";}
+			@Override public String getEvaluation() {return "evaluation";}
+			@Override public LocalDate getDdate() {return LocalDate.of(2021, 12, 12);}
+			@Override public Integer getWeek() {return 6;}
+			@Override public String getEvidence() {return "evidence";}
+			@Override public String getActivity() {return "activity";}
+			@Override public Integer getCoordinates() {return 3;}
+			@Override public Integer getStudents() {return 11;}
+			@Override public Integer getDlevel() {return 1;}
+			@Override public String getTitle() {return "title";}
+			@Override public String getCompetenceCode() {return "C01";}
+			@Override public String getCriteriaCode() {return "1.2";}
+			@Override public Integer getGrade() {return 20;}
+		};
+
+		Rubric r1 = new Rubric(ri1, "Docente");
+		Rubric r2 = new Rubric(ri1, "Calidad");
+		Rubric r3 = new Rubric(ri2, "Docente");
+
+		Assert.assertEquals(r1.getDate(), "12/12/2021");
+		Assert.assertEquals(r1.getState(), "Sin asignar");
+	}
+
+	@Test
+	public void RubricUpdateTest() {
+		RubricUpdate r = new RubricUpdate(
+				(short) 2,
+				"descriptores",
+				"actividad",
+				"titulo",
+				State.SinAsignar
+		);
+
+		Short newDimensiones = 3;
+		String newDescriptores = "new descriptores";
+		String newActividad = "new actividad";
+		String newTitulo = "new titulo";
+		State newState = State.Cumplidos;
+
+		r.setDimensiones(newDimensiones);
+		r.setDescriptores(newDescriptores);
+		r.setActividad(newActividad);
+		r.setTitle(newTitulo);
+		r.setState(newState);
+
+		Assert.assertEquals(r.getDimensiones(), newDimensiones);
+		Assert.assertEquals(r.getDescriptores(), newDescriptores);
+		Assert.assertEquals(r.getActividad(), newActividad);
+		Assert.assertEquals(r.getTitle(), newTitulo);
+		Assert.assertEquals(r.getState(), newState);
+	}
+
+	@Test
+	public void RubricCreationTest() {
+		RubricCreationInterface rci = new RubricCreationInterface() {
+			@Override public String getCourse() {return "course";}
+			@Override public String getActivity() {return "activity";}
+			@Override public Integer getWeek() {return 7;}
+			@Override public String getCodCompetence() {return "C01";}
+			@Override public String getCompetence() {return "competence";}
+			@Override public String getCriteria() {return "criteria";}
+			@Override public Integer getcriteriaLevel() {return 1;}
+			@Override public LocalDate getDate() {return LocalDate.of(2021, 12, 12);}
+			@Override public String getContent() {return "content";}
+			@Override public String getEvaluation() {return "evaluation";}
+			@Override public String getEvidence() {return "evidence";}
+			@Override public String getCycle() {return "cycle";}
+			@Override public String getTitle() {return "title";}
+			@Override public State getState() {return State.SinAsignar;}
+			@Override public String getSections() {return "sections";}
+			@Override public String getAllSections() {return "all sections";}
+			@Override public Integer getGrade() {return 20;}
+		};
+
+		RubricCreation r = new RubricCreation(rci);
+	}
+
+	@Test
+	public void RubricImportTest() {
+		RubricImportInterface rii = new RubricImportInterface() {
+			@Override public String getCourse() {return "course";}
+			@Override public String getCodCourse() {return "EN01";}
+			@Override public String getTitle() {return "title";}
+			@Override public String getContent() {return "content";}
+			@Override public String getSemester() {return "2021 - 2";}
+		};
+
+		RubricImport r = new RubricImport(rii);
+
+		Assert.assertEquals(r.getSemester(), "2021 - 2");
+		Assert.assertEquals(r.getContent(), "content");
+	}
+
+	@Test
+	public void RubricStudentTest() {
+		RubricStudentInterface rsi = new RubricStudentInterface() {
+			@Override public String getStudentCode() {return null;}
+			@Override public String getCalificacionAlumno() {return null;}
+			@Override public String getCalificacionCompetencia() {return null;}
+			@Override public Boolean getEvaluacionTotal() {return null;}
+		};
+
+		RubricStudent r = new RubricStudent(rsi);
+	}
+
+	@Test
+	public void Student() {
+		StudentInterface si = new StudentInterface() {
+			@Override public String getStudentCode() {return "0001";}
+			@Override public String getStudentName() {return "name";}
+			@Override public Boolean getTotalEvaluation() {return false;}
+		};
+
+		Student s = new Student(si);
+
+		Assert.assertEquals(s.getName(), "name");
+	}
+
+	@Test
+	public void RubricSection() {
+		RubricCreationInterface rci = new RubricCreationInterface() {
+			@Override public String getCourse() {return "course";}
+			@Override public String getActivity() {return "activity";}
+			@Override public Integer getWeek() {return 7;}
+			@Override public String getCodCompetence() {return "C01";}
+			@Override public String getCompetence() {return "competence";}
+			@Override public String getCriteria() {return "criteria";}
+			@Override public Integer getcriteriaLevel() {return 1;}
+			@Override public LocalDate getDate() {return LocalDate.of(2021, 12, 12);}
+			@Override public String getContent() {return "content";}
+			@Override public String getEvaluation() {return "evaluation";}
+			@Override public String getEvidence() {return "evidence";}
+			@Override public String getCycle() {return "cycle";}
+			@Override public String getTitle() {return "title";}
+			@Override public State getState() {return State.SinAsignar;}
+			@Override public String getSections() {return "sections";}
+			@Override public String getAllSections() {return "all sections";}
+			@Override public Integer getGrade() {return 20;}
+		};
+
+		RubricSection r1 = new RubricSection(rci, "Docente");
+		RubricSection r2 = new RubricSection(rci, "Calidad");
+	}
+
+	// dtos tests
+
+	@Test
+	public void UserDTOTest() {
+		UserDTO u = new UserDTO();
+
+		Long codempleado = 0L;
+		String username = "username";
+		Role rol = Role.Docente;
+
+		u.setCodEmpleado(codempleado);
+		u.setUsername(username);
+		u.setRol(rol);
+
+		Assert.assertEquals(u.getCodEmpleado(), codempleado);
+		Assert.assertEquals(u.getUsername(), username);
+		Assert.assertEquals(u.getRol(), rol);
+	}
+
+	@Test
+	public void CourseDTOTest() {
+		CourseDTO c = new CourseDTO();
+
+		String nombre = "nombre";
+
+		c.setNombre(nombre);
+
+		Assert.assertEquals(c.getNombre(), nombre);
 	}
 }

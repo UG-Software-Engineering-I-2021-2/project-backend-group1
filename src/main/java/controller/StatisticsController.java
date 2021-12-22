@@ -139,11 +139,11 @@ public class StatisticsController {
 
             if(evaluation.getState().compareTo(State.Cumplidos) != 0)
                 criteriaCodeState.put(criteriaCode, "En Proceso");
-            if(evaluation.getState().compareTo(State.Cumplidos) == 0 && Boolean.TRUE.equals(evaluation.getTotalEvaluation()))
+            if(evaluation.getState().compareTo(State.Cumplidos) == 0 && Boolean.FALSE.equals(evaluation.getTotalEvaluation()))
                 criteriaCodeTotal.put(criteriaCode, criteriaCodeTotal.get(criteriaCode)-1);
             if(competenceGrade == null)
                 continue;
-            if(competenceGrade.containsKey(competenceLeft) && competenceGrade.get(competenceLeft) > 70)
+            if(competenceGrade.containsKey(competenceLeft) && competenceGrade.get(competenceLeft) >= 75.0)
                 criteriaCodeGood.put(criteriaCode, criteriaCodeGood.get(criteriaCode)+1);
         }
         HashMap<String, HashMap<Integer, Double>> statisticMap = new HashMap<>();

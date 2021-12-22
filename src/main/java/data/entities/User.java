@@ -137,7 +137,9 @@ public class User {
         this.seccionesDicta = seccionesDicta;
     }
 
-    public Set<Seccion> getSeccionesCoordina() { return seccionesCoordina; }
+    public Set<Seccion> getSeccionesCoordina() {
+        return seccionesCoordina;
+    }
 
     public Set<Seccion> getSeccionesCoordina(String semester) {
         Set<Seccion> response = new HashSet<>();
@@ -149,4 +151,7 @@ public class User {
         return response;
     }
 
+    public void setSeccionesCoordina(Set<Seccion> seccionesCoordina) {
+        this.seccionesCoordina = seccionesCoordina;
+    }
 }

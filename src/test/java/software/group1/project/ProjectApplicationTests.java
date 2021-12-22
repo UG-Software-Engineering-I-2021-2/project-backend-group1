@@ -66,6 +66,21 @@ public class ProjectApplicationTests {
 
 	@Test
 	public void SeccionTest() {
+		Seccion s = new Seccion();
 
+		SeccionPK sPK = new SeccionPK();
+		String codseccion = "1";
+		String semestre = "2021 - 2";
+		String codcurso = "EN01";
+
+		sPK.setCodSeccion(codseccion);
+		sPK.setSemestre(semestre);
+		sPK.setCodCurso(codcurso);
+
+		Assert.assertEquals(sPK.getCodSeccion(), codseccion);
+		Assert.assertEquals(sPK.getSemestre(), semestre);
+		Assert.assertEquals(sPK.getCodCurso(), codcurso);
+
+		s.setSeccionPK(sPK);
 	}
 }

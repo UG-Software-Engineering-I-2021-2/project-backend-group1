@@ -40,19 +40,4 @@ public class RubricaBasePK implements Serializable {
     public void setCodCompetencia(String codCompetencia) {
         this.codCompetencia = codCompetencia;
     }
-
-    // equals() and hashCode()
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        RubricaBasePK that = (RubricaBasePK) o;
-        return codRubrica.equals(that.codRubrica) && codCurso.equals(that.codCurso) && codCompetencia.equals(that.codCompetencia);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(codRubrica, codCurso, codCompetencia);
-    }
 }

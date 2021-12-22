@@ -30,19 +30,4 @@ public class LlevaPK implements Serializable {
     public void setSeccionPK(SeccionPK seccionPK) {
         this.seccionPK = seccionPK;
     }
-
-    // equals() and hashCode()
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LlevaPK llevaPK = (LlevaPK) o;
-        return codAlumno.equals(llevaPK.codAlumno) && seccionPK.equals(llevaPK.seccionPK);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(codAlumno, seccionPK);
-    }
 }

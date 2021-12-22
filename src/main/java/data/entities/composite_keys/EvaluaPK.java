@@ -31,19 +31,4 @@ public class EvaluaPK implements Serializable {
     public void setRubricaPK(RubricaPK rubricaPK) {
         this.rubricaPK = rubricaPK;
     }
-
-    // equals() and hashCode()
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EvaluaPK evaluaPK = (EvaluaPK) o;
-        return codAlumno.equals(evaluaPK.codAlumno) && rubricaPK.equals(evaluaPK.rubricaPK);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(codAlumno, rubricaPK);
-    }
 }

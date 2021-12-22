@@ -130,8 +130,8 @@ public class StatisticsController {
                 criteriaCodeState.put(criteriaCode, "Procesado");
             }
 
-            Type empMapType = new TypeToken<Map<String, Integer>>() {}.getType();
-            Map<String, Integer> competenceGrade = gson.fromJson(evaluation.getCompetenceGrade(), empMapType);
+            Type empMapType = new TypeToken<Map<String, Double>>() {}.getType();
+            Map<String, Double> competenceGrade = gson.fromJson(evaluation.getCompetenceGrade(), empMapType);
 
             String competenceLeft = "competenceLeft";
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -48,7 +49,7 @@ public class CoursesUsernameController {
             return msgReturn.callError(404, "role empty");
 
         List<Course> response = courseService.getCourse(semester, username, role);
-
+        response.sort(Comparator.comparing(Course::getName));
         return ResponseEntity.status(200).body(gson.toJson(response));
     }
 }

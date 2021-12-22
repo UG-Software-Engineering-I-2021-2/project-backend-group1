@@ -33,4 +33,8 @@ public class Course{
         this.careers = new ArrayList<>();
         this.careers.addAll(Arrays.asList(courseInterface.getCareers().split("\\|")));
     }
+
+    public String getName() {
+        return name;
+    }
 }

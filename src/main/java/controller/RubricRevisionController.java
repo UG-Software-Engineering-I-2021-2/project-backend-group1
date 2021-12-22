@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.util.List;
 
 class RubricRevisionBody {
     private String rubricCode;
@@ -84,8 +85,9 @@ public class RubricRevisionController {
         String comment = rubricRevisionBody.getComment();
         String link = rubricRevisionBody.getLink();
 
-        String[] to = userService.getCourseCoordinators(semester, courseCode).toArray(new String[0]);
-
+        List<String> coordinators = userService.getCourseCoordinators(semester, courseCode);
+        coordinators.add("luis.carbajal@utec.edu.pe");
+        String[] to = coordinators.toArray(new String[0]);
 
         String subject = "Resultado de revisión. Rúbrica: " + title + " del curso " + courseCode + " " + courseName;
         String body;

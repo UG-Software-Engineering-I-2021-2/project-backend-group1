@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static config.GlobalConstants.DOMINIO;
+
 @Service
 @Transactional
 public class UserService {
@@ -34,7 +36,7 @@ public class UserService {
             throw new CustomNotFoundException("No existen coordinadores para el curso con el código: " + courseCode + ".\n");
         List<String> response = new ArrayList<>();
         for (CoordinatorInterface ci : coordinatorList) {
-            String username = ci.getUsername() + "@utec.edu.pe";
+            String username = ci.getUsername() + DOMINIO;
             response.add(username);
         }
         return response;

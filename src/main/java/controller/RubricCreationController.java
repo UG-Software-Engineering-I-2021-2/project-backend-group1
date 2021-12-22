@@ -129,8 +129,9 @@ public class RubricCreationController {
                     new RubricUpdate((short) content.size(), gson.toJson(content), activity, title, State.SinAsignar));
             return msgReturn.callMsg(200, "msg", "Rúbrica guardada correctamente");
         } else {
-            String[] to = new String[1];
+            String[] to = new String[2];
             to[0] = "jorge.neira@utec.edu.pe";
+            to[1] = "luis.carbajal@utec.edu.pe";
             String subject = "Nueva rúbrica creada requiere revisión. Rúbrica: " + title + " del curso " + courseCode + " " + courseName;
             String body = "<div style=\"display: flex; justify-content: center; width: 100%; font-family: SYSTEM-UI;\">\n" +
                     "    <div style=\"width: 50%;\">\n" +

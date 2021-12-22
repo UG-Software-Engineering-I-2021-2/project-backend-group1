@@ -2,7 +2,6 @@ package data.entities.composite_keys;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Embeddable
 public class RubricaPK implements Serializable {

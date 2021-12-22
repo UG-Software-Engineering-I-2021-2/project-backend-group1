@@ -1,8 +1,7 @@
 package software.group1.project;
 
 import config.enums.Role;
-import data.entities.Seccion;
-import data.entities.User;
+import data.entities.*;
 import data.entities.composite_keys.SeccionPK;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -81,6 +80,46 @@ public class ProjectApplicationTests {
 		Assert.assertEquals(sPK.getSemestre(), semestre);
 		Assert.assertEquals(sPK.getCodCurso(), codcurso);
 
+		Curso curso = new Curso();
+		Set<User> docentesDicta = new HashSet<>();
+		Set<User> docentesCoordina = new HashSet<>();
+		Set<Lleva> lleva = new HashSet<>();
+		Set<Rubrica> rubricas = new HashSet<>();
+
 		s.setSeccionPK(sPK);
+		s.setCursoSeccion(curso);
+		s.setDocentesDicta(docentesDicta);
+		s.setDocentesCoordina(docentesCoordina);
+		s.setLleva(lleva);
+		s.setRubricasRubricFinish(rubricas);
+
+		Assert.assertEquals(s.getSeccionPK(), sPK);
+		Assert.assertEquals(s.getCursoSeccion(), curso);
+		Assert.assertEquals(s.getDocentesDicta(), docentesDicta);
+		Assert.assertEquals(s.getDocentesCoordina(), docentesCoordina);
+		Assert.assertEquals(s.getLleva(), lleva);
+		Assert.assertEquals(s.getRubricasRubricFinish(), rubricas);
+	}
+
+	@Test
+	public void CursoTest() {
+		Curso c = new Curso();
+		String codcurso = "EN01";
+		String nombre = "curso";
+		Set<Seccion> secciones = new HashSet<>();
+		Set<RubricaBase> rubricaBase = new HashSet<>();
+		Set<Carrera> carreras = new HashSet<>();
+
+		c.setCodCurso(codcurso);
+		c.setNombre(nombre);
+		c.setSecciones(secciones);
+		c.setRubricasBase(rubricaBase);
+		c.setCarrerasPertenece(carreras);
+
+		Assert.assertEquals(c.getCodCurso(), codcurso);
+		Assert.assertEquals(c.getNombre(), nombre);
+		Assert.assertEquals(c.getSecciones(), secciones);
+		Assert.assertEquals(c.getRubricasBase(), rubricaBase);
+		Assert.assertEquals(c.getCarrerasPertenece(), carreras);
 	}
 }

@@ -3,7 +3,6 @@ package data.entities.composite_keys;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-import java.util.Objects;
 
 import static config.GlobalConstants.COD_ALUMNO_LENGTH;
 

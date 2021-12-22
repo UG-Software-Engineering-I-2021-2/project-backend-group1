@@ -28,8 +28,6 @@ public enum State {
                 return "Disponible para calificar";
             case "FueraDeFecha":
                 return "Fuera de fecha";
-            case "Cumplidos":
-                return "Cumplidos";
             default:
                 return name;
         }

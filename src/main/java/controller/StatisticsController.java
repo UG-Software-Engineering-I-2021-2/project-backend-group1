@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 class StatisticResponse{
@@ -157,10 +159,15 @@ public class StatisticsController {
             }
             HashMap<Integer, Double> mapCompetence = statisticMap.get(criteriaCodeMap.get(criteriaCodeLevel));
             HashMap<Integer, String> mapCompetenceState = statisticMapState.get(criteriaCodeMap.get(criteriaCodeLevel));
-            if(criteriaCodeTotal.get(criteriaCodeLevel) != 0)
-                mapCompetence.put(criteriaLevel, (double) (criteriaCodeGood.get(criteriaCodeLevel))*100.0/criteriaCodeTotal.get(criteriaCodeLevel));
+            if(criteriaCodeTotal.get(criteriaCodeLevel) != 0){
+                double value = (double) (criteriaCodeGood.get(criteriaCodeLevel))*100.0/criteriaCodeTotal.get(criteriaCodeLevel);
+                Double valueTruncate = BigDecimal.valueOf(value)
+                        .setScale(2, RoundingMode.HALF_UP)
+                        .doubleValue();
+                mapCompetence.put(criteriaLevel, valueTruncate);
+            }
             else
-                mapCompetence.put(criteriaLevel, 0.0);
+                mapCompetence.put(criteriaLevel, 0.00);
             mapCompetenceState.put(criteriaLevel, criteriaCodeState.get(criteriaCodeLevel));
             statisticMap.put(criteriaCodeMap.get(criteriaCodeLevel), mapCompetence);
             statisticMapState.put(criteriaCodeMap.get(criteriaCodeLevel), mapCompetenceState);
